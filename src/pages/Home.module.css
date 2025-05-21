@@ -1,0 +1,78 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.leftSide,
+.rightSide {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+
+  /* Halvtransparent svart överlägg */
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+h2 {
+  font-size: 2.5em;
+  margin-bottom: 0.5em;
+  font-family: Georgia, serif;
+}
+
+p {
+  font-size: 1.2em;
+  margin-bottom: 1.5em;
+  font-family: Georgia, serif;
+}
+
+.button {
+  background-color: #341602;
+  color: white;
+  padding: 12px 24px;
+  text-decoration: none;
+  font-size: 1.2em;
+  border-radius: 5px;
+  font-family: Georgia, serif;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover {
+  background-color: #232020;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.mmvFront {
+  max-width: 300px;
+  max-height: 300px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}

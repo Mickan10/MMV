@@ -1,0 +1,113 @@
+/* Bilder start-sida, från instagram??*/
+.social-media-gallery-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.social-media-gallery h2 {
+    font-size: 24px;
+    margin-top: 50px;
+}
+
+.social-media-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-media-gallery img {
+    width: 350px;
+    height: 350px;
+    opacity: 0;
+    animation: fadeIn 1s ease-in forwards;
+}
+
+.fade-in {
+    width: 350px;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 20px;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: fadeIn 1s ease-in forwards;
+}
+
+.fade-in:nth-child(1) { animation-delay: 0.3s; }
+.fade-in:nth-child(2) { animation-delay: 0.6s; }
+.fade-in:nth-child(3) { animation-delay: 0.9s; }
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* ====== RESPONSIVITET ====== */
+
+@media (max-width: 1024px) {
+    .social-media-gallery-container {
+        margin-top: 400px;
+    }
+    .social-media-gallery h2 {
+        font-size: 22px;
+        margin-top: 100px;
+    }
+    .social-media-gallery img,
+    .fade-in {
+        width: 280px;
+        height: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .social-media-gallery-container {
+        margin-top: 300px;
+    }
+    .social-media-gallery h2 {
+        font-size: 20px;
+        margin-top: 80px;
+    }
+    .social-media-gallery img,
+    .fade-in {
+        width: 220px;
+        height: 220px;
+    }
+}
+
+@media (max-width: 480px) {
+    .social-media-gallery-container {
+        margin-top: 200px;
+        padding: 0 10px;
+    }
+    .social-media-gallery h2 {
+        font-size: 18px;
+        margin-top: 60px;
+    }
+    .social-media-gallery {
+        gap: 10px;
+    }
+    .social-media-gallery img,
+    .fade-in {
+        width: 150px;
+        height: 150px;
+        border-radius: 15px;
+    }
+}
+
+@media (max-width: 320px) {
+    .social-media-gallery-container {
+        margin-top: 150px;
+    }
+    .social-media-gallery h2 {
+        font-size: 16px;
+        margin-top: 40px;
+    }
+    .social-media-gallery img,
+    .fade-in {
+        width: 120px;
+        height: 120px;
+        border-radius: 12px;
+    }
+}

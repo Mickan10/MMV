@@ -1,0 +1,141 @@
+footer {
+    background-color: #111111;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: auto;
+    gap: 0px;
+}
+
+footer .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: nowrap; 
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+footer .footer-section {
+    flex: 1 1 250px;
+    text-align: left;
+}
+
+.logo-mmv-fot {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+    display: block;
+}
+
+footer h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #efede8;
+}
+
+footer p,
+footer a {
+    font-size: 16px;
+    color: #ccc;
+    line-height: 1.6;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+    color: #000000;
+}
+
+footer .social-icons {
+    display: flex;
+    list-style: none;
+    gap: 15px;
+    padding: 0;
+    margin-top: 15px;
+    justify-content: flex-start; /* Ändrat från center till flex-start för bättre alignment */
+}
+
+footer .social-icons li {
+    display: inline-block;
+}
+
+footer .social-icons a {
+    color: #fff;
+    font-size: 40px;
+    transition: color 0.3s;
+}
+
+footer .social-icons a:hover {
+    color: #957b12;
+}
+
+.form-button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.form-button-container h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #efede8;
+}
+
+.form-button-container a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #c58e3e, #e5b970);
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+footer p {
+    font-size: 14px;
+    color: #ccc;
+    margin-top: 20px;
+}
+
+/* Media queries för responsiv footer */
+@media (max-width: 768px) {
+    footer .footer-container {
+        flex-wrap: wrap; 
+        justify-content: center;
+        gap: 20px;
+    }
+    footer .footer-section {
+        flex: 1 1 45%; 
+        text-align: center;
+    }
+    footer .social-icons {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    footer .footer-container {
+        flex-direction: column; 
+        align-items: center;
+        gap: 30px;
+    }
+    footer .footer-section {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+    .form-button-container {
+        margin-top: 10px;
+    }
+    footer p,
+    footer a {
+        font-size: 14px;
+    }
+}

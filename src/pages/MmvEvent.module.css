@@ -1,0 +1,35 @@
+.textSection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 190px;
+  padding: 50px 30px;
+  background-color: #dec69b;
+  margin: 20px 0;
+  justify-content: center;
+}
+
+.leftText, .rightText {
+  padding: 30px 25px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 500px;
+  text-align: left;
+}
+
+.leftText h3, .rightText h3 {
+  font-size: 1.3rem;
+  color: #2b0100;
+}
+
+.leftText p, .rightText p {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #2b0100;
+}
+
+@media (max-width: 768px) {
+  .textSection {
+    flex-direction: column;
+    gap: 30px;
+  }
+}

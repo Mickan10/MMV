@@ -1,0 +1,238 @@
+
+#events {
+    text-align: center;
+    padding: 40px 0;
+}
+
+#events h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.btn-l
+{
+    background-color: #ccbcaf;
+    border: black solid 1px;
+}
+
+.btn-l:hover
+{
+    background-color: #080808;
+}
+
+.events {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.event {
+    background-color: white;
+    color: rgb(38, 37, 37);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 280px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    padding: 20px;
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.event:hover {
+    transform: scale(1.05);
+}
+
+.event img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.event h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.event p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.event button {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    font-size: 16px;
+}
+
+.border {
+    border-top: 2px solid rgb(97, 94, 94);
+    width: 100%;
+    margin: 10px 0;
+}
+
+button.gallery-prev, button.gallery-next {
+    all: unset;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgb(14, 14, 14);
+    background-color: rgba(255, 255, 255, 0.527);
+    border: none;
+    font-size: 40px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 20%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+button.gallery-prev:hover, button.gallery-next:hover {
+    color: black;
+    background-color: rgba(255, 255, 255, 0.738);
+}
+
+button.gallery-prev {
+    left: 0;
+}
+
+button.gallery-next {
+    right: 0;
+}
+
+.gallery-container {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.gallery {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+#gallery
+{
+    background: white;
+    padding: 50px 0;
+    color: #fff;
+    width: 100%;
+}
+
+#gallery h2
+{
+    color: rgb(27, 27, 27);
+    margin: 4px;
+}
+
+.gallery img {
+    width: calc(100% / 3);
+    flex-shrink: 0;
+    height: 300px;
+    object-fit: cover;
+    margin: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.gallery img:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    transform: scale(1.05);
+}
+
+.gallery-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.gallery-button {
+    display: inline-block;
+    background-color: #ccbcaf;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    border: solid black 1px;
+    transition: background 0.3s;
+}
+
+.gallery-button:hover {
+    background-color: black;
+}
+
+/* Sponsor box */
+.sponsors {
+    max-width: 1200px; 
+    margin: 40px auto;
+    text-align: center;
+    padding: 20px;
+    background: #ccbcaf;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.sponsors h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.sponsors-container {
+    display: flex;
+}
+
+.logos {
+    display: flex;
+    justify-content: space-between;
+    gap: 55px;
+    width: 60%; /* Ger logotyperna mer plats */
+}
+
+.sponsor {
+    position: relative;
+    width: 45%;  /* Gör varje logotyp större och två per rad */
+    height: 120px;
+    overflow: hidden;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.sponsor img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: filter 0.3s ease;
+}
+
+.sponsor:hover img {
+    filter: blur(3px);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-size: 0.8em;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sponsor:hover .overlay {
+    opacity: 1;
+}

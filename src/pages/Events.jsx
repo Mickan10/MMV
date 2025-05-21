@@ -1,0 +1,47 @@
+import React, { useState, useEffect } from "react";
+import SearchBar from "../components/SearchBar";
+import EventCalendar from "../components/EventCalendar";
+import "./Events.css";
+
+function Events() {
+  const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [filters, setFilters] = useState({
+    city: "",
+    date: "",
+    genre: "",
+  });
+
+  useEffect(() => {
+    fetch("/events.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setEvents(data);
+        setFilteredEvents(data); // visa alla events från början
+      })
+      .catch((err) => console.error("Failed to fetch events:", err));
+  }, []);
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+
+  const filtered = events.filter((event) => {
+  const matchCity = !newFilters.city || event.city.toLowerCase().includes(newFilters.city.toLowerCase());
+  const matchDate = !newFilters.date || event.date === newFilters.date;
+  const matchGenre = !newFilters.genre || event.genre.toLowerCase().includes(newFilters.genre.toLowerCase());
+  return matchCity && matchDate && matchGenre;
+});
+
+
+    setFilteredEvents(filtered);
+  };
+
+  return (
+    <main>
+      <SearchBar onFilterChange={handleFilterChange} />
+      <EventCalendar events={filteredEvents} />
+    </main>
+  );
+}
+
+export default Events;

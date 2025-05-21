@@ -1,0 +1,208 @@
+.upcoming-events {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* Centrerar hela sektionen */
+    justify-content: center;
+    margin-bottom: 60px;
+}
+
+.event-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;  /* Centrerar korten horisontellt */
+    margin-top: 100px;
+}
+
+.event-item {
+    background-color: #ffffff;
+    color: #000000;
+    width: 300px;
+    padding: 30px;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Centrerar innehållet vertikalt */
+    text-align: center;   /* Centrerar texten i kortet */
+    border: solid rgb(180, 180, 180) 1px;
+    height: 450px;
+}
+
+.event-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+
+.event-item h3 {
+    font-size: 24px;
+    margin: 15px 0;
+    font-weight: bold;
+    color: #000000;
+    text-align: center;   /* Centrerar rubriken */
+}
+
+.event-item p {
+    font-size: 18px;
+    color: #000000;
+    margin: 10px 0;
+    text-align: center;  /* Centrerar brödtexten */
+}
+
+.cta-button {
+    background: linear-gradient(135deg, #c58e3e, #e5b970);
+    color: #111111;
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 30px;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-top: 20px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.cta-button:hover {
+    transform: scale(1.1);
+}
+
+/* --- Media Queries --- */
+
+/* max-width 1024px */
+@media (max-width: 1024px) {
+    .event-list {
+        gap: 15px;
+        margin-top: 80px;
+    }
+    
+    .event-item {
+        width: 280px;
+        padding: 25px;
+        height: 420px;
+    }
+    
+    .event-image {
+        height: 270px;
+        margin-bottom: 12px;
+    }
+    
+    .event-item h3 {
+        font-size: 22px;
+        margin: 12px 0;
+    }
+    
+    .event-item p {
+        font-size: 16px;
+        margin: 8px 0;
+    }
+    
+    .cta-button {
+        padding: 18px 28px;
+    }
+}
+
+/* max-width 768px */
+@media (max-width: 768px) {
+    .event-list {
+        gap: 12px;
+        margin-top: 60px;
+        flex-direction: column;      /* Rad till kolumn */
+        align-items: center;         /* Centrera kolumninnehåll */
+    }
+    
+    .event-item {
+        width: 90%;
+        max-width: 320px;
+        padding: 20px;
+        height: auto;
+    }
+    
+    .event-image {
+        height: 220px;
+        margin-bottom: 10px;
+    }
+    
+    .event-item h3 {
+        font-size: 20px;
+        margin: 10px 0;
+    }
+    
+    .event-item p {
+        font-size: 15px;
+        margin: 6px 0;
+    }
+    
+    .cta-button {
+        padding: 16px 26px;
+    }
+}
+
+/* max-width 480px */
+@media (max-width: 480px) {
+    .event-list {
+        margin-top: 40px;
+        gap: 10px;
+    }
+    
+    .event-item {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .event-image {
+        height: 180px;
+        margin-bottom: 8px;
+    }
+    
+    .event-item h3 {
+        font-size: 18px;
+        margin: 8px 0;
+    }
+    
+    .event-item p {
+        font-size: 14px;
+        margin: 5px 0;
+    }
+    
+    .cta-button {
+        padding: 14px 22px;
+    }
+}
+
+/* max-width 320px */
+@media (max-width: 320px) {
+    .event-list {
+        margin-top: 30px;
+        gap: 8px;
+    }
+    
+    .event-item {
+        width: 100%;
+        padding: 12px;
+    }
+    
+    .event-image {
+        height: 150px;
+        margin-bottom: 6px;
+    }
+    
+    .event-item h3 {
+        font-size: 16px;
+        margin: 6px 0;
+    }
+    
+    .event-item p {
+        font-size: 13px;
+        margin: 4px 0;
+    }
+    
+    .cta-button {
+        padding: 12px 18px;
+        font-size: 14px;
+    }
+}
