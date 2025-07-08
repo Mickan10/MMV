@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer>
       <div className="footer-container">
-        <img src="/Bilder/mmv-front.png" alt="MMV Event Logo" className="logo-mmv-fot" />
+        <img src="src/assets/mmv-front.png" alt="MMV Event Logo" className="logo-mmv-fot" />
 
         <div className="footer-section">
           <h3>Om MMV Event</h3>

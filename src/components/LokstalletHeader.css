@@ -1,0 +1,85 @@
+/* === LokstalletHeader Styling === */
+.hero {
+  position: relative;
+  color: white;
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.logo-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.logo-container img {
+  height: 80px;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: 2rem;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  font-weight: 300;
+  margin-top: 0;
+  color: black;
+}
+
+.hero-nav {
+  margin-top: 3rem;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-links li {
+  margin: 0.5rem;
+}
+
+.nav-links .btn {
+  padding: 10px 20px;
+  background-color: #ffffff;
+  color: #000;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.nav-links .btn:hover,
+.nav-links .btn.active {
+  background-color: #c2a97e;
+  color: #fff;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+  }
+}

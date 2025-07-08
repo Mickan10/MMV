@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "../pages/Events.css";
 
 function EventCalendar({ events }) {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -26,6 +25,10 @@ function EventCalendar({ events }) {
     const dayString = day.toISOString().split("T")[0];
     return events.filter((event) => event.date === dayString);
   }
+
+  // Filtera fram event som är idag eller i framtiden
+  const todayString = new Date().toISOString().split("T")[0];
+  const upcomingEvents = events.filter(event => event.date >= todayString);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -79,6 +82,7 @@ function EventCalendar({ events }) {
       {/* Eventlista */}
       <div className="events-container">
         {selectedDate ? (
+          // Visa detaljer för event på vald dag
           eventsForDay(selectedDate).length > 0 ? (
             eventsForDay(selectedDate).map((event) => (
               <div key={event.name + event.date} className="event-poster">
@@ -86,14 +90,28 @@ function EventCalendar({ events }) {
                 <h4>{event.name}</h4>
                 <p><b>Stad:</b> {event.city}</p>
                 <p><b>Genre:</b> {event.genre}</p>
-                <p>{event.description}</p>
+                <p>{event.description}</p> {/* Full beskrivning */}
+                {event.extraInfo && <p className="extra-info">{event.extraInfo}</p>} {/* Extra info visas här */}
               </div>
             ))
           ) : (
             <p>Inga evenemang denna dag.</p>
           )
         ) : (
-          <p>Välj en dag för att se evenemang.</p>
+          // Visa bara grundinfo för framtida event när inget datum valt
+          upcomingEvents.length > 0 ? (
+            upcomingEvents.map((event) => (
+              <div key={event.name + event.date} className="event-poster">
+                <img src={event.image} alt={event.name} />
+                <h4>{event.name}</h4>
+                <p><b>Stad:</b> {event.city}</p>
+                <p><b>Genre:</b> {event.genre}</p>
+                {/* Ingen full beskrivning här */}
+              </div>
+            ))
+          ) : (
+            <p>Inga kommande evenemang att visa.</p>
+          )
         )}
       </div>
     </div>

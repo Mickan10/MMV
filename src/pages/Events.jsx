@@ -25,13 +25,25 @@ function Events() {
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
 
-  const filtered = events.filter((event) => {
-  const matchCity = !newFilters.city || event.city.toLowerCase().includes(newFilters.city.toLowerCase());
-  const matchDate = !newFilters.date || event.date === newFilters.date;
-  const matchGenre = !newFilters.genre || event.genre.toLowerCase().includes(newFilters.genre.toLowerCase());
-  return matchCity && matchDate && matchGenre;
-});
+    // Säkerställ att filtervärden är strängar innan trim
+    const city = (newFilters.city || "").trim();
+    const date = (newFilters.date || "").trim();
+    const genre = (newFilters.genre || "").trim();
 
+    if (!city && !date && !genre) {
+      // Om inga filter valda, visa alla events
+      setFilteredEvents(events);
+      return;
+    }
+
+    const filtered = events.filter((event) => {
+      const matchCity =
+        !city || event.city.toLowerCase().includes(city.toLowerCase());
+      const matchDate = !date || event.date === date;
+      const matchGenre =
+        !genre || event.genre.toLowerCase().includes(genre.toLowerCase());
+      return matchCity && matchDate && matchGenre;
+    });
 
     setFilteredEvents(filtered);
   };

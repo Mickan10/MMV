@@ -45,13 +45,13 @@ const SearchBar = ({ onFilterChange }) => {
         <label htmlFor="date">Datum:</label>
         <input type="date" id="date" name="date" value={filters.date} onChange={handleChange} />
 
-        <label htmlFor="genre">Genre:</label>
+        {/*<label htmlFor="genre">Genre:</label>
         <select id="genre" name="genre" value={filters.genre} onChange={handleChange}>
           <option value="">Välj genre</option>
           <option value="rock">Rock</option>
           <option value="pop">Pop</option>
           <option value="metal">Metal</option>
-        </select>
+        </select>*/}
 
         <button type="submit">Sök</button>
       </form>

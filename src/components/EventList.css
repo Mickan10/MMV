@@ -1,8 +1,17 @@
+.event-heading {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+  font-weight: bold;
+}
+
 .upcoming-events {
     display: flex;
     flex-direction: column;
-    align-items: center;    /* Centrerar hela sektionen */
+    align-items: center;
     justify-content: center;
+    margin-top: 100px;   
     margin-bottom: 60px;
 }
 
@@ -11,7 +20,7 @@
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;  /* Centrerar korten horisontellt */
-    margin-top: 100px;
+    margin-top: 30px;
 }
 
 .event-item {

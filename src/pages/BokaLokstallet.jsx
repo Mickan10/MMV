@@ -1,6 +1,7 @@
 import React, { useState, } from "react";
 import "./BokaLokstallet.module.css.css";
 
+
 export default function BokaLokstallet() {
   // States för formulärvärden
   const [local, setLocal] = useState("");

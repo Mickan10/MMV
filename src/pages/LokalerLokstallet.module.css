@@ -1,45 +1,119 @@
 .lokaler-container {
-  padding: 2rem;
-  max-width: 1200px;
+  padding: 4rem 2rem;
+  max-width: 1300px;
   margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+  color: #2a2a2a;
 }
 
-h1 {
+.lokaler-container h1 {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #3e3e3e;
 }
 
 .lokal {
   display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 3rem;
-  align-items: center;
   gap: 2rem;
-}
-
-.lokal.reverse {
-  flex-direction: row-reverse;
+  margin-bottom: 4rem;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 20px;
+  padding: 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 .lokal-text {
-  flex: 1;
-  min-width: 250px;
+  flex: 1 1 40%;
+  min-width: 280px;
+}
+
+.lokal-text h2 {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  color: #222;
+}
+
+.lokal-text p {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #555;
 }
 
 .lokal-bild {
-  flex: 1;
-  min-width: 250px;
+  flex: 1 1 55%;
+  position: relative;
+  min-width: 300px;
+  max-width: 600px;
+  height: 330px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
-.slideshow {
-  display: flex;
-  gap: 0.5rem;
-  overflow-x: auto;
-}
-
-.slideshow img {
+/* Bildövergång med fade-effekt */
+.lokal-bild img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 300px;
-  border-radius: 8px;
+  height: 100%;
   object-fit: cover;
+  border-radius: 16px;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.lokal-bild img.visible {
+  opacity: 1;
+  z-index: 1;
+}
+
+.lokal-bild img.hidden {
+  opacity: 0;
+  z-index: 0;
+}
+
+/* Responsivt */
+@media (max-width: 992px) {
+  .lokal {
+    flex-wrap: wrap;
+    padding: 1.5rem;
+  }
+
+  .lokal-text,
+  .lokal-bild {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .lokal-bild {
+    height: 260px;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .lokal-container {
+    padding: 2rem 1rem;
+  }
+
+  .lokaler-container h1 {
+    font-size: 2.2rem;
+  }
+
+  .lokal-text h2 {
+    font-size: 1.5rem;
+  }
+
+  .lokal-text p {
+    font-size: 1rem;
+  }
+
+  .lokal-bild {
+    height: 200px;
+  }
 }

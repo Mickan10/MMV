@@ -1,4 +1,6 @@
 import "./LokstalletFooter.css"; // Skapa separat CSS för Lokstallets footer
+import { NavLink } from 'react-router-dom';
+
 
 export default function LokstalletFooter() {
   return (
@@ -55,11 +57,11 @@ export default function LokstalletFooter() {
         </div>
 
         <div className="lokstallet-form-button-container">
-          <h3>Boka Lokstallet</h3>
-          <a href="/formulär" className="lokstallet-form-button">
-            Boka nu!
-          </a>
-        </div>
+        <h3>Boka Lokstallet</h3>
+        <NavLink to="/boka-lokstallet" className="lokstallet-form-button">
+          Boka nu!
+        </NavLink>
+      </div>
       </div>
       <p>&copy; 2024 Lokstallet. Alla rättigheter förbehålls.</p>
     </footer>
