@@ -6,13 +6,13 @@
   padding: 4rem 2rem;
 }
 
-.logo-container {
+.log-container {
   position: absolute;
   top: 20px;
   left: 20px;
 }
 
-.logo-container img {
+.log-container img {
   height: 80px;
 }
 

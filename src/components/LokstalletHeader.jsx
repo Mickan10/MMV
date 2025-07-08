@@ -5,7 +5,7 @@ import './LokstalletHeader.css';
 const LokstalletHeader = () => {
   return (
     <header className="hero">
-      <div className="logo-container">
+      <div className="log-container">
         <NavLink to="/" className="btn">
           <img src="Bilder/mmvevent.png" alt="MMV Event logga" style={{ height: '80px' }} />
         </NavLink>
