@@ -9,6 +9,7 @@ import About from "./pages/About.jsx";
 import Arkiv from "./pages/Arkiv.jsx";
 import FAQ from "./pages/FAQ.jsx";
 import Contact from "./pages/Contact.jsx";
+import Bandpages from "./pages/Bandpages.jsx";
 
 // Lokstallet-sidor
 import Lokstallet from "./pages/Lokstallet.jsx";
@@ -65,6 +66,7 @@ export default function App() {
         <Route path="/kundcase" element={<MMVLayout><Arkiv /></MMVLayout>} />
         <Route path="/faq" element={<MMVLayout><FAQ /></MMVLayout>} />
         <Route path="/contact" element={<MMVLayout><Contact /></MMVLayout>} />
+        <Route path="/bandpages" element={<MMVLayout><Bandpages /></MMVLayout>} />
 
         {/* Lokstallet-sidor med egen layout */}
         <Route path="/lokstallet" element={<LokstalletLayout><Lokstallet /></LokstalletLayout>} />

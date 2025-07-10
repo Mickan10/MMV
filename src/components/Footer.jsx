@@ -1,5 +1,6 @@
 import React from "react";
 import "./Footer.css"; // Skapa CSS enligt din footerstil
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -32,8 +33,8 @@ export default function Footer() {
         </div>
 
         <div className="form-button-container">
-          <h3>Band och Arrangörer:</h3>
-          <a href="/form" className="form-button">Häng hos oss!</a>
+        <h3>Band och Arrangörer:</h3>
+        <Link to="/bandpages" className="form-button">Häng hos oss!</Link>
         </div>
       </div>
       <p>&copy; 2024 MMV Event. Alla rättigheter förbehålls.</p>
