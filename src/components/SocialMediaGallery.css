@@ -46,6 +46,10 @@
 
 /* ====== RESPONSIVITET ====== */
 
+/* ...befintlig CSS oförändrad... */
+
+/* ====== RESPONSIVITET ====== */
+
 @media (max-width: 1024px) {
     .social-media-gallery-container {
         margin-top: 400px;
@@ -78,36 +82,46 @@
 
 @media (max-width: 480px) {
     .social-media-gallery-container {
-        margin-top: 200px;
+        margin-top: 60px; /* Minska från 200px till 60px */
         padding: 0 10px;
     }
     .social-media-gallery h2 {
         font-size: 18px;
-        margin-top: 60px;
+        margin-top: 20px; /* Minska från 60px till 20px */
     }
     .social-media-gallery {
-        gap: 10px;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
     }
     .social-media-gallery img,
     .fade-in {
-        width: 150px;
-        height: 150px;
+        width: 90%;
+        height: auto;
         border-radius: 15px;
+        max-width: 320px;
     }
 }
 
 @media (max-width: 320px) {
     .social-media-gallery-container {
-        margin-top: 150px;
+        margin-top: 30px; /* Minska från 50px till 30px */
     }
     .social-media-gallery h2 {
         font-size: 16px;
-        margin-top: 40px;
+        margin-top: 15px; /* Minska från 40px till 15px */
+    }
+    .social-media-gallery {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
     }
     .social-media-gallery img,
     .fade-in {
-        width: 120px;
-        height: 120px;
+        width: 95%;
+        height: auto;
         border-radius: 12px;
+        max-width: 280px;
     }
 }
+

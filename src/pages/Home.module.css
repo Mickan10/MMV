@@ -9,6 +9,7 @@ html, body, #root {
   width: 100%;
   margin: 0;
   padding: 0;
+  flex-wrap: nowrap; /* Bredvid varandra som standard */
 }
 
 .leftSide,
@@ -29,7 +30,6 @@ html, body, #root {
   background-position: center center;
   background-size: cover;
 
-  /* Halvtransparent svart överlägg */
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
@@ -72,4 +72,40 @@ p {
   max-height: 300px;
   object-fit: contain;
   margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: 100vh; /* Ta hela höjden på skärmen */
+  }
+
+  .leftSide,
+  .rightSide {
+    height: 50vh; /* Varje sida tar halva höjden */
+    padding: 0; /* Ta bort padding för att bilden täcker hela ytan */
+  }
+
+  .overlay {
+    padding: 10px; /* Behåll lite padding för texten */
+  }
+
+  .mmvFront {
+    max-width: 100%;
+    max-height: 100%;
+    margin-bottom: 0;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  p {
+    font-size: 1em;
+  }
+
+  .button {
+    font-size: 1em;
+    padding: 10px 20px;
+  }
 }

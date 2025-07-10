@@ -49,17 +49,19 @@ function Events() {
   };
 
   return (
-    <main>
+     <main>
+    <div className="events-wrapper">
       <SearchBar filters={filters} onFilterChange={handleFilterChange} />
       <button
         onClick={resetFilters}
         className="reset-button"
         style={{ margin: "1rem 0", padding: "0.5rem 1rem" }}
       >
-        Visa alla events
+        *nollställer bara vid filter searchbar
       </button>
       <EventCalendar events={filteredEvents} />
-    </main>
+    </div>
+  </main>
   );
 }
 

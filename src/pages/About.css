@@ -1,93 +1,95 @@
-/* Området för "Om oss"-sektionen */
+/* === Om oss sektion === */
 .about-us {
-    background-color: #c2a97eb9;
-    padding: 40px;
-    border-radius: 10px;
-    color: rgb(0, 0, 0);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin: 20px auto;
-    border: none;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+  background-color: #c2a97eb9;
+  padding: 40px;
+  border-radius: 10px;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 20px auto;
+  border: none;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }
 
 .about-us-other {
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: 40px;
-    border-radius: 10px;
-    color: rgb(0, 0, 0);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-    max-width: 1200px;
-    margin: 50px auto;
-    border: none;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 40px;
+  border-radius: 10px;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 1200px;
+  margin: 50px auto;
+  border: none;
 }
 
 .about {
-    max-width: 1300px;
-    margin: 0 auto;
+  max-width: 1300px;
+  margin: 0 auto;
 }
 
 .about-content h2 {
-    text-align: left;
-    margin-bottom: 30px;
-    font-size: 45px; /* Större text */
-    color: #0a0a0a;
+  text-align: left;
+  margin-bottom: 30px;
+  font-size: 45px;
+  color: #0a0a0a;
 }
 
+/* Flex-container för text och bild */
 .about-content .content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Ger jämnt utrymme mellan bilderna och texten */
-    gap: 50px;
-    text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  text-align: left;
+  flex-wrap: wrap; /* Säkerställer att det inte bryter layouten */
 }
 
+/* Bildbehållare */
 .image-containers {
-    width: 550px;
-    height: 550px; /* samma som bredden */
-    border-radius: 50%;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-shrink: 0; /* Hindrar att bilden krymper */
 }
-
 
 .image-containers img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
-
-.about-us-reverse {
-    margin-left: 90px;
-}
-
+/* Textbehållare */
 .text {
-    flex: 1;
-    max-width: 700px; /* eller ta bort helt för full bredd */
-    width: 100%;
+  flex: 1;
+  max-width: 700px;
+  width: 100%;
 }
-
 
 .text p {
-    margin-bottom: 0px;
-    line-height: 1.8; /* Bättre läsbarhet */
-    font-size: 20px; /* Större text */
-    color: rgb(0, 0, 0);
+  margin-bottom: 0;
+  line-height: 1.8;
+  font-size: 20px;
+  color: #000;
 }
 
+/* Omvänd layout för varannan sektion */
+.about-us-reverse {
+  flex-direction: row-reverse !important; /* Gör om till rad-reverse */
+}
 
-/* === PARTNERS-STIL === */
+/* === Partners-sektion === */
 .partners {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 50px 20px;
@@ -113,7 +115,6 @@
   max-width: 900px;
   margin-bottom: 50px;
   line-height: 1.6;
-  text-align: center;
   color: #222;
 }
 
@@ -152,6 +153,7 @@
   object-fit: cover;
   transition: transform 0.3s ease, filter 0.3s ease;
   display: block;
+  border-radius: 12px;
 }
 
 .partners ul li:hover img {
@@ -171,7 +173,7 @@
   text-align: left;
   line-height: 1.5;
   display: flex;
-  align-items: left;
+  align-items: flex-start;
   justify-content: flex-start;
   overflow-y: auto;
 }
@@ -187,7 +189,6 @@
   text-align: center;
 }
 
-
 .partners ul li:hover span {
   opacity: 1;
 }
@@ -201,38 +202,97 @@
   border-radius: 3px;
 }
 
-/* RESPONSIV DESIGN */
-@media (max-width: 992px) {
-  .partners ul li {
-    flex: 0 1 calc(50% - 15px);
-    height: 220px;
-  }
+/* === Responsivitet === */
 
-  .partners p {
-    max-width: 95%;
-    font-size: 1.1rem;
+/* Under 992px - lite mindre bilder i "Om oss" och justerad layout */
+@media (max-width: 992px) {
+  .about-content .content {
+    gap: 40px;
+    justify-content: center;
+  }
+  .image-containers {
+    width: 400px;
+    height: 400px;
+    margin-bottom: 20px;
+  }
+  .text {
+    max-width: 600px;
+  }
+  .about-content h2 {
+    font-size: 36px;
+  }
+  .about-us-reverse {
+    flex-direction: row-reverse !important;
   }
 }
 
+/* Under 768px - stapla vertikalt och mindre bilder */
+@media (max-width: 768px) {
+  .about-content .content {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    text-align: center;
+  }
+  .image-containers {
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+  }
+  .text {
+    max-width: 100%;
+  }
+  .about-content h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  .text p {
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .about-us-reverse {
+    flex-direction: column !important;
+    margin-left: 0;
+  }
+}
+
+/* Under 480px - ännu mindre bilder och text */
+@media (max-width: 480px) {
+  .image-containers {
+    width: 180px;
+    height: 180px;
+  }
+  .about-content h2 {
+    font-size: 24px;
+  }
+  .text p {
+    font-size: 16px;
+  }
+}
+
+/* Partners sektion - vertikal lista under 600px */
 @media (max-width: 600px) {
   .partners ul {
     flex-direction: column;
-    gap: 25px;
+    gap: 30px;
     align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
   }
-
   .partners ul li {
-    flex: 1 1 100%;
-    width: 90%;
-    height: 180px;
+    flex: none;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    max-height: none;
   }
-
+  .partners ul li img {
+    height: 100%;
+    object-fit: cover;
+  }
   .partners p {
     font-size: 1rem;
     max-width: 100%;
-  }
-
-  .about-content h2 {
-    font-size: 1.8rem;
   }
 }
