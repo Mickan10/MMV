@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import "./Header.css";
-
+import logo from "../assets/mmv-front.png";
 
 export default function Header() {
   return (
@@ -10,7 +10,7 @@ export default function Header() {
       </div>
 
       <div className="logo-container">
-        <img src="/images/mmvevent.png" alt="MMV Event Logga" className="logo-mmv" />
+      <img src={logo} alt="MMV Event Logga" className="logo-mmv" />
       </div>
 
       {/*<h1 className="header-title">MMV Event</h1>*/}

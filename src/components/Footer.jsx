@@ -1,12 +1,12 @@
-import React from "react";
-import "./Footer.css"; // Skapa CSS enligt din footerstil
+import "./Footer.css"; 
 import { Link } from "react-router-dom";
+import logo from "../assets/mmv-front.png";
 
 export default function Footer() {
   return (
     <footer>
       <div className="footer-container">
-        <img src="src/assets/mmv-front.png" alt="MMV Event Logo" className="logo-mmv-fot" />
+        <img src={logo} alt="MMV Event Logga" className="logo-mmv-fot" />
 
         <div className="footer-section">
           <h3>Om MMV Event</h3>
