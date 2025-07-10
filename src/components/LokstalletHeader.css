@@ -1,9 +1,10 @@
-/* === LokstalletHeader Styling === */
-.hero {
+.lokstallet-header {
   position: relative;
-  color: white;
+  color: black; /* Svart text som standard */
   text-align: center;
   padding: 4rem 2rem;
+  background-color: white; /* Vit bakgrund */
+  font-family: Arial, sans-serif; 
 }
 
 .log-container {
@@ -26,6 +27,7 @@
   font-size: 3rem;
   margin-bottom: 0.5rem;
   font-weight: 700;
+  color: black;
 }
 
 .hero-content p {
@@ -39,7 +41,7 @@
   margin-top: 3rem;
 }
 
-.nav-links {
+.links {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -48,24 +50,28 @@
   list-style: none;
 }
 
-.nav-links li {
+.links li {
   margin: 0.5rem;
 }
 
-.nav-links .btn {
+/* Knapp-styling anpassad till lokstallet-btn */
+.lokstallet-btn {
   padding: 10px 20px;
-  background-color: #ffffff;
-  color: #000;
+  background-color: #fff;  /* vit bakgrund */
+  color: #000;             /* svart text */
   font-weight: 600;
   text-decoration: none;
   border-radius: 8px;
   transition: all 0.3s ease;
+  display: inline-block;
+  border: none;
 }
 
-.nav-links .btn:hover,
-.nav-links .btn.active {
-  background-color: #c2a97e;
-  color: #fff;
+.lokstallet-btn:hover,
+.lokstallet-btn.active {
+  background-color: #000;  /* svart bakgrund när hover eller aktiv */
+  color: #fff;       
+  border: none;    
 }
 
 /* === Responsive === */
@@ -78,7 +84,7 @@
     font-size: 1rem;
   }
 
-  .nav-links {
+  .links {
     flex-direction: column;
     align-items: center;
   }

@@ -1,39 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import styles from './LokalerLokstallet.module.css';
 
+import gh4_1 from '../assets/gh4-1.jpg';
+import restu from '../assets/restu.jpg';
+import scen from '../assets/scen.jpg';
+
 const lokalerData = [
   {
     title: 'Köket',
     text: 'Perfekt för matlagningsevent och mingel. Fullt utrustat kök och mysig atmosfär.',
-    images: ['src/assets/gh4-1.jpg', 'src/assets/bild2 restu.jpg', 'src/assets/scen.jpg'],
+    images: [restu, gh4_1, scen],
   },
   {
     title: 'Lilla Scenen',
     text: 'En intim scen för mindre uppträdanden och möten.',
-    images: ['src/assets/gh4-1.jpg', 'src/assets/bild2 restu.jpg', 'src/assets/scen.jpg'],
+    images: [gh4_1, restu, scen],
   },
   {
     title: 'Stora Scenen',
     text: 'Stor scen med professionellt ljud- och ljussystem.',
-    images: ['src/assets/gh4-1.jpg', 'src/assets/bild2 restu.jpg', 'src/assets/scen.jpg'],
+    images: [scen, gh4_1, restu],
   },
   {
     title: 'Konferensrum',
     text: 'Modernt och välutrustat konferensrum för möten och workshops.',
-    images: ['src/assets/gh4-1.jpg', 'src/assets/bild2 restu.jpg', 'src/assets/scen.jpg'],
+    images: [restu, gh4_1, scen],
   },
   {
     title: 'Hela Lokalen',
     text: 'Hyr hela lokalen för stora evenemang, fester eller företagsevent.',
-    images: ['src/assets/gh4-1.jpg', 'src/assets/bild2 restu.jpg', 'src/assets/scen.jpg'],
+    images: [scen, gh4_1, restu],
   },
   {
     title: 'Dagskontor',
     text: 'Flexibla arbetsplatser med snabb WiFi och bekväm miljö.',
-    images: ['src/assets/gh4-1.jpg', 'src/assets/bild2 restu.jpg', 'src/assets/scen.jpg'],
+    images: [gh4_1, restu, scen],
   },
 ];
-
 
 const LokalerLokstallet = () => {
   const [currentImages, setCurrentImages] = useState(
@@ -46,6 +49,7 @@ const LokalerLokstallet = () => {
         prev.map((curr, i) => (curr + 1) % lokalerData[i].images.length)
       );
     }, 3000);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -64,7 +68,9 @@ const LokalerLokstallet = () => {
                 key={i}
                 src={src}
                 alt={`${lokal.title} bild ${i + 1}`}
-                className={`${styles['slide-image']} ${currentImages[idx] === i ? styles.visible : styles.hidden}`}
+                className={`${styles['slide-image']} ${
+                  currentImages[idx] === i ? styles.visible : styles.hidden
+                }`}
               />
             ))}
           </div>

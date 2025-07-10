@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import "./Lokstallet.css"; 
 import { Link } from 'react-router-dom';
 
@@ -8,17 +9,29 @@ import img2 from '../assets/scen.jpg';
 import img3 from '../assets/resturang.webp';
 import img4 from '../assets/header.jpg';
 import logoWebbVitMini from '../assets/Logo-webb-vit-mini.webp';
-{/*import sponsor2 from '../assets/sponsor2.png';
-import sponsor3 from '../assets/sponsor3.png';
-import sponsor4 from '../assets/sponsor4.png';*/}
 
 const Lokstallet = () => {
+  const images = [img1, img2, img1, img3, img4, img4, img4, img4, img4, img3];
+  const [startIndex, setStartIndex] = useState(0);
+  const imagesToShow = 3; // Antal bilder som visas samtidigt
+
+  const handlePrev = () => {
+    setStartIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleNext = () => {
+    setStartIndex((prev) => Math.min(prev + 1, images.length - imagesToShow));
+  };
+
+  const visibleImages = images.slice(startIndex, startIndex + imagesToShow);
+
   return (
     <main>
       <div className="border"></div>
 
       <section id="events" className="section">
         <h2>Vad händer på Lokstallet?</h2>
+        <p>något annat i denna section? innan det finns event</p>
         <div className="events">
           <article className="event">
             <img src={eventImg} alt="Event 1" />
@@ -26,22 +39,23 @@ const Lokstallet = () => {
             <p>Datum: 25 januari 2025</p>
             <button className="btn-l">Köp biljett</button>
           </article>
+          {/* ... fler eventartiklar som tidigare ... */}
           <article className="event">
-            <img src={eventImg} alt="Event 2" />
-            <h3>Teater: Föreställningsnamn</h3>
-            <p>Datum: 10 februari 2025</p>
-            <button className="btn-l">Köp biljett</button>
-          </article>
-          <article className="event">
-            <img src={eventImg} alt="Event 3" />
+            <img src={eventImg} alt="Event 1" />
             <h3>Konsert: Bandnamn</h3>
             <p>Datum: 25 januari 2025</p>
             <button className="btn-l">Köp biljett</button>
           </article>
           <article className="event">
-            <img src={eventImg} alt="Event 4" />
-            <h3>Teater: Föreställningsnamn</h3>
-            <p>Datum: 10 februari 2025</p>
+            <img src={eventImg} alt="Event 1" />
+            <h3>Konsert: Bandnamn</h3>
+            <p>Datum: 25 januari 2025</p>
+            <button className="btn-l">Köp biljett</button>
+          </article>
+          <article className="event">
+            <img src={eventImg} alt="Event 1" />
+            <h3>Konsert: Bandnamn</h3>
+            <p>Datum: 25 januari 2025</p>
             <button className="btn-l">Köp biljett</button>
           </article>
         </div>
@@ -52,20 +66,25 @@ const Lokstallet = () => {
       <section id="gallery" className="section">
         <h2>Lokstallet: En Oas För Kultur och Evenemang</h2>
         <div className="gallery-container">
-          <button className="gallery-prev" id="prev">&#10094;</button>
+          <button 
+            className="gallery-prev" 
+            onClick={handlePrev} 
+            disabled={startIndex === 0}
+          >
+            &#10094;
+          </button>
           <div className="gallery">
-            <img src={img1} alt="Bild 1" />
-            <img src={img2} alt="Bild 2" />
-            <img src={img1} alt="Bild 3" />
-            <img src={img3} alt="Bild 4" />
-            <img src={img4} alt="Bild 5" />
-            <img src={img4} alt="Bild 6" />
-            <img src={img4} alt="Bild 7" />
-            <img src={img4} alt="Bild 8" />
-            <img src={img4} alt="Bild 9" />
-            <img src={img3} alt="Bild 10" />
+            {visibleImages.map((img, i) => (
+              <img key={i} src={img} alt={`Bild ${startIndex + i + 1}`} />
+            ))}
           </div>
-          <button className="gallery-next" id="next">&#10095;</button>
+          <button 
+            className="gallery-next" 
+            onClick={handleNext} 
+            disabled={startIndex >= images.length - imagesToShow}
+          >
+            &#10095;
+          </button>
         </div>
 
         <div className="gallery-button-container">
@@ -89,18 +108,7 @@ const Lokstallet = () => {
                 </div>
               </a>
             </div>
-            {/*<div className="sponsor">
-              <img src={sponsor2} alt="Sponsor 2" />
-              <div className="overlay">Om Sponsor 2</div>
-            </div>
-            <div className="sponsor">
-              <img src={sponsor3} alt="Sponsor 3" />
-              <div className="overlay">Om Sponsor 3</div>
-            </div>
-            <div className="sponsor">
-              <img src={sponsor4} alt="Sponsor 4" />
-              <div className="overlay">Om Sponsor 4</div>
-            </div>*/}
+            {/* eventuella fler sponsorer */}
           </div>
         </div>
       </section>

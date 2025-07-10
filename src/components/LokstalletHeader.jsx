@@ -1,13 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './LokstalletHeader.css';
+import logo from '../assets/mmv-front.png'; 
 
 const LokstalletHeader = () => {
   return (
-    <header className="hero">
+    <header className="lokstallet-header">
       <div className="log-container">
-        <NavLink to="/" className="btn">
-          <img src="Bilder/mmvevent.png" alt="MMV Event logga" style={{ height: '80px' }} />
+        <NavLink to="/" className="lokstallet-btn">
+        <img src={logo} alt="MMV Event logga" style={{ height: '80px' }} />
         </NavLink>
       </div>
 
@@ -17,16 +18,15 @@ const LokstalletHeader = () => {
       </div>
 
       <nav className="hero-nav">
-        <ul className="nav-links bottom-nav">
-          <li><NavLink to="/lokstallet" className="btn">Home</NavLink></li>
-          <li><NavLink to="/boka-lokstallet" className="btn">Boka Lokstallet</NavLink></li>
-          <li><NavLink to="/evenemang-lokstallet" className="btn">Evenemang & Biljetter</NavLink></li>
-          <li><NavLink to="/lokaler" className="btn">Lokstallets lokaler</NavLink></li>
-          <li><NavLink to="/historia" className="btn">Historia</NavLink></li>
-          <li><NavLink to="/kontakt-lokstallet" className="btn">Kontakt</NavLink></li>
+        <ul className="links bottom-nav">
+          <li><NavLink to="/lokstallet" className="lokstallet-btn">Home</NavLink></li>
+          <li><NavLink to="/boka-lokstallet" className="lokstallet-btn">Boka Lokstallet</NavLink></li>
+          <li><NavLink to="/evenemang-lokstallet" className="lokstallet-btn">Evenemang & Biljetter</NavLink></li>
+          <li><NavLink to="/lokaler" className="lokstallet-btn">Lokstallets lokaler</NavLink></li>
+          <li><NavLink to="/historia" className="lokstallet-btn">Historia</NavLink></li>
+          <li><NavLink to="/kontakt-lokstallet" className="lokstallet-btn">Kontakt</NavLink></li>
         </ul>
       </nav>
-
     </header>
   );
 };
