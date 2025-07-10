@@ -13,11 +13,14 @@ function Events() {
   });
 
   useEffect(() => {
-    fetch("/events.json")
-      .then((res) => res.json())
+    fetch("/MMV/events.json")
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
         setEvents(data);
-        setFilteredEvents(data); // visa alla events från början
+        setFilteredEvents(data);
       })
       .catch((err) => console.error("Failed to fetch events:", err));
   }, []);
@@ -25,32 +28,36 @@ function Events() {
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
 
-    // Säkerställ att filtervärden är strängar innan trim
-    const city = (newFilters.city || "").trim();
-    const date = (newFilters.date || "").trim();
-    const genre = (newFilters.genre || "").trim();
-
-    if (!city && !date && !genre) {
-      // Om inga filter valda, visa alla events
-      setFilteredEvents(events);
-      return;
-    }
+    const city = newFilters.city?.toLowerCase() ?? "";
+    const date = newFilters.date ?? "";
+    const genre = newFilters.genre?.toLowerCase() ?? "";
 
     const filtered = events.filter((event) => {
-      const matchCity =
-        !city || event.city.toLowerCase().includes(city.toLowerCase());
+      const matchCity = !city || event.city.toLowerCase().includes(city);
       const matchDate = !date || event.date === date;
-      const matchGenre =
-        !genre || event.genre.toLowerCase().includes(genre.toLowerCase());
+      const matchGenre = !genre || event.genre.toLowerCase().includes(genre);
       return matchCity && matchDate && matchGenre;
     });
 
     setFilteredEvents(filtered);
   };
 
+  const resetFilters = () => {
+    const reset = { city: "", date: "", genre: "" };
+    setFilters(reset);
+    setFilteredEvents(events);
+  };
+
   return (
     <main>
-      <SearchBar onFilterChange={handleFilterChange} />
+      <SearchBar filters={filters} onFilterChange={handleFilterChange} />
+      <button
+        onClick={resetFilters}
+        className="reset-button"
+        style={{ margin: "1rem 0", padding: "0.5rem 1rem" }}
+      >
+        Visa alla events
+      </button>
       <EventCalendar events={filteredEvents} />
     </main>
   );

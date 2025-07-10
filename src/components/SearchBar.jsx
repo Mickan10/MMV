@@ -1,32 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../pages/Events.css";
 
-const SearchBar = ({ onFilterChange }) => {
-  const [filters, setFilters] = useState({
-    city: "",
-    date: "",
-    genre: "",
-  });
-
-  // Anropa onFilterChange varje gång filters ändras - live filter
-  useEffect(() => {
-    onFilterChange(filters);
-  }, [filters, onFilterChange]);
-
+const SearchBar = ({ filters, onFilterChange }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFilters((prev) => ({
-      ...prev,
+    onFilterChange({
+      ...filters,
       [name]: value,
-    }));
+    });
   };
 
-  // Vi kan antingen ta bort submit helt eller göra den till reset
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // Om du vill kan du göra reset på submit:
-    // setFilters({ city: "", date: "", genre: "" });
-    // Eller helt enkelt göra inget, eftersom vi filtrerar live.
+    e.preventDefault(); // vi hanterar allt på ändring
   };
 
   return (
@@ -43,17 +28,23 @@ const SearchBar = ({ onFilterChange }) => {
         </select>
 
         <label htmlFor="date">Datum:</label>
-        <input type="date" id="date" name="date" value={filters.date} onChange={handleChange} />
+        <input
+          type="date"
+          id="date"
+          name="date"
+          value={filters.date}
+          onChange={handleChange}
+        />
 
-        {/*<label htmlFor="genre">Genre:</label>
+        <label htmlFor="genre">Genre:</label>
         <select id="genre" name="genre" value={filters.genre} onChange={handleChange}>
           <option value="">Välj genre</option>
           <option value="rock">Rock</option>
           <option value="pop">Pop</option>
           <option value="metal">Metal</option>
-        </select>*/}
-
-        <button type="submit">Sök</button>
+          <option value="jazz">Jazz</option>
+          <option value="indie">Indie</option>
+        </select>
       </form>
     </section>
   );

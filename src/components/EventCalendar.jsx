@@ -27,7 +27,6 @@ function EventCalendar({ events }) {
     return events.filter((event) => event.date === dayString);
   }
 
-  // Filtera fram event som är idag eller i framtiden
   const todayString = new Date().toISOString().split("T")[0];
   const upcomingEvents = events.filter((event) => event.date >= todayString);
 
@@ -35,9 +34,11 @@ function EventCalendar({ events }) {
   const month = currentDate.getMonth();
   const daysInMonth = getDaysInMonth(year, month);
 
+  // Veckodagar med unika keys
+  const weekdays = ["M", "T", "O", "To", "F", "L", "S"];
+
   return (
     <div className="container-evente">
-      {/* Kalender */}
       <div className="calendar-container">
         <div className="calendar-header">
           <button className="nav-button" onClick={() => changeMonth(-1)}>
@@ -52,7 +53,7 @@ function EventCalendar({ events }) {
         </div>
 
         <div className="weekdays">
-          {["M", "T", "O", "T", "F", "L", "S"].map((d) => (
+          {weekdays.map((d) => (
             <div key={d}>{d}</div>
           ))}
         </div>
@@ -87,7 +88,6 @@ function EventCalendar({ events }) {
       {/* Eventlista */}
       <div className="events-container">
         {selectedDate ? (
-          // Visa detaljer för event på vald dag
           eventsForDay(selectedDate).length > 0 ? (
             eventsForDay(selectedDate).map((event) => (
               <div
@@ -100,33 +100,29 @@ function EventCalendar({ events }) {
                 <h4>{event.name}</h4>
                 <p><b>Stad:</b> {event.city}</p>
                 <p><b>Genre:</b> {event.genre}</p>
-                <p>{event.description}</p> {/* Full beskrivning */}
-                {event.extraInfo && <p className="extra-info">{event.extraInfo}</p>} {/* Extra info visas här */}
+                <p>{event.description}</p>
+                {event.extraInfo && <p className="extra-info">{event.extraInfo}</p>}
               </div>
             ))
           ) : (
             <p>Inga evenemang denna dag.</p>
           )
+        ) : upcomingEvents.length > 0 ? (
+          upcomingEvents.map((event) => (
+            <div
+              key={event.name + event.date}
+              className="event-poster"
+              onClick={() => setExpandedEvent(event)}
+              style={{ cursor: "pointer" }}
+            >
+              <img src={event.image} alt={event.name} />
+              <h4>{event.name}</h4>
+              <p><b>Stad:</b> {event.city}</p>
+              <p><b>Genre:</b> {event.genre}</p>
+            </div>
+          ))
         ) : (
-          // Visa bara grundinfo för framtida event när inget datum valt
-          upcomingEvents.length > 0 ? (
-            upcomingEvents.map((event) => (
-              <div
-                key={event.name + event.date}
-                className="event-poster"
-                onClick={() => setExpandedEvent(event)}
-                style={{ cursor: "pointer" }}
-              >
-                <img src={event.image} alt={event.name} />
-                <h4>{event.name}</h4>
-                <p><b>Stad:</b> {event.city}</p>
-                <p><b>Genre:</b> {event.genre}</p>
-                {/* Ingen full beskrivning här */}
-              </div>
-            ))
-          ) : (
-            <p>Inga kommande evenemang att visa.</p>
-          )
+          <p>Inga kommande evenemang att visa.</p>
         )}
       </div>
 
