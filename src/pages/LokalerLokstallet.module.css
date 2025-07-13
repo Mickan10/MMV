@@ -1,17 +1,23 @@
 /* Grundinställning för hela sidan */
 html, body {
   margin: 0;
-  padding: 0;
+  padding: 40px 0;
   height: 100%;
   background-color: #c1b6a8;
   font-family: 'Josefin Sans', sans-serif;
   font-weight: 400;
 }
 
+section {
+  margin: 0;
+  padding: 0;
+  background-color: #c1b6a8;
+}
+
 /* Behåll layouten centrerad men ge den luft från kanterna på små skärmar */
 .lokaler-container {
   max-width: 1600px;
-  margin: 0;
+  margin: 20px 0 20px 0;
   font-family: 'Segoe UI', sans-serif;
   color: #2a2a2a;
   background-color: #c1b6a8;
@@ -19,7 +25,7 @@ html, body {
 
 .lokaler-container h1 {
   text-align: center;
-  margin: 3rem;
+  margin: 0rem;
   font-size: 3rem;
   color: #3e3e3e;
   font-family: 'Bungee Shade', cursive;
