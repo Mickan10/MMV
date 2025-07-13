@@ -3,15 +3,14 @@ import "./Lokstallet.css";
 import { Link } from 'react-router-dom';
 
 // Importera bilder från assets-mappen
-import eventImg from '../assets/55d73d6f-6f18-4cc8-bb49-43e1f403beaa.webp';
-import img1 from '../assets/images.jpg';
+import timo from '../assets/timo.png';
 import img2 from '../assets/scen.jpg';
 import img3 from '../assets/resturang.webp';
 import img4 from '../assets/header.jpg';
 import logoWebbVitMini from '../assets/Logo-webb-vit-mini.webp';
 
 const Lokstallet = () => {
-  const images = [img1, img2, img1, img3, img4, img4, img4, img4, img4, img3];
+  const images = [img2, img3, img4, img4, img4, img4, img4, img3];
   const [startIndex, setStartIndex] = useState(0);
   const imagesToShow = 3; // Antal bilder som visas samtidigt
 
@@ -34,26 +33,31 @@ const Lokstallet = () => {
         <p></p>
         <div className="events">
           <article className="event">
-            <img src={eventImg} alt="Event 1" />
-            <h3>Konsert: Bandnamn</h3>
-            <p>Datum: 25 januari 2025</p>
+          <img src={timo} alt="Julen enligt Timo" />
+          <h3>Lördag 6 dec. • Julen enligt Timo • Kulturaktiebolaget</h3>
+          <a
+            href="https://billetto.se/e/julen-enligt-timo-biljetter-1280249"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <button className="btn-l">Mer information</button>
-          </article>
-          {/* ... fler eventartiklar som tidigare ... */}
+          </a>
+        </article>
+
           <article className="event">
-            <img src={eventImg} alt="Event 1" />
+            <img src={img2} alt="Event 1" />
             <h3>Konsert: Bandnamn</h3>
             <p>Datum: 25 januari 2025</p>
             <button className="btn-l">Köp biljett</button>
           </article>
           <article className="event">
-            <img src={eventImg} alt="Event 1" />
+            <img src={img2} alt="Event 1" />
             <h3>Konsert: Bandnamn</h3>
             <p>Datum: 25 januari 2025</p>
             <button className="btn-l">Köp biljett</button>
           </article>
           <article className="event">
-            <img src={eventImg} alt="Event 1" />
+            <img src={img2} alt="Event 1" />
             <h3>Konsert: Bandnamn</h3>
             <p>Datum: 25 januari 2025</p>
             <button className="btn-l">Köp biljett</button>

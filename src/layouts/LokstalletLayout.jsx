@@ -5,7 +5,9 @@ export default function LokstalletLayout({ children }) {
   return (
     <>
       <LokstalletHeader />
-      <main>{children}</main>
+      <div className="lokstallet-page">
+        <main>{children}</main>
+      </div>
       <LokstalletFooter />
     </>
   );

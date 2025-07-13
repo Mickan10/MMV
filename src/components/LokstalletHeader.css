@@ -57,21 +57,25 @@
 
 .lokstallet-btn {
   padding: 10px 20px;
-  color: #000;     
-  background-color: #b79c62;        
+  color: #000;
+  background: rgba(183, 156, 98, 0.6); /* Transparent guldig nyans */
   font-weight: 600;
   text-decoration: none;
   border-radius: 8px;
   transition: all 0.3s ease;
   display: inline-block;
   border: none;
+  min-width: 120px; /* Alla knappar får minst denna bredd */
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(183, 156, 98, 0.5);
 }
 
 .lokstallet-btn:hover,
 .lokstallet-btn.active {
   background-color: #b79c62;  
-  color: #d4d2d2;       
-  border: none;    
+  color: #d4d2d2;
+  box-shadow: 0 4px 12px rgba(183, 156, 98, 0.8);
+  border: none;
 }
 
 /* === Responsive === */
@@ -87,5 +91,10 @@
   .links {
     flex-direction: column;
     align-items: center;
+  }
+
+  .lokstallet-btn {
+    min-width: 180px; /* Lite bredare på liten skärm för enhetlig look */
+    margin-bottom: 10px; /* Lite mellanrum mellan knapparna */
   }
 }

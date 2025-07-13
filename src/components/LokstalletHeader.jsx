@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { NavLink } from 'react-router-dom';
 import './LokstalletHeader.css';
 import logo from '../assets/mmv-front.png'; 
