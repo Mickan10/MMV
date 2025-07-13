@@ -2,19 +2,20 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './LokstalletHeader.css';
 import logo from '../assets/mmv-front.png'; 
+import logga from '../assets/lokstalletheader.png';
 
 const LokstalletHeader = () => {
   return (
     <header className="lokstallet-header">
       <div className="log-container">
-        <NavLink to="/" className="lokstallet-btn">
+        <NavLink to="/" className="lokstalle-btn">
         <img src={logo} alt="MMV Event logga" style={{ height: '80px' }} />
         </NavLink>
       </div>
 
       <div className="hero-content">
-        <h1>Lokstallet</h1>
-        <p>Boka Lokstallet – Skapa oförglömliga minnen i vår unika lokal.</p>
+        <img src={logga} alt="Lokstallet logga" style={{ height: '380px' }} />
+        {/*<p>Boka Lokstallet – Skapa oförglömliga minnen i vår unika lokal.</p>*/}
       </div>
 
       <nav className="hero-nav">

@@ -8,35 +8,36 @@ import scen from '../assets/scen.jpg';
 const lokalerData = [
   {
     title: 'Köket',
-    text: 'Perfekt för matlagningsevent och mingel. Fullt utrustat kök och mysig atmosfär.',
+    text: 'Perfekt för matlagningsevent, mingel och workshops. Lokalen erbjuder ett fullt utrustat restaurangkök med stora arbetsytor, modern utrustning och en trivsam miljö för både små och stora sällskap. Köket är sammankopplat med serveringsytor vilket gör det perfekt för både kurser och privata matupplevelser.',
     images: [restu, gh4_1, scen],
   },
   {
     title: 'Lilla Scenen',
-    text: 'En intim scen för mindre uppträdanden och möten.',
+    text: 'Lilla scenen erbjuder en intim och flexibel yta för mindre uppträdanden, föreläsningar, samtal eller möten. Lokalen är utrustad med basljudsystem, justerbar belysning och möjlighet att möblera efter behov. Perfekt för akustiska spelningar, boklanseringar eller kreativa möten.',
     images: [gh4_1, restu, scen],
   },
   {
     title: 'Stora Scenen',
-    text: 'Stor scen med professionellt ljud- och ljussystem.',
+    text: 'Stora scenen är vår mest kraftfulla lokal med plats för både publik och artister. Här finns ett professionellt ljud- och ljussystem, hög scen, blackout-möjligheter och teknisk personal på begäran. Lokalen passar för konserter, teaterföreställningar, stand-up, lanseringar och stora föreläsningar.',
     images: [scen, gh4_1, restu],
   },
   {
     title: 'Konferensrum',
-    text: 'Modernt och välutrustat konferensrum för möten och workshops.',
+    text: 'Vårt moderna konferensrum är en ljus och trivsam lokal med plats för upp till 20 personer. Här finns projektor, whiteboard, konferensbord, ergonomiska stolar och snabbt WiFi. Perfekt för effektiva möten, strategidagar, utbildningar eller digitala presentationer.',
     images: [restu, gh4_1, scen],
   },
   {
     title: 'Hela Lokalen',
-    text: 'Hyr hela lokalen för stora evenemang, fester eller företagsevent.',
+    text: 'För de riktigt stora tillfällena kan du boka hela lokalen. Det innebär tillgång till samtliga ytor – scen, kök, bar, foajé och konferensrum – och ger möjlighet att arrangera events med upp till 250 deltagare. Idealisk för bröllop, festivaler, företagsgalor eller mässor. Vi erbjuder även hjälp med planering, teknik och bemanning.',
     images: [scen, gh4_1, restu],
   },
   {
     title: 'Dagskontor',
-    text: 'Flexibla arbetsplatser med snabb WiFi och bekväm miljö.',
+    text: 'Behöver du en flexibel arbetsplats under dagen? Våra dagskontor erbjuder en tyst och professionell miljö med höj- och sänkbara skrivbord, bra belysning, WiFi, skrivare och kaffe. Lokalen lämpar sig för distansarbete, fokustid eller digitala möten och kan bokas per timme eller dag.',
     images: [gh4_1, restu, scen],
   },
 ];
+
 
 const LokalerLokstallet = () => {
   const [currentImages, setCurrentImages] = useState(
@@ -57,25 +58,30 @@ const LokalerLokstallet = () => {
     <main className={styles['lokaler-container']}>
       <h1>Våra Lokaler</h1>
       {lokalerData.map((lokal, idx) => (
-        <section key={idx} className={styles.lokal}>
-          <div className={styles['lokal-text']}>
-            <h2>{lokal.title}</h2>
-            <p>{lokal.text}</p>
-          </div>
-          <div className={styles['lokal-bild']}>
-            {lokal.images.map((src, i) => (
-              <img
-                key={i}
-                src={src}
-                alt={`${lokal.title} bild ${i + 1}`}
-                className={`${styles['slide-image']} ${
-                  currentImages[idx] === i ? styles.visible : styles.hidden
-                }`}
-              />
-            ))}
-          </div>
-        </section>
-      ))}
+  <React.Fragment key={idx}>
+    <section className={styles.lokal}>
+      <div className={styles['lokal-text']}>
+        <h2>{lokal.title}</h2>
+        <p>{lokal.text}</p>
+      </div>
+      <div className={styles['lokal-bild']}>
+        {lokal.images.map((src, i) => (
+          <img
+            key={i}
+            src={src}
+            alt={`${lokal.title} bild ${i + 1}`}
+            className={`${styles['slide-image']} ${
+              currentImages[idx] === i ? styles.visible : styles.hidden
+            }`}
+          />
+        ))}
+      </div>
+    </section>
+    {idx < lokalerData.length - 1 && (
+      <hr className={styles['guld-linje']} />
+    )}
+  </React.Fragment>
+))}
     </main>
   );
 };

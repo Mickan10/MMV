@@ -31,13 +31,13 @@ const Lokstallet = () => {
 
       <section id="events" className="section">
         <h2>Vad händer på Lokstallet?</h2>
-        <p>något annat i denna section? innan det finns event</p>
+        <p></p>
         <div className="events">
           <article className="event">
             <img src={eventImg} alt="Event 1" />
             <h3>Konsert: Bandnamn</h3>
             <p>Datum: 25 januari 2025</p>
-            <button className="btn-l">Köp biljett</button>
+            <button className="btn-l">Mer information</button>
           </article>
           {/* ... fler eventartiklar som tidigare ... */}
           <article className="event">

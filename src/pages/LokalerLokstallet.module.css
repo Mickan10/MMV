@@ -1,29 +1,40 @@
+/* Grundinställning för hela sidan */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #c1b6a8;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+}
+
+/* Behåll layouten centrerad men ge den luft från kanterna på små skärmar */
 .lokaler-container {
-  padding: 4rem 2rem;
-  max-width: 1300px;
-  margin: 0 auto;
+  max-width: 1600px;
+  margin: 0;
   font-family: 'Segoe UI', sans-serif;
   color: #2a2a2a;
+  background-color: #c1b6a8;
 }
 
 .lokaler-container h1 {
   text-align: center;
-  margin-bottom: 3rem;
+  margin: 3rem;
   font-size: 3rem;
-  font-weight: 700;
   color: #3e3e3e;
+  font-family: 'Bungee Shade', cursive;
 }
 
+/* Lokalboxar utan vit bakgrund */
 .lokal {
   display: flex;
   gap: 2rem;
-  margin-bottom: 4rem;
   align-items: center;
   justify-content: space-between;
   border-radius: 20px;
   padding: 2rem;
-  background-color: #ffffff;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  background-color: transparent; /* ← Ändrad från vitt */
+  box-shadow: none; /* ← Ta bort vit skugga om du vill ha sömlöst */
 }
 
 .lokal-text {
@@ -76,6 +87,15 @@
   opacity: 0;
   z-index: 0;
 }
+
+.guld-linje {
+  border: 0;
+  height: 2px;
+  background-color: #b79c62;
+  margin: 2rem 0;
+  width: 100%;
+}
+
 
 /* Responsivt */
 @media (max-width: 992px) {

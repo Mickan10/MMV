@@ -1,10 +1,11 @@
 .lokstallet-header {
   position: relative;
-  color: black; /* Svart text som standard */
+  color: black; 
   text-align: center;
-  padding: 4rem 2rem;
-  background-color: white; /* Vit bakgrund */
-  font-family: Arial, sans-serif; 
+  padding: 2rem 2rem;
+  background-color: #766656; 
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
 }
 
 .log-container {
@@ -54,11 +55,10 @@
   margin: 0.5rem;
 }
 
-/* Knapp-styling anpassad till lokstallet-btn */
 .lokstallet-btn {
   padding: 10px 20px;
-  background-color: #fff;  /* vit bakgrund */
-  color: #000;             /* svart text */
+  color: #000;     
+  background-color: #b79c62;        
   font-weight: 600;
   text-decoration: none;
   border-radius: 8px;
@@ -69,8 +69,8 @@
 
 .lokstallet-btn:hover,
 .lokstallet-btn.active {
-  background-color: #000;  /* svart bakgrund när hover eller aktiv */
-  color: #fff;       
+  background-color: #b79c62;  
+  color: #d4d2d2;       
   border: none;    
 }
 
