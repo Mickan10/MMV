@@ -25,7 +25,7 @@ const KontaktLokstallet = () => {
         <h2>Kontakt</h2>
         <p><strong>Telefon:</strong> 0123-456 789</p>
         <p><strong>E-post:</strong> info@lokstallet.se</p>
-        <p><strong>Adress:</strong> Stationsgatan 1, 123 45 Stad</p>
+        <p><strong>Adress:</strong> Drottninggatan 17, 541 51 Skövde</p>
       </div>
 
       <form className="kontakt-form" onSubmit={handleSubmit}>
@@ -62,13 +62,14 @@ const KontaktLokstallet = () => {
       </form>
 
       <div className="kontakt-map">
-        <iframe
-          title="Lokstallet Map"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2133.6829511066744!2d11.967017316049778!3d57.708870981113665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x464ff36fd24e15d9%3A0x6fa34203cdb2ae4f!2sKungsgatan%2012%2C%20411%2019%20G%C3%B6teborg!5e0!3m2!1ssv!2sse!4v1700000000000!5m2!1ssv!2sse"
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
+      <iframe
+      title="Lokstallet Map"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1635.1511027116955!2d13.852596621792623!3d58.38304160479618!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465f6e69d107b2d3%3A0x91a98328b5d69e88!2sLokstallet%20Drottninggatan%2017%2C%20541%2051%20Sk%C3%B6vde!5e0!3m2!1ssv!2sse!4v1700000000000!5m2!1ssv!2sse"
+      allowFullScreen
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+      style={{ width: "100%", height: "100%", border: 0 }}
+    ></iframe>
       </div>
     </main>
   );

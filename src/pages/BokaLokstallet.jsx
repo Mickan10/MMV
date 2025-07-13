@@ -1,6 +1,5 @@
-import React, { useState, } from "react";
+import React, { useState } from "react";
 import "./BokaLokstallet.module.css.css";
-
 
 export default function BokaLokstallet() {
   // States för formulärvärden
@@ -9,7 +8,7 @@ export default function BokaLokstallet() {
   const [otherEventDescription, setOtherEventDescription] = useState("");
   const [audioTech, setAudioTech] = useState("nej");
   const [lightTech, setLightTech] = useState("nej");
-  const [extraPersonnel, setExtraPersonnel] = useState(0);
+  const [extraPersonnel, setExtraPersonnel] = useState("");
   const [ticketSales, setTicketSales] = useState("nej");
   const [catering, setCatering] = useState("nej");
 
@@ -47,7 +46,11 @@ export default function BokaLokstallet() {
     if (localPrices[local]) totalPrice += localPrices[local];
     if (audioTech === "ja") totalPrice += 1500;
     if (lightTech === "ja") totalPrice += 1200;
-    totalPrice += extraPersonnel * 500;
+
+    const extraPersonnelNumber = Number(extraPersonnel);
+    const extraPersonnelCount = isNaN(extraPersonnelNumber) ? 0 : extraPersonnelNumber;
+    totalPrice += extraPersonnelCount * 500;
+
     if (catering === "ja") totalPrice += 2000;
     if (ticketSales === "ja") totalPrice += 1000;
 
@@ -74,7 +77,7 @@ export default function BokaLokstallet() {
         <strong>Ljustekniker:</strong> {lightTech}
       </p>
       <p>
-        <strong>Extra personal:</strong> {extraPersonnel}
+        <strong>Extra personal:</strong> {extraPersonnel || 0}
       </p>
       <p>
         <strong>Biljettförsäljning:</strong> {ticketSales}
@@ -193,7 +196,8 @@ export default function BokaLokstallet() {
               id="extraPersonnel"
               min="0"
               value={extraPersonnel}
-              onChange={(e) => setExtraPersonnel(Number(e.target.value))}
+              onChange={(e) => setExtraPersonnel(e.target.value)}
+              placeholder="0"
             />
 
             <label htmlFor="ticketSales">Biljettförsäljning:</label>
