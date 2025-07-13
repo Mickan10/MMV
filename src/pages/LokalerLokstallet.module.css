@@ -3,26 +3,32 @@ section {
   margin: 0;
   padding: 0;
   background-color: #c1b6a8;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+  color: #2a2a2a;
 }
 
-/* Behåll layouten centrerad men ge den luft från kanterna på små skärmar */
 .lokaler-container {
   max-width: 1600px;
-  margin: 20px 0 20px 0;
-  font-family: 'Segoe UI', sans-serif;
-  color: #2a2a2a;
+  margin: 20px auto;
+  padding: 0 20px; /* Lägger till lite luft på sidorna */
   background-color: #c1b6a8;
 }
 
 .lokaler-container h1 {
   text-align: center;
-  margin: 0rem;
+  margin: 0 0 2rem 0;
   font-size: 3rem;
   color: #3e3e3e;
   font-family: 'Bungee Shade', cursive;
+  font-weight: normal;
+  line-height: 1.1;
 }
 
-/* Lokalboxar utan vit bakgrund */
+/* ==================
+   Lokalboxar
+==================== */
+
 .lokal {
   display: flex;
   gap: 2rem;
@@ -30,8 +36,13 @@ section {
   justify-content: space-between;
   border-radius: 20px;
   padding: 2rem;
-  background-color: transparent; /* ← Ändrad från vitt */
-  box-shadow: none; /* ← Ta bort vit skugga om du vill ha sömlöst */
+  background-color: transparent; 
+  box-shadow: none;
+  transition: transform 0.3s ease;
+}
+
+.lokal:hover {
+  transform: translateY(-5px);
 }
 
 .lokal-text {
@@ -41,16 +52,21 @@ section {
 
 .lokal-text h2 {
   margin-bottom: 1rem;
-  font-size: 2rem;
+  font-size: 2.25rem;
   color: #222;
+  line-height: 1.2;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
 }
 
 .lokal-text p {
-  font-size: 1.15rem;
-  line-height: 1.6;
+  font-size: 1.2rem;
+  line-height: 1.7;
   color: #555;
+  margin: 0;
 }
 
+/* Bildruta */
 .lokal-bild {
   flex: 1 1 55%;
   position: relative;
@@ -60,9 +76,14 @@ section {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
-/* Bildövergång med fade-effekt */
+.lokal-bild:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
 .lokal-bild img {
   position: absolute;
   top: 0;
@@ -85,6 +106,7 @@ section {
   z-index: 0;
 }
 
+/* Guldig linje under rubrik eller sektion */
 .guld-linje {
   border: 0;
   height: 2px;
@@ -93,12 +115,16 @@ section {
   width: 100%;
 }
 
+/* ==================
+   Responsivt
+==================== */
 
-/* Responsivt */
+/* Under 992px: kolumner går till block */
 @media (max-width: 992px) {
   .lokal {
-    flex-wrap: wrap;
-    padding: 1.5rem;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    gap: 1.5rem;
   }
 
   .lokal-text,
@@ -109,28 +135,63 @@ section {
 
   .lokal-bild {
     height: 260px;
-    margin-top: 1rem;
+    margin-top: 0;
+  }
+
+  .lokal-text h2 {
+    font-size: 2rem;
+  }
+
+  .lokal-text p {
+    font-size: 1.1rem;
   }
 }
 
+/* Under 600px: mindre padding och textstorlek */
 @media (max-width: 600px) {
-  .lokal-container {
-    padding: 2rem 1rem;
+  .lokaler-container {
+    padding: 1rem 15px;
   }
 
   .lokaler-container h1 {
     font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .lokal {
+    padding: 1rem 0.5rem;
   }
 
   .lokal-text h2 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 
   .lokal-text p {
     font-size: 1rem;
+    line-height: 1.5;
   }
 
   .lokal-bild {
     height: 200px;
+  }
+}
+
+/* Under 400px: extra anpassning för små mobiler */
+@media (max-width: 400px) {
+  .lokaler-container h1 {
+    font-size: 1.8rem;
+  }
+
+  .lokal-text h2 {
+    font-size: 1.3rem;
+  }
+
+  .lokal-text p {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .lokal-bild {
+    height: 160px;
   }
 }

@@ -1,20 +1,7 @@
-.mmv-page {
-  margin: 60px 0 0 0;
+html, body, #root {
+  height: 100%;
+  margin: 0;
   padding: 0;
-  background-color: white; /* exempel på MMV-bakgrund */
-  min-height: 100vh;
-  font-family: Arial, sans-serif; /* eller vad som passar MMV */
-  color: #333;
-}
-
-
-.lokstallet-page {
-  margin: 60px 0 0 0;
-  padding: 0;
-  background-color: #c1b6a8;
-  min-height: 100vh;
-  font-family: 'Josefin Sans', sans-serif;
-  color: #382615;
 }
 
 

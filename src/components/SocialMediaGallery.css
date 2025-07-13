@@ -1,127 +1,69 @@
-/* Bilder start-sida, från instagram??*/
 .social-media-gallery-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 30px;
+  background-color: white;
+  text-align: center;
 }
 
 .social-media-gallery h2 {
-    font-size: 24px;
-    margin-top: 50px;
+  font-size: 28px;
+  margin-bottom: 40px;
+  color: #333;
 }
 
 .social-media-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
 }
 
-.social-media-gallery img {
-    width: 350px;
-    height: 350px;
-    opacity: 0;
-    animation: fadeIn 1s ease-in forwards;
-}
-
+.social-media-gallery img,
 .fade-in {
-    width: 350px;
-    height: 350px;
-    object-fit: cover;
-    border-radius: 20px;
-    opacity: 0;
-    transform: scale(0.8);
-    animation: fadeIn 1s ease-in forwards;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Alltid kvadratiska */
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: scale(0.9);
+  animation: fadeIn 0.8s ease-in forwards;
 }
 
-.fade-in:nth-child(1) { animation-delay: 0.3s; }
-.fade-in:nth-child(2) { animation-delay: 0.6s; }
-.fade-in:nth-child(3) { animation-delay: 0.9s; }
+/* Fade-in delays */
+.fade-in:nth-child(1) { animation-delay: 0.2s; }
+.fade-in:nth-child(2) { animation-delay: 0.4s; }
+.fade-in:nth-child(3) { animation-delay: 0.6s; }
+.fade-in:nth-child(4) { animation-delay: 0.8s; }
+.fade-in:nth-child(5) { animation-delay: 1s; }
 
+/* Fade-in animation */
 @keyframes fadeIn {
-    0% { opacity: 0; transform: scale(0.8); }
-    100% { opacity: 1; transform: scale(1); }
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
-/* ====== RESPONSIVITET ====== */
-
-/* ...befintlig CSS oförändrad... */
-
-/* ====== RESPONSIVITET ====== */
-
-@media (max-width: 1024px) {
-    .social-media-gallery-container {
-        margin-top: 400px;
-    }
-    .social-media-gallery h2 {
-        font-size: 22px;
-        margin-top: 100px;
-    }
-    .social-media-gallery img,
-    .fade-in {
-        width: 280px;
-        height: 280px;
-    }
-}
-
-@media (max-width: 768px) {
-    .social-media-gallery-container {
-        margin-top: 300px;
-    }
-    .social-media-gallery h2 {
-        font-size: 20px;
-        margin-top: 80px;
-    }
-    .social-media-gallery img,
-    .fade-in {
-        width: 220px;
-        height: 220px;
-    }
-}
 
 @media (max-width: 480px) {
-    .social-media-gallery-container {
-        margin-top: 60px; /* Minska från 200px till 60px */
-        padding: 0 10px;
-    }
-    .social-media-gallery h2 {
-        font-size: 18px;
-        margin-top: 20px; /* Minska från 60px till 20px */
-    }
-    .social-media-gallery {
-        flex-direction: column;
-        gap: 20px;
-        align-items: center;
-    }
-    .social-media-gallery img,
-    .fade-in {
-        width: 90%;
-        height: auto;
-        border-radius: 15px;
-        max-width: 320px;
-    }
-}
+  .social-media-gallery-container {
+    padding: 40px 15px;
+  }
 
-@media (max-width: 320px) {
-    .social-media-gallery-container {
-        margin-top: 30px; /* Minska från 50px till 30px */
-    }
-    .social-media-gallery h2 {
-        font-size: 16px;
-        margin-top: 15px; /* Minska från 40px till 15px */
-    }
-    .social-media-gallery {
-        flex-direction: column;
-        gap: 15px;
-        align-items: center;
-    }
-    .social-media-gallery img,
-    .fade-in {
-        width: 95%;
-        height: auto;
-        border-radius: 12px;
-        max-width: 280px;
-    }
+  .social-media-gallery h2 {
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+
+  .social-media-gallery {
+    gap: 20px;
+  }
+
+  .social-media-gallery img,
+  .fade-in {
+    border-radius: 16px;
+  }
 }
 

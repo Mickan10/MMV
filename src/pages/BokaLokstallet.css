@@ -1,4 +1,12 @@
-.form-container {
+.bokamain {
+  background-color: #c1b6a8;
+  min-height: 100vh;    
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.forme-container {
   max-width: 1000px;
   margin: 60px auto 60px auto;  /* Mer luft ovanför och under */
   padding: 40px 30px;

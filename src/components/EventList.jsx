@@ -26,13 +26,6 @@ export default function EventList() {
       time: "21:00",
       location: "Musikaliska, Mariestad",
     },
-    {
-      img: test3,
-      title: "Indie Night - The Soundwaves",
-      date: "28 januari 2025",
-      time: "21:00",
-      location: "Musikaliska, Skövde",
-    },
   ];
 
   return (

@@ -78,6 +78,7 @@
   border: none;
 }
 
+
 /* === Responsive === */
 @media (max-width: 768px) {
   .hero-content h1 {

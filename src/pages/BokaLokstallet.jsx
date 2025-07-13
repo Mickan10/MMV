@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./BokaLokstallet.module.css.css";
+import "./BokaLokstallet.css";
 
 export default function BokaLokstallet() {
   // States för formulärvärden
@@ -114,8 +114,8 @@ export default function BokaLokstallet() {
   }
 
   return (
-    <main>
-      <div className="form-container">
+    <main className="bokamain">
+      <div className="forme-container">
         <h1>Boka Lokal</h1>
 
         {/* Steg 1 */}

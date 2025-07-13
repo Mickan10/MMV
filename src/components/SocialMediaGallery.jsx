@@ -4,7 +4,7 @@ import test3 from "../assets/test3.jpg";
 import test4 from "../assets/test4.jpg";
 import "./SocialMediaGallery.css";
 
-const images = [test1, test2, test3, test4];
+const images = [test1, test2, test3, test4, test4, test4];
 
 export default function SocialMediaGallery() {
   return (
