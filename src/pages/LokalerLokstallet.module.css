@@ -1,4 +1,3 @@
-
 section {
   margin: 0;
   padding: 0;
@@ -119,33 +118,48 @@ section {
    Responsivt
 ==================== */
 
-/* Under 992px: kolumner går till block */
+/* Under 992px: kolumner går till block och text över bild */
 @media (max-width: 992px) {
   .lokal {
     flex-direction: column;
-    padding: 1.5rem 1rem;
-    gap: 1.5rem;
+    padding: 1rem 0;
+    gap: 1rem;
   }
 
-  .lokal-text,
   .lokal-bild {
-    min-width: 100%;
+    width: 100%;
     max-width: 100%;
+    height: 260px;
+    position: relative;
   }
 
-  .lokal-bild {
-    height: 260px;
-    margin-top: 0;
+  .lokal-bild img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    opacity: 1;
+    filter: none;
+  }
+
+  .lokal-text {
+    flex: none;
+    min-width: auto;
+    width: 100%;
+    padding: 0 1rem;
+    text-align: center;
   }
 
   .lokal-text h2 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .lokal-text p {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 }
+
+
 
 /* Under 600px: mindre padding och textstorlek */
 @media (max-width: 600px) {
@@ -163,7 +177,7 @@ section {
   }
 
   .lokal-text h2 {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
 
   .lokal-text p {
@@ -172,7 +186,7 @@ section {
   }
 
   .lokal-bild {
-    height: 200px;
+    height: 220px;
   }
 }
 
@@ -183,7 +197,7 @@ section {
   }
 
   .lokal-text h2 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   .lokal-text p {
@@ -192,6 +206,6 @@ section {
   }
 
   .lokal-bild {
-    height: 160px;
+    height: 180px;
   }
 }
