@@ -1,6 +1,15 @@
-.bokamain {
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
   background-color: #c1b6a8;
-  min-height: 100vh;    
+}
+
+
+.bokamain {
+  height: 100%;
+  min-height: 100vh;
+  background-color: #c1b6a8;   
   margin: 0;
   padding: 0;
   box-sizing: border-box;
