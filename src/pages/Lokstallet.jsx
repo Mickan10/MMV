@@ -113,6 +113,30 @@ const Lokstallet = () => {
               </a>
             </div>
             {/* eventuella fler sponsorer */}
+            <div className="sponsor">
+              <a href="https://sallskapetskovde.se/" target="_blank" rel="noreferrer">
+                <img src={logoWebbVitMini} alt="Sponsor 1" />
+                <div className="overlay">
+                  Sällskapet i Skövde – Mat från Skaraborg & världen, lunch, á la carte, after work, brunch, fika, festlokal, mässor, livespelningar...
+                </div>
+              </a>
+            </div>
+            <div className="sponsor">
+              <a href="https://sallskapetskovde.se/" target="_blank" rel="noreferrer">
+                <img src={logoWebbVitMini} alt="Sponsor 1" />
+                <div className="overlay">
+                  Sällskapet i Skövde – Mat från Skaraborg & världen, lunch, á la carte, after work, brunch, fika, festlokal, mässor, livespelningar...
+                </div>
+              </a>
+            </div>
+            <div className="sponsor">
+              <a href="https://sallskapetskovde.se/" target="_blank" rel="noreferrer">
+                <img src={logoWebbVitMini} alt="Sponsor 1" />
+                <div className="overlay">
+                  Sällskapet i Skövde – Mat från Skaraborg & världen, lunch, á la carte, after work, brunch, fika, festlokal, mässor, livespelningar...
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </section>

@@ -14,7 +14,7 @@ import Bandpages from "./pages/Bandpages.jsx";
 // Lokstallet-sidor
 import Lokstallet from "./pages/Lokstallet.jsx";
 import BokaLokstallet from "./pages/BokaLokstallet.jsx";
-import EvenemangLokstallet from "./pages/EvenemangLokstallet.jsx";
+import EvenmangLokstallet from "./pages/EvenmangLokstallet.jsx";
 import LokalerLokstallet from "./pages/LokalerLokstallet.jsx";
 import HistoriaLokstallet from "./pages/HistoriaLokstallet.jsx";
 import KontaktLokstallet from "./pages/KontaktLokstallet.jsx";
@@ -71,7 +71,7 @@ export default function App() {
         {/* Lokstallet-sidor med egen layout */}
         <Route path="/lokstallet" element={<LokstalletLayout><Lokstallet /></LokstalletLayout>} />
         <Route path="/boka-lokstallet" element={<LokstalletLayout><BokaLokstallet /></LokstalletLayout>} />
-        <Route path="/evenemang-lokstallet" element={<LokstalletLayout><EvenemangLokstallet /></LokstalletLayout>} />
+        <Route path="/evenemang-lokstallet" element={<LokstalletLayout><EvenmangLokstallet /></LokstalletLayout>} />
         <Route path="/lokaler" element={<LokstalletLayout><LokalerLokstallet /></LokstalletLayout>} />
         <Route path="/historia" element={<LokstalletLayout><HistoriaLokstallet /></LokstalletLayout>} />
         <Route path="/kontakt-lokstallet" element={<LokstalletLayout><KontaktLokstallet /></LokstalletLayout>} />

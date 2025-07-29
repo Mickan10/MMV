@@ -1,11 +1,13 @@
 .lokstallet-header {
   position: relative;
-  color: black; 
+  color: black;
   text-align: center;
-  padding: 2rem 2rem;
-  background-color: #766656; 
+  padding: 2rem 1rem;
+  background-color: #766656;
   font-family: 'Josefin Sans', sans-serif;
   font-weight: 400;
+  width: 100%;
+  border-radius: 0; /* Tar bort rundade hörn */
 }
 
 .log-container {
@@ -39,43 +41,44 @@
 }
 
 .hero-nav {
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 .links {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.5rem;
   padding: 0;
   list-style: none;
+  margin: 0 auto;
+  max-width: 90%;
 }
 
 .links li {
-  margin: 0.5rem;
+  margin: 0;
 }
 
 .lokstallet-btn {
-  padding: 10px 20px;
+  padding: 12px 24px;
   color: #000;
-  background: rgba(183, 156, 98, 0.6); /* Transparent guldig nyans */
+  background: #b79c62;
   font-weight: 600;
   text-decoration: none;
-  border-radius: 8px;
+  border-radius: 0;
   transition: all 0.3s ease;
   display: inline-block;
   border: none;
-  min-width: 120px; /* Alla knappar får minst denna bredd */
+  min-width: 140px;
   text-align: center;
-  box-shadow: 0 2px 6px rgba(183, 156, 98, 0.5);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .lokstallet-btn:hover,
 .lokstallet-btn.active {
-  background-color: #b79c62;  
-  color: #d4d2d2;
-  box-shadow: 0 4px 12px rgba(183, 156, 98, 0.8);
-  border: none;
+  background-color: #9b824c;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 
@@ -92,10 +95,11 @@
   .links {
     flex-direction: column;
     align-items: center;
+    gap: 0.7rem;
   }
 
   .lokstallet-btn {
-    min-width: 180px; /* Lite bredare på liten skärm för enhetlig look */
-    margin-bottom: 10px; /* Lite mellanrum mellan knapparna */
+    min-width: 200px;
+    padding: 14px;
   }
 }

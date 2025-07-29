@@ -1,4 +1,9 @@
 /* Bakgrunder och text */
+ * 
+ { 
+  border-radius: 0 !important;
+}
+
 #events {
   text-align: center;
   padding: 20px 0; /* tidigare 40px */
@@ -198,7 +203,6 @@ button.gallery-next {
   width: 45%;
   height: 130px;
   overflow: hidden;
-  border-radius: 12px;
   transition: transform 0.3s ease;
 }
 .sponsor img {

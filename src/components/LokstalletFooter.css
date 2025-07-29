@@ -1,10 +1,11 @@
 /* === FOOTER STYLES === */
 .lokstallet-footer {
-  background-color: #2d2c2c;
+  background: linear-gradient(135deg, #2d2c2c, #4a463f);
   color: #f5f0e6;
-  padding: 40px 20px 20px;
+  padding: 80px 70px 60px;
   font-family: 'Josefin Sans', sans-serif;
   font-weight: 400;
+  margin-bottom: 160px
 }
 
 .lokstallet-footer-container {
@@ -15,23 +16,56 @@
   gap: 20px;
   justify-content: space-between;
   align-items: flex-start;
+  position: relative; 
+  padding-left: 190px;
+}
+
+.lokstallet-footer-logo-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-left: 10px;
 }
 
 .lokstallet-logo-fot {
-  height: 70px;
-  margin: 0 auto 20px;
+  height: 220px;
+  width: auto;
   display: block;
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.5));
 }
 
 .lokstallet-footer-section {
   flex: 1 1 200px;
   min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.lokstallet-footer-section p {
+  text-align: left;
 }
 
 .lokstallet-footer-section h3 {
   font-size: 1.1rem;
   margin-bottom: 10px;
   color: #e0d2b4;
+  position: relative;
+  padding-bottom: 6px;
+}
+
+.lokstallet-footer-section h3::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background-color: #b79c62;
+  border-radius: 2px;
 }
 
 .lokstallet-footer-section p,
@@ -56,19 +90,24 @@
 }
 
 .lokstallet-social-icons li a {
-  font-size: 1.5rem;
+  font-size: 3rem; /* större ikoner */
   color: #d7c7a8;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .lokstallet-social-icons li a:hover {
-  color: #fff;
+  color: #b79c62;
+  transform: scale(1.2);
 }
 
 .lokstallet-form-button-container {
   flex: 1 1 100%;
-  text-align: center;
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* Centrerar innehållet horisontellt */
+  justify-content: center;
+  text-align: center;
 }
 
 .lokstallet-form-button-container h3 {
@@ -79,7 +118,7 @@
 .lokstallet-form-button {
   background-color: #7a664d;
   color: #f5f0e6;
-  padding: 10px 20px;
+  padding: 20px 30px;
   border-radius: 6px;
   font-weight: 600;
   text-decoration: none;
@@ -100,12 +139,6 @@
 
 /* === Responsive === */
 @media (max-width: 768px) {
-  .lokstallet-footer-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-    text-align: center;
-  }
 
   .lokstallet-footer-section {
     flex: 1 1 100%;
@@ -113,5 +146,23 @@
 
   .lokstallet-social-icons {
     justify-content: center;
+  }
+
+  .lokstallet-footer-container {
+    padding-left: 0;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .lokstallet-footer-logo-container {
+    position: static;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .lokstallet-logo-fot {
+    height: 100px;
   }
 }

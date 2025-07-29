@@ -1,0 +1,129 @@
+.evenemang-lokstallet {
+  background-color: #f2f0e9;
+  color: #2e2e2e;
+  font-family: 'Josefin Sans', sans-serif;
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center; /* Centrerar hela innehållet horisontellt */
+}
+
+.evenemang-container {
+  max-width: 900px; /* Begränsar bredden på event-sektionen */
+  width: 100%;
+  text-align: center;
+}
+
+.evenemang-title {
+  font-size: 2.4em;
+  margin-bottom: 10px;
+  font-family: 'Bungee Shade', cursive;
+  color: #4b3b2b;
+}
+
+.evenemang-intro {
+  font-size: 1.1em;
+  margin-bottom: 50px;
+  color: #5a4c3e;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.event-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+.event-card {
+  display: flex;
+  align-items: flex-start;
+  background-color: #fff9f0;
+  padding: 25px 30px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.event-card:hover {
+  transform: scale(1.02);
+  background-color: #fdf6e9;
+}
+
+.event-img {
+  width: 280px;
+  height: auto;
+  border-radius: 12px;
+  margin-right: 30px;
+  flex-shrink: 0;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(125, 90, 79, 0.3);
+}
+
+.event-content {
+  flex: 1;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.event-heading {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #5c4a3a;
+  line-height: 1.2;
+}
+
+.event-description {
+  font-size: 1.05em;
+  margin-bottom: 20px;
+  color: #5a4c3e;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.btn-l {
+  align-self: start;
+  background-color: #7d5a4f;
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  font-size: 1em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 3px 7px rgba(125, 90, 79, 0.5);
+}
+
+.btn-l:hover {
+  background-color: #a67b63;
+}
+
+/* Responsive: på mindre skärmar staplas bild och text */
+@media (max-width: 768px) {
+  .event-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .event-img {
+    margin-right: 0;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 14px;
+  }
+  
+  .event-content {
+    text-align: center;
+    align-items: center;
+  }
+  
+  .btn-l {
+    align-self: center;
+  }
+}

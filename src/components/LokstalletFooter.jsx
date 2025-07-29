@@ -1,16 +1,15 @@
 import "./LokstalletFooter.css"; // Skapa separat CSS för Lokstallets footer
 import { NavLink } from 'react-router-dom';
+import logo from '../assets/lokstalletheader.png';
 
 
 export default function LokstalletFooter() {
   return (
     <footer className="lokstallet-footer">
       <div className="lokstallet-footer-container">
-        <img
-          src="/Bilder/lokstallet-logo.png"
-          alt="Lokstallet Logo"
-          className="lokstallet-logo-fot"
-        />
+        <div className="lokstallet-footer-logo-container">
+        <img src={logo} alt="Lokstallet Logo" className="lokstallet-logo-fot" />
+      </div>
 
         <div className="lokstallet-footer-section">
           <h3>Om Lokstallet</h3>
@@ -27,11 +26,9 @@ export default function LokstalletFooter() {
           <p>
             Lokstallet
             <br />
-            Storgatan 12
+            Drottninggatan 17
             <br />
-            541 30 Skövde
-            <br />
-            Tel: <a href="tel:+46701234568">070-123 45 68</a>
+            541 51 Skövde
             <br />
             E-post: <a href="mailto:info@lokstallet.se">info@lokstallet.se</a>
           </p>
@@ -41,13 +38,13 @@ export default function LokstalletFooter() {
           <h3>Följ oss</h3>
           <ul className="lokstallet-social-icons">
             <li>
-              <a href="https://www.facebook.com/lokstallet" title="Facebook">
+              <a href="https://www.facebook.com/lokstallet.skovde" title="Facebook">
                 <i className="fab fa-facebook"></i>
               </a>
             </li>
             <li>
               <a
-                href="https://www.instagram.com/lokstallet/"
+                href="https://www.instagram.com/lokstallet.skovde/"
                 title="Instagram"
               >
                 <i className="fab fa-instagram"></i>
@@ -56,12 +53,13 @@ export default function LokstalletFooter() {
           </ul>
         </div>
 
-        <div className="lokstallet-form-button-container">
+        {/*<div className="lokstallet-form-button-container">
         <h3>Boka Lokstallet</h3>
         <NavLink to="/boka-lokstallet" className="lokstallet-form-button">
           Boka nu!
         </NavLink>
-      </div>
+        </div> */}
+
       </div>
       <p>&copy; 2024 Lokstallet. Alla rättigheter förbehålls.</p>
     </footer>
