@@ -1,4 +1,4 @@
- * 
+* 
 { 
   border-radius: 0 !important;
   box-sizing: border-box;
@@ -86,31 +86,8 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin: 0;
 }
-button.gallery-prev, button.gallery-next {
-  all: unset;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #000;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 50%;
-  font-size: 40px;
-  padding: 10px;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  z-index: 10;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-button.gallery-prev:hover, button.gallery-next:hover {
-  color: #444;
-  background-color: rgba(255, 255, 255, 1);
-}
-button.gallery-prev {
-  left: 5px;
-}
-button.gallery-next {
-  right: 5px;
-}
+
+/* Gallery-container */
 .gallery-container {
   position: relative;
   width: 100%;
@@ -120,12 +97,15 @@ button.gallery-next {
   background-color: #c1b6a8;
   padding: 20px 0;
 }
+
+/* Gallery */
 .gallery {
   display: flex;
   transition: transform 0.5s ease-in-out;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
 }
+
 #gallery {
   background-color: #c1b6a8;
   padding: 50px 0;
@@ -155,6 +135,48 @@ button.gallery-next {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   transform: scale(1.05);
 }
+
+/* Buttons för gallery med svart och guld tema */
+button.gallery-prev,
+button.gallery-next {
+  all: unset;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b79c62; /* Guldfärg */
+  background-color: rgba(0, 0, 0, 0.85); /* Nästan svart bakgrund */
+  border: 2px solid #b79c62; /* Guldram */
+  border-radius: 50%;
+  font-size: 40px;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button.gallery-prev:hover,
+button.gallery-next:hover {
+  color: #fff; /* Vit text vid hover */
+  background-color: #b79c62; /* Guld bakgrund vid hover */
+  box-shadow: 0 0 12px #b79c62;
+}
+
+button.gallery-prev {
+  left: 10px;
+}
+button.gallery-next {
+  right: 10px;
+}
+
+/* Dölj pilar på små skärmar */
+@media (max-width: 768px) {
+  button.gallery-prev,
+  button.gallery-next {
+    display: none;
+  }
+}
+
 .gallery-button-container {
   text-align: center;
   margin-top: 20px;
@@ -177,6 +199,7 @@ button.gallery-next {
   background-color: #444;
   color: #fff;
 }
+
 .sponsors {
   margin: 0;
   padding: 40px 0;
@@ -237,6 +260,7 @@ button.gallery-next {
   opacity: 1;
 }
 
+/* Responsiv design för stora skärmar */
 @media screen and (min-width: 769px) {
   .gallery {
     flex-wrap: wrap;
@@ -245,7 +269,7 @@ button.gallery-next {
   }
 
   .gallery img {
-    width: calc(33.33% - 20px); /* tre bilder per rad */
+    width: calc(33.33% - 20px); 
     height: 300px;
     margin: 10px;
   }
@@ -256,7 +280,7 @@ button.gallery-next {
   }
 }
 
-
+/* Responsiv design för små skärmar */
 @media screen and (max-width: 768px) {
   .events {
     gap: 15px;
@@ -280,5 +304,11 @@ button.gallery-next {
   }
   .sponsor {
     width: 80%;
+  }
+
+   .sponsors h2 {
+    font-size: 1.3em; /* Mindre storlek på rubriken */
+    margin: 20px 10px 30px; /* Lite mindre marginal och padding */
+    word-wrap: break-word; /* Bryt långa ord vid behov */
   }
 }

@@ -59,6 +59,9 @@
   flex-shrink: 0;
   object-fit: cover;
   box-shadow: 0 4px 10px rgba(125, 90, 79, 0.3);
+  /* Fix för att säkerställa korrekt orientering och undvika sneda bilder */
+  image-rendering: auto;
+  transform: none;
 }
 
 .event-content {
@@ -86,7 +89,6 @@
 }
 
 .btn-l {
-  align-self: start;
   background-color: #7d5a4f;
   color: white;
   border: none;
@@ -96,6 +98,11 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   box-shadow: 0 3px 7px rgba(125, 90, 79, 0.5);
+  font-family: 'Josefin Sans', sans-serif;
+
+  /* Centrera knappen */
+  margin: 0 auto;
+  display: block;
 }
 
 .btn-l:hover {
@@ -108,6 +115,7 @@
     flex-direction: column;
     text-align: center;
     padding: 20px;
+    align-items: center; /* Centrerar innehållet i kolumnlayout */
   }
   
   .event-img {
@@ -116,6 +124,10 @@
     width: 100%;
     max-width: 300px;
     border-radius: 14px;
+    flex-shrink: 0;
+    object-fit: cover;
+    image-rendering: auto;
+    transform: none;
   }
   
   .event-content {

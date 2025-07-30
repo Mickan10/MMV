@@ -9,8 +9,8 @@ section {
 
 .lokaler-container {
   max-width: 1600px;
-  margin: 20px auto;
-  padding: 0 20px; /* Lägger till lite luft på sidorna */
+  margin: 90px auto;
+  padding: 0 20px;
   background-color: #c1b6a8;
 }
 
@@ -22,11 +22,8 @@ section {
   font-family: 'Bungee Shade', cursive;
   font-weight: normal;
   line-height: 1.1;
+  text-shadow: 1px 1px 0 #b79c62; /* Guldig skugga */
 }
-
-/* ==================
-   Lokalboxar
-==================== */
 
 .lokal {
   display: flex;
@@ -35,13 +32,14 @@ section {
   justify-content: space-between;
   border-radius: 20px;
   padding: 2rem;
-  background-color: transparent; 
+  background-color: transparent;
   box-shadow: none;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .lokal:hover {
   transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(183, 156, 98, 0.3); /* Guldig hover-glow */
 }
 
 .lokal-text {
@@ -52,7 +50,7 @@ section {
 .lokal-text h2 {
   margin-bottom: 1rem;
   font-size: 2.25rem;
-  color: #222;
+  color: #b79c62; /* Guldig rubrik */
   line-height: 1.2;
   font-family: 'Josefin Sans', sans-serif;
   font-weight: 400;
@@ -63,9 +61,11 @@ section {
   line-height: 1.7;
   color: #555;
   margin: 0;
+  border-left: 4px solid #b79c62;
+  padding-left: 12px;
 }
 
-/* Bildruta */
+/* === Bildspel === */
 .lokal-bild {
   flex: 1 1 55%;
   position: relative;
@@ -80,10 +80,10 @@ section {
 }
 
 .lokal-bild:hover {
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 30px rgba(183, 156, 98, 0.2); /* Guldig hover */
 }
 
-.lokal-bild img {
+.slide-image {
   position: absolute;
   top: 0;
   left: 0;
@@ -95,17 +95,17 @@ section {
   transition: opacity 1s ease-in-out;
 }
 
-.lokal-bild img.visible {
+.visible {
   opacity: 1;
   z-index: 1;
 }
 
-.lokal-bild img.hidden {
+.hidden {
   opacity: 0;
   z-index: 0;
 }
 
-/* Guldig linje under rubrik eller sektion */
+/* Guldig linje */
 .guld-linje {
   border: 0;
   height: 2px;
@@ -114,11 +114,7 @@ section {
   width: 100%;
 }
 
-/* ==================
-   Responsivt
-==================== */
-
-/* Under 992px: kolumner går till block och text över bild */
+/* === Responsivitet === */
 @media (max-width: 992px) {
   .lokal {
     flex-direction: column;
@@ -130,16 +126,6 @@ section {
     width: 100%;
     max-width: 100%;
     height: 260px;
-    position: relative;
-  }
-
-  .lokal-bild img {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 16px;
-    opacity: 1;
-    filter: none;
   }
 
   .lokal-text {
@@ -157,11 +143,18 @@ section {
   .lokal-text p {
     font-size: 1.05rem;
   }
+
+  .slide-image {
+    position: relative;
+    opacity: 1 !important;
+    z-index: 1;
+  }
+
+  .lokal-bild {
+    height: 260px;
+  }
 }
 
-
-
-/* Under 600px: mindre padding och textstorlek */
 @media (max-width: 600px) {
   .lokaler-container {
     padding: 1rem 15px;
@@ -190,7 +183,6 @@ section {
   }
 }
 
-/* Under 400px: extra anpassning för små mobiler */
 @media (max-width: 400px) {
   .lokaler-container h1 {
     font-size: 1.8rem;

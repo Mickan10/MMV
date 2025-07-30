@@ -8,6 +8,8 @@
   font-weight: 400;
   width: 100%;
   border-radius: 0; /* Tar bort rundade hörn */
+  border-bottom: 5px solid #b79c62;
+  box-shadow: 0 2px 5px rgba(183, 156, 98, 0.4);
 }
 
 .log-container {
@@ -92,14 +94,113 @@
     font-size: 1rem;
   }
 
+  .lokstallet-btn {
+    width: 200px;       /* Fast bredd */
+    height: 48px;       /* Fast höjd */
+    padding: 0;         /* Nollställ padding för att flexbox fungerar bra */
+    box-sizing: border-box;
+    display: flex;      /* Flexbox för centrering */
+    justify-content: center; /* Horisontellt centrerad text */
+    align-items: center;     /* Vertikalt centrerad text */
+    text-align: center;      /* Backup centrerad text */
+  }
+
   .links {
     flex-direction: column;
-    align-items: center;
+    align-items: center;  /* För att centrera knapparna */
     gap: 0.7rem;
   }
 
-  .lokstallet-btn {
-    min-width: 200px;
-    padding: 14px;
+  .hamburger {
+    display: flex;
   }
+
+  .hero-nav {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out;
+  }
+
+  .hero-nav.open {
+    max-height: 500px;
+  }
+}
+
+
+/* Hamburgerknapp - dold på stora skärmar */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  box-sizing: content-box;
+  position: absolute;
+  top: 25px;
+  right: 20px;
+  z-index: 20;
+}
+
+.hamburger span {
+  width: 30px;
+  height: 3px;
+  background-color: #b79c62;
+  border-radius: 2px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+/* Animera hamburger när öppen */
+.hamburger.open span:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+/* Menyn syns alltid på stora skärmar */
+.hero-nav {
+  display: block;
+  transition: max-height 0.3s ease-in-out;
+  position: relative;
+  z-index: 10;
+}
+
+/* På små skärmar: dölj menyn som standard */
+@media (max-width: 768px) {
+  .hero-nav {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out;
+  }
+
+  /* Visa menyn när öppen */
+  .hero-nav.open {
+    max-height: 500px; /* tillräckligt för menyn */
+  }
+
+  .links {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0;
+    margin: 0;
+  }
+
+  /* Visa hamburgerknappen */
+  .hamburger {
+    display: flex;
+  }
+
+  /* Anpassa länkar för mobil */
+  
 }

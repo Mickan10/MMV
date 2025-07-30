@@ -61,7 +61,7 @@ export default function LokstalletFooter() {
         </div> */}
 
       </div>
-      <p>&copy; 2024 Lokstallet. Alla rättigheter förbehålls.</p>
+      <p>&copy; 2025 Lokstallet. Musik • Evenemang • Möten</p>
     </footer>
   );
 }
