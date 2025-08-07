@@ -38,50 +38,95 @@ const lokalerData = [
   },
 ];
 
-
 const LokalerLokstallet = () => {
-  const [currentImages, setCurrentImages] = useState(
-    lokalerData.map(() => 0)
-  );
+  const [currentImages, setCurrentImages] = useState(lokalerData.map(() => 0));
+  const [isMobile, setIsMobile] = useState(false);
+  const [touchStartPositions, setTouchStartPositions] = useState({});
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImages((prev) =>
-        prev.map((curr, i) => (curr + 1) % lokalerData[i].images.length)
-      );
-    }, 3000);
-
-    return () => clearInterval(interval);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    if (!isMobile) {
+      const interval = setInterval(() => {
+        setCurrentImages((prev) =>
+          prev.map((curr, i) => (curr + 1) % lokalerData[i].images.length)
+        );
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [isMobile]);
+
+  const handleTouchStart = (e, index) => {
+    const touchStartX = e.touches[0].clientX;
+    setTouchStartPositions((prev) => ({ ...prev, [index]: touchStartX }));
+  };
+
+  const handleTouchEnd = (e, index, imagesLength) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const deltaX = touchEndX - touchStartPositions[index];
+
+    if (deltaX > 50) {
+      // swipe right
+      setCurrentImages((prev) =>
+        prev.map((curr, i) =>
+          i === index ? (curr - 1 + imagesLength) % imagesLength : curr
+        )
+      );
+    } else if (deltaX < -50) {
+      // swipe left
+      setCurrentImages((prev) =>
+        prev.map((curr, i) =>
+          i === index ? (curr + 1) % imagesLength : curr
+        )
+      );
+    }
+  };
 
   return (
     <main className={styles['lokaler-container']}>
       <h1>Våra Lokaler</h1>
       {lokalerData.map((lokal, idx) => (
-  <React.Fragment key={idx}>
-    <section className={styles.lokal}>
-      <div className={styles['lokal-text']}>
-        <h2>{lokal.title}</h2>
-        <p>{lokal.text}</p>
-      </div>
-      <div className={styles['lokal-bild']}>
-        {lokal.images.map((src, i) => (
-          <img
-            key={i}
-            src={src}
-            alt={`${lokal.title} bild ${i + 1}`}
-            className={`${styles['slide-image']} ${
-              currentImages[idx] === i ? styles.visible : styles.hidden
-            }`}
-          />
-        ))}
-      </div>
-    </section>
-    {idx < lokalerData.length - 1 && (
-      <hr className={styles['guld-linje']} />
-    )}
-  </React.Fragment>
-))}
+        <React.Fragment key={idx}>
+          <section className={styles.lokal}>
+            <div className={styles['lokal-text']}>
+              <h2>{lokal.title}</h2>
+              <p>{lokal.text}</p>
+            </div>
+            <div className={styles['lokal-bild']}>
+              {isMobile ? (
+                <img
+                  src={lokal.images[currentImages[idx]]}
+                  alt={`${lokal.title} bild ${currentImages[idx] + 1}`}
+                  className={styles['slide-image']}
+                  onTouchStart={(e) => handleTouchStart(e, idx)}
+                  onTouchEnd={(e) => handleTouchEnd(e, idx, lokal.images.length)}
+                />
+              ) : (
+                lokal.images.map((src, i) => (
+                  <img
+                    key={i}
+                    src={src}
+                    alt={`${lokal.title} bild ${i + 1}`}
+                    className={`${styles['slide-image']} ${
+                      currentImages[idx] === i ? styles.visible : styles.hidden
+                    }`}
+                  />
+                ))
+              )}
+            </div>
+          </section>
+          {idx < lokalerData.length - 1 && (
+            <hr className={styles['guld-linje']} />
+          )}
+        </React.Fragment>
+      ))}
     </main>
   );
 };

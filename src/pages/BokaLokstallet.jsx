@@ -59,36 +59,48 @@ export default function BokaLokstallet() {
     setShowContactForm(true);
   }
 
-  // Validering för formulärskick
-  function handleSubmit() {
-    setSubmitError("");
-    if (!name || !email || !customerType || !orgNumber || !phone) {
-      setSubmitError("Vänligen fyll i alla fält innan du skickar din förfrågan.");
-      return;
+    function handleSubmit() {
+      setSubmitError("");
+      if (!name || !email || !customerType || !orgNumber || !phone) {
+        setSubmitError("Vänligen fyll i alla fält innan du skickar din förfrågan.");
+        return;
+      }
+
+      const data = {
+        local,
+        eventType,
+        otherEventDescription,
+        audioTech,
+        lightTech,
+        extraPersonnel,
+        catering,
+        price,
+        name,
+        email,
+        customerType,
+        orgNumber,
+        phone,
+      };
+
+      fetch("/api/sendmail.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.success) {
+            alert("Förfrågan skickad! Vi hör av oss snart.");
+            // Rensa formuläret om du vill
+          } else {
+            setSubmitError("Något gick fel, försök igen senare.");
+          }
+        })
+        .catch(() => {
+          setSubmitError("Nätverksfel, försök igen senare.");
+        });
     }
 
-    // Mailbody som tidigare, med ticketSales borttagen
-    const mailBody = encodeURIComponent(
-      `Bokningsförfrågan:\n\n` +
-      `Lokal: ${local}\n` +
-      `Evenemangstyp: ${eventType}\n` +
-      (eventType === "annat" ? `Beskrivning: ${otherEventDescription}\n` : "") +
-      `Ljudtekniker: ${audioTech}\n` +
-      `Ljustekniker: ${lightTech}\n` +
-      `Extra personal: ${extraPersonnel || 0}\n` +
-      // `Biljettförsäljning: ${ticketSales}\n` +  // Kommenterad bort
-      `Catering: ${catering}\n` +
-      `Totalpris: ${price.toLocaleString()} SEK\n\n` +
-      `Kontaktuppgifter:\n` +
-      `Namn: ${name}\n` +
-      `E-post: ${email}\n` +
-      `Typ av kund: ${customerType}\n` +
-      `Organisationsnummer: ${orgNumber}\n` +
-      `Telefon: ${phone}\n`
-    );
-
-    window.location.href = `mailto:info@lokstallet.se?subject=Bokningsförfrågan&body=${mailBody}`;
-  }
 
   const summary = (
     <>

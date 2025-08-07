@@ -11,6 +11,7 @@
   max-width: 900px; /* Begränsar bredden på event-sektionen */
   width: 100%;
   text-align: center;
+  margin-bottom: 40px;
 }
 
 .evenemang-title {
