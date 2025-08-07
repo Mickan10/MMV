@@ -96,6 +96,7 @@
   overflow: hidden;
   background-color: #c1b6a8;
   padding: 20px 0;
+  min-height: 340px;
 }
 
 /* Gallery */
@@ -104,6 +105,8 @@
   transition: transform 0.5s ease-in-out;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  align-items: center; 
+  min-height: 300px; 
 }
 
 #gallery {
@@ -157,8 +160,8 @@ button.gallery-next {
 
 button.gallery-prev:hover,
 button.gallery-next:hover {
-  color: #fff; /* Vit text vid hover */
-  background-color: #b79c62; /* Guld bakgrund vid hover */
+  color: #fff; 
+  background-color: #b79c62; 
   box-shadow: 0 0 12px #b79c62;
 }
 
@@ -183,20 +186,20 @@ button.gallery-next {
 }
 .gallery-button {
   display: inline-block;
-  background-color: #b79c62;
+  background-color: #2f1e11;
   color: #fff;
-  padding: 10px 25px;
+  padding: 14px 25px;
   text-decoration: none;
   font-size: 16px;
   border-radius: 8px;
-  border: 2px solid #000;
+  border: 2px solid #b79c62;
   font-weight: 600;
   transition: background-color 0.3s ease, color 0.3s ease;
   font-family: 'Josefin Sans', sans-serif;
   font-weight: 400;
 }
 .gallery-button:hover {
-  background-color: #444;
+  background-color: #b79c62;
   color: #fff;
 }
 

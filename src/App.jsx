@@ -57,16 +57,17 @@ export default function App() {
     <Router>
       <Routes>
         {/* Startsidan utan header/footer */}
-        <Route path="/" element={<NoLayout><Home /></NoLayout>} />
+        {/* Startsidan leder nu till Lokstallet */}
+        <Route path="/" element={<LokstalletLayout><Lokstallet /></LokstalletLayout>} />
 
-        {/* MMV-relaterade sidor */}
+        {/* MMV-relaterade sidor 
         <Route path="/events" element={<MMVLayout><Events /></MMVLayout>} />
         <Route path="/mmvevent" element={<MMVLayout><MmvEvent /></MMVLayout>} />
         <Route path="/about" element={<MMVLayout><About /></MMVLayout>} />
         <Route path="/kundcase" element={<MMVLayout><Arkiv /></MMVLayout>} />
         <Route path="/faq" element={<MMVLayout><FAQ /></MMVLayout>} />
         <Route path="/contact" element={<MMVLayout><Contact /></MMVLayout>} />
-        <Route path="/bandpages" element={<MMVLayout><Bandpages /></MMVLayout>} />
+        <Route path="/bandpages" element={<MMVLayout><Bandpages /></MMVLayout>} />*/}
 
         {/* Lokstallet-sidor med egen layout */}
         <Route path="/lokstallet" element={<LokstalletLayout><Lokstallet /></LokstalletLayout>} />
