@@ -250,23 +250,27 @@ button.gallery-next {
   text-align: center;
   margin-top: 20px;
 }
+
 .gallery-button {
   display: inline-block;
-  background-color: #2f1e11;
-  color: #fff;
-  padding: 14px 25px;
+  background-color: #b79c62;         /* Guldfärg bakgrund, samma som rubrikens text */
+  color: #2f1e11;                    /* Mörk textfärg för kontrast */
+  padding: 14px 30px;
   text-decoration: none;
-  font-size: 16px;
-  border-radius: 8px;
+  font-size: 18px;
+  border-radius: 12px;
   border: 2px solid #b79c62;
   font-weight: 600;
-  transition: background-color 0.3s ease, color 0.3s ease;
   font-family: 'Josefin Sans', sans-serif;
-  font-weight: 400;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Liknande textskugga som rubrikens text-shadow */
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
-.gallery-button:hover {
-  background-color: #b79c62;
-  color: #fff;
+
+.gallery-button:hover {      /* Mörk bakgrund på hover */
+  color: #b79c62;                    /* Guldfärgad text på hover */
+  box-shadow: none; 
+  color: black;                 /* Ta bort skugga på hover för kontrast */
 }
 
 .sponsors {
@@ -277,10 +281,11 @@ button.gallery-next {
   width: 100%;
 }
 .sponsors h2 {
-  font-size: 1.9em;
-  margin-bottom: 30px;
-  color: #ffffff;
   font-family: 'Bungee Shade', cursive;
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+  color: #b79c62;
+  text-shadow: 1px 1px 3px #000;
 }
 .sponsors-container {
   display: flex;
@@ -298,6 +303,7 @@ button.gallery-next {
   height: 130px;
   overflow: hidden;
   transition: transform 0.3s ease;
+  border-radius: 0 !important;
 }
 .sponsor img {
   width: 100%;
