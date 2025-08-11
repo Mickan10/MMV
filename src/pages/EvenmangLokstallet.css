@@ -70,16 +70,25 @@
   text-align: left;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* Viktig ändring för att knappen ska ligga längst ner */
+  justify-content: flex-start;
 }
 
 .event-heading {
   font-size: 1.5em;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
   color: #5c4a3a;
-  line-height: 1.2;
 }
+
+.event-date {
+  font-size: 1.4em;
+  font-weight: 600;
+  color: #7d6a5a;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
 
 .event-description {
   font-size: 1.05em;
@@ -89,7 +98,9 @@
   font-weight: 400;
 }
 
+/* Här gör vi så knappen hamnar längst ner */
 .btn-l {
+  margin-top: auto; /* Viktigt - trycker ner knappen till botten av flex-kolumnen */
   background-color: #7d5a4f;
   color: white;
   border: none;
@@ -101,8 +112,9 @@
   box-shadow: 0 3px 7px rgba(125, 90, 79, 0.5);
   font-family: 'Josefin Sans', sans-serif;
 
-  /* Centrera knappen */
-  margin: 0 auto;
+  /* Centrera knappen horisontellt */
+  margin-left: auto;
+  margin-right: auto;
   display: block;
 }
 
@@ -138,5 +150,6 @@
   
   .btn-l {
     align-self: center;
+    margin-top: 20px; /* Lite extra utrymme ovanför knappen på mobil */
   }
 }

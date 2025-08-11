@@ -1,9 +1,33 @@
-* 
-{ 
+* { 
   border-radius: 0 !important;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+.textbox {
+  flex: 0 0 320px;
+  border: 3px solid #b79c62; /* guldig ram */
+  border-radius: 10px;
+  padding: 25px 30px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+  color: #000;
+  box-shadow: 0 6px 12px rgba(183, 156, 98, 0.35);
+  background-color: #fff; /* vit bakgrund så texten syns bra */
+}
+
+.textbox h3 {
+  font-family: 'Bungee Shade', cursive;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #b79c62;
+}
+
+.textbox p {
+  line-height: 1.5;
+  font-size: 16px;
+  color: #333;
 }
 
 #events {
@@ -85,6 +109,48 @@
   width: 100%;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin: 0;
+}
+
+/* Ny wrapper för event-textbox + event-lista */
+.events-wrapper {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  padding: 20px 10px;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+/* Textboxen till vänster med guldig ram */
+.events-info {
+  background-color: #c1b6a8;
+  border: 3px solid #b79c62; /* Guldig ram */
+  border-radius: 10px;
+  padding: 20px;
+  width: 280px;
+  box-shadow: 0 4px 10px rgba(183, 156, 98, 0.5);
+  color: #000;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+  text-align: left;
+}
+
+.events-info h3 {
+  font-family: 'Bungee Shade', cursive;
+  font-size: 22px;
+  margin-bottom: 12px;
+  color: #000;
+}
+
+/* Event-listan till höger */
+.events-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  flex: 1; /* Tar kvarvarande utrymme */
+  min-width: 300px;
 }
 
 /* Gallery-container */
@@ -206,7 +272,7 @@ button.gallery-next {
 .sponsors {
   margin: 0;
   padding: 40px 0;
-  background-color: #766656;
+  background-color: #403b3b;
   text-align: center;
   width: 100%;
 }
@@ -309,9 +375,24 @@ button.gallery-next {
     width: 80%;
   }
 
-   .sponsors h2 {
+  .sponsors h2 {
     font-size: 1.3em; /* Mindre storlek på rubriken */
     margin: 20px 10px 30px; /* Lite mindre marginal och padding */
     word-wrap: break-word; /* Bryt långa ord vid behov */
+  }
+}
+
+/* Responsiv justering för events-wrapper och dess barn */
+@media (max-width: 768px) {
+  .events-wrapper {
+    flex-direction: column;
+    padding: 10px;
+  }
+  .events-info {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+  .events-list {
+    flex: none;
   }
 }

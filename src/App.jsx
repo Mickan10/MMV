@@ -19,6 +19,9 @@ import LokalerLokstallet from "./pages/LokalerLokstallet.jsx";
 import HistoriaLokstallet from "./pages/HistoriaLokstallet.jsx";
 import KontaktLokstallet from "./pages/KontaktLokstallet.jsx";
 
+import Login from "./pages/Login.jsx";
+import EventAdmin from "./pages/EventAdmin.jsx";
+
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 
@@ -76,6 +79,11 @@ export default function App() {
         <Route path="/lokaler" element={<LokstalletLayout><LokalerLokstallet /></LokstalletLayout>} />
         <Route path="/historia" element={<LokstalletLayout><HistoriaLokstallet /></LokstalletLayout>} />
         <Route path="/kontakt-lokstallet" element={<LokstalletLayout><KontaktLokstallet /></LokstalletLayout>} />
+
+        {/* Admin-sidor utan header/footer */}
+        <Route path="/admin-panel" element={<Login />} />
+        <Route path="/admin" element={<EventAdmin />} />
+
       </Routes>
     </Router>
   );

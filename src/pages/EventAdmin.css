@@ -1,0 +1,154 @@
+/* EventAdmin.css */
+
+.admin-container {
+  font-family: 'Josefin Sans', sans-serif;
+  color: #5a4c3e;
+  max-width: 700px;
+  margin: 40px auto;
+  background-color: #fff9f0;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(125, 90, 79, 0.3);
+}
+
+.admin-title {
+  font-family: 'Bungee Shade', cursive;
+  color: #7d5a4f;
+  font-size: 2em;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.admin-input,
+.admin-textarea,
+.admin-file {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+  border: 2px solid #d6cbb3;
+  border-radius: 8px;
+  font-size: 1em;
+  font-family: 'Josefin Sans', sans-serif;
+  transition: border-color 0.3s ease;
+  resize: vertical;
+}
+
+.admin-input:focus,
+.admin-textarea:focus,
+.admin-file:focus {
+  border-color: #7d5a4f;
+  outline: none;
+}
+
+.admin-textarea {
+  min-height: 80px;
+}
+
+.admin-button {
+  background-color: #7d5a4f;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(125, 90, 79, 0.6);
+  font-family: 'Josefin Sans', sans-serif;
+  transition: background-color 0.3s ease;
+  margin-bottom: 25px;
+  display: block;
+  width: 100%;
+}
+
+.admin-button:hover {
+  background-color: #a67b63;
+}
+
+.admin-event-list {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-event-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #d6cbb3;
+  padding: 15px 0;
+}
+
+.admin-event-image {
+  width: 100px;
+  height: auto;
+  border-radius: 10px;
+  margin-right: 20px;
+  box-shadow: 0 4px 10px rgba(125, 90, 79, 0.3);
+  object-fit: cover;
+}
+
+.admin-event-name {
+  flex-grow: 1;
+  font-size: 1.2em;
+  color: #5c4a3a;
+  margin: 0;
+}
+
+.admin-event-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-event-buttons button {
+  width: auto;
+  padding: 8px 15px;
+  font-size: 0.95em;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.admin-event-buttons button:first-child {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.admin-event-buttons button:first-child:hover {
+  background-color: #ec971f;
+}
+
+.admin-event-buttons button:last-child {
+  background-color: #d9534f;
+  color: white;
+}
+
+.admin-event-buttons button:last-child:hover {
+  background-color: #c9302c;
+}
+
+@media (max-width: 600px) {
+  .admin-container {
+    padding: 20px;
+    margin: 20px 15px;
+  }
+
+  .admin-event-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-event-image {
+    margin-bottom: 10px;
+    margin-right: 0;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .admin-event-buttons {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .admin-event-buttons button {
+    flex: 1;
+  }
+}

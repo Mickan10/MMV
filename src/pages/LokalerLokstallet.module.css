@@ -33,7 +33,7 @@ section {
   justify-content: space-between;
   border-radius: 12px;
   padding: 2rem;
-  background-color: #fdfaf4;
+  background-color: #c1b6a8;
   box-shadow: 0 6px 20px rgba(183, 156, 98, 0.15);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -41,7 +41,7 @@ section {
 .lokal:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 30px rgba(183, 156, 98, 0.4);
-  background-color: #f8f5ef;
+  background-color: #d0c7ba;
 }
 
 .lokal-text {

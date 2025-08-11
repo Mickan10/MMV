@@ -1,7 +1,25 @@
 import "./EvenmangLokstallet.css";
-import timo from "../assets/timo.png";
+import { useState, useEffect } from "react";
+import { db } from "../firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
 
-const EvenmangLokstallet = () => {
+const EvenemangLokstallet = () => {
+  const [events, setEvents] = useState([]);
+
+  const fetchEvents = async () => {
+    const snapshot = await getDocs(collection(db, "events"));
+    let eventList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    eventList.sort((a, b) => new Date(a.date) - new Date(b.date)); // Sortera på datum
+    setEvents(eventList);
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  // Filtrera bort event som är dolda (hidden === true)
+  const visibleEvents = events.filter(event => !event.hidden);
+
   return (
     <section id="events" className="evenemang-lokstallet">
       <div className="evenemang-container">
@@ -11,28 +29,32 @@ const EvenmangLokstallet = () => {
         </p>
 
         <div className="event-grid">
-          <article className="event-card">
-            <img src={timo} alt="Julen enligt Timo" className="event-img" />
-            <div className="event-content">
-              <h3 className="event-heading">
-                Lördag 6 dec. • Julen enligt Timo • Kulturaktiebolaget
-              </h3>
-              <p className="event-description">
-                Timo Räisänen har tagit alla bra jullåtar (och några dåliga) till sin spets i ett enkelt format. Med en ensam gitarr och sin egensinniga stämma blandar han och ger vackra och stökiga sånger i julens avigaste konsert - Julen enligt Timo.
-              </p>
-              <a
-                href="https://billetto.se/e/julen-enligt-timo-biljetter-1280249"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <button className="btn-l">Mer information</button>
-              </a>
+          {visibleEvents.length === 0 && <p>Inga aktuella evenemang att visa.</p>}
+          {visibleEvents.map((event) => (
+            <article key={event.id} className="event-card">
+              {event.image && (
+                <img
+                  src={event.image}
+                  alt={event.title}
+                  className="event-img"
+                />
+              )}
+              <div className="event-content">
+              <h3 className="event-heading">{event.title}</h3>
+              <p className="event-date">{event.date}</p>
+              <p className="event-description">{event.description}</p>
+              {event.link && (
+                <a href={event.link} target="_blank" rel="noopener noreferrer">
+                  <button className="btn-l">Mer information/Biljetter</button>
+                </a>
+              )}
             </div>
-          </article>
+            </article>
+          ))}
         </div>
       </div>
     </section>
   );
 };
 
-export default EvenmangLokstallet;
+export default EvenemangLokstallet;

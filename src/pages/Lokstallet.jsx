@@ -63,6 +63,7 @@ const Lokstallet = () => {
 
   return (
     <main>
+      
       <section id="events" className="section">
         <h2>Vad händer på Lokstallet?</h2>
         <p></p>
@@ -88,6 +89,8 @@ const Lokstallet = () => {
           {/* fler events */}
         </div>
       </section>
+
+
 
       <div className="border"></div>
 
