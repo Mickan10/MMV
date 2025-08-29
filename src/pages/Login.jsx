@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+import { auth, db } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
 import "./Login.css";
 
 export default function Login() {
@@ -12,11 +13,22 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/admin");  // Gå till adminpanelen efter inloggning
-    }   catch (err) {
-      console.error("Login error:", err);
+      // Logga in med Firebase Auth
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Kolla om användaren är admin i Firestore
+      const adminDoc = await getDoc(doc(db, "admins", user.uid));
+      if (adminDoc.exists()) {
+        navigate("/admin"); // Till adminpanelen
+      } else {
+        setError("Du har inte adminbehörighet.");
+        await auth.signOut(); // logga ut
+      }
+    } catch (err) {
+      console.error("Login error:", err.code, err.message);
       setError("Felaktig e-post eller lösenord. Försök igen.");
     }
   };
@@ -31,6 +43,7 @@ export default function Login() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          autoComplete="username"
         />
         <input
           type="password"
@@ -38,6 +51,7 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          autoComplete="current-password"
         />
         {error && <p className="error">{error}</p>}
         <button type="submit">Logga in</button>

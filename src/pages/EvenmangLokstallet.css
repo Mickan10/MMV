@@ -101,9 +101,9 @@
 /* Knapp */
 .btn-l {
   margin-top: auto;
-  background: linear-gradient(135deg, #b79c62, #a4884b); /* Guldtoner */
+  background: linear-gradient(135deg, #b79c62, #a4884b);
   color: white;
-  border: none;
+  border: none; 
   padding: 12px 22px;
   font-size: 1em;
   border-radius: 8px;
@@ -120,6 +120,11 @@
   background: linear-gradient(135deg, #c9ab71, #b28a50);
   box-shadow: 0 4px 10px rgba(184, 148, 95, 0.6);
 }
+
+.event-content a {
+  text-decoration: none;
+}
+
 
 /* Mobilanpassning */
 @media (max-width: 768px) {

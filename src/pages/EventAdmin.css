@@ -1,4 +1,13 @@
 /* EventAdmin.css */
+.admin-button.logout {       
+  font-size: 0.9rem;       
+  border-radius: 4px;     
+  background-color: #5a4c3e; 
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+}
 
 .admin-container {
   font-family: 'Josefin Sans', sans-serif;
@@ -150,5 +159,10 @@
 
   .admin-event-buttons button {
     flex: 1;
+  }
+
+    .admin-event-name {
+    word-wrap: break-word;
+    font-size: 1.1em;
   }
 }

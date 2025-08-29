@@ -42,13 +42,18 @@
   color: #000;
   font-family: 'Bungee Shade', cursive;
 }
+
 .btn-l {
   background-color: #b79c62;
-  border: 0.5px solid #000;
+  border: none; /* Tar bort border */
   color: #fff;
   transition: background-color 0.3s ease, color 0.3s ease;
   cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 600;
 }
+
 .btn-l:hover {
   background-color: #b79c62;
   color: #fff;
@@ -87,15 +92,25 @@
   margin-bottom: 10px;
 }
 .event h3 {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* Lite mellanrum mellan datum/tid och titel */
   font-size: 20px;
   margin-bottom: 10px;
 }
-.event p {
-  font-size: 16px;
-  margin-bottom: 15px;
-  font-family: 'Josefin Sans', sans-serif;
-  font-weight: 400;
+
+.event .event-meta {
+  font-size: 18px;
+  font-weight: 800;
+  color: #7d6a5a; /* subtil färg för datum/tid */
 }
+
+.event .event-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+}
+
 .event button {
   display: block;
   width: 100%;

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { db } from "../firebaseConfig";
+import { db, auth } from "../firebaseConfig";
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import "./EventAdmin.css";
 
 const EventAdmin = () => {
@@ -8,6 +10,8 @@ const EventAdmin = () => {
   const [form, setForm] = useState({
     title: "",
     date: "",
+    time: "",
+    location: "",
     description: "",
     link: "",
     image: ""
@@ -16,13 +20,38 @@ const EventAdmin = () => {
   const [editForm, setEditForm] = useState({
     title: "",
     date: "",
+    time: "",
+    location: "",
     description: "",
     link: "",
     image: "",
     hidden: false
   });
+  const [loading, setLoading] = useState(true);
 
-  // Hämta event från Firestore och sortera på datum
+  const navigate = useNavigate();
+
+  // Säker inloggning: kolla Auth + admin i Firestore
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        navigate("/admin-panel"); // Inte inloggad
+        return;
+      }
+      const adminDoc = await getDocs(collection(db, "admins"));
+      const isAdmin = adminDoc.docs.some(doc => doc.id === user.uid);
+      if (!isAdmin) {
+        await signOut(auth);
+        navigate("/admin-panel");
+      } else {
+        setLoading(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
+
+  // Hämta events
   const fetchEvents = async () => {
     const snapshot = await getDocs(collection(db, "events"));
     let eventList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -37,26 +66,24 @@ const EventAdmin = () => {
   // Lägg till nytt event
   const handleAddEvent = async (e) => {
     e.preventDefault();
-
-    await addDoc(collection(db, "events"), {
-      title: form.title,
-      date: form.date,
-      description: form.description,
-      link: form.link,
-      image: form.image || "",
-      hidden: false
-    });
-
-    setForm({
-      title: "",
-      date: "",
-      description: "",
-      link: "",
-      image: ""
-    });
-
+    await addDoc(collection(db, "events"), { ...form, hidden: false });
+    setForm({ title: "", date: "", time: "", location: "", description: "", link: "", image: "" });
     fetchEvents();
   };
+
+  // Redigering
+  const handleEditClick = (event) => {
+    setEditingId(event.id);
+    setEditForm({ ...event });
+  };
+
+  const handleSaveEdit = async (id) => {
+    await updateDoc(doc(db, "events", id), { ...editForm });
+    setEditingId(null);
+    fetchEvents();
+  };
+
+  const handleCancelEdit = () => setEditingId(null);
 
   // Ta bort event
   const handleDeleteEvent = async (id) => {
@@ -64,56 +91,38 @@ const EventAdmin = () => {
     fetchEvents();
   };
 
-  // Starta redigering - fyll editForm med valt event
-  const handleEditClick = (event) => {
-    setEditingId(event.id);
-    setEditForm({
-      title: event.title,
-      date: event.date,
-      description: event.description,
-      link: event.link,
-      image: event.image || "",
-      hidden: event.hidden || false
-    });
-  };
-
-  // Spara ändringar
-  const handleSaveEdit = async (id) => {
-    const eventRef = doc(db, "events", id);
-    await updateDoc(eventRef, {
-      title: editForm.title,
-      date: editForm.date,
-      description: editForm.description,
-      link: editForm.link,
-      image: editForm.image,
-      hidden: editForm.hidden
-    });
-    setEditingId(null);
-    fetchEvents();
-  };
-
-  // Avbryt redigering
-  const handleCancelEdit = () => {
-    setEditingId(null);
-  };
-
-  // Dölj / visa event (toggle hidden)
+  // Dölj / visa
   const handleToggleHidden = async (id, currentHidden) => {
-    const eventRef = doc(db, "events", id);
-    await updateDoc(eventRef, { hidden: !currentHidden });
+    await updateDoc(doc(db, "events", id), { hidden: !currentHidden });
     fetchEvents();
   };
+
+  // Logga ut
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate("/admin-panel");
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div className="admin-container">
-      <h2 className="admin-title">Admin - Hantera Evenemang</h2>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <button className="admin-button logout" onClick={handleLogout}>
+          Logga ut
+        </button>
+        <h2 className="admin-title">Admin - Hantera Evenemang</h2>
+      </div>
 
-      {/* Lägg till nytt event */}
       <form onSubmit={handleAddEvent}>
         <input
           className="admin-input"
           type="text"
-          placeholder="Titel - Vad heter eventet? Gör det catchy så folk vill komma!"
+          placeholder="Titel"
           value={form.title}
           onChange={(e) => setForm({ ...form, title: e.target.value })}
           required
@@ -125,9 +134,25 @@ const EventAdmin = () => {
           onChange={(e) => setForm({ ...form, date: e.target.value })}
           required
         />
+        <input
+          className="admin-input"
+          type="text"
+          placeholder="Tid (t.ex. 18:30)"
+          value={form.time}
+          onChange={(e) => setForm({ ...form, time: e.target.value })}
+          required
+        />
+        <input
+          className="admin-input"
+          type="text"
+          placeholder="Plats"
+          value={form.location}
+          onChange={(e) => setForm({ ...form, location: e.target.value })}
+          required
+        />
         <textarea
           className="admin-textarea"
-          placeholder="Beskriv eventet. Vad händer? Varför ska man komma? eller sno från någon annan sida."
+          placeholder="Beskrivning"
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
           required
@@ -135,14 +160,14 @@ const EventAdmin = () => {
         <input
           className="admin-input"
           type="text"
-          placeholder="Länk till biljettsida eller annan info-sida/facebook-event"
+          placeholder="Länk"
           value={form.link}
           onChange={(e) => setForm({ ...form, link: e.target.value })}
         />
         <input
           className="admin-input"
           type="text"
-          placeholder="Bild-URL (webbadress till din bild, t.ex. https://...)"
+          placeholder="Bild-URL"
           value={form.image}
           onChange={(e) => setForm({ ...form, image: e.target.value })}
         />
@@ -154,77 +179,36 @@ const EventAdmin = () => {
         {events.map((event) => (
           <li key={event.id} className="admin-event-item">
             {editingId === event.id ? (
-              // Redigeringsläge
               <div style={{ width: "100%" }}>
-                <input
-                  className="admin-input"
-                  type="text"
-                  value={editForm.title}
-                  onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                />
-                <input
-                  className="admin-input"
-                  type="date"
-                  value={editForm.date}
-                  onChange={(e) => setEditForm({ ...editForm, date: e.target.value })}
-                />
-                <textarea
-                  className="admin-textarea"
-                  value={editForm.description}
-                  onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                />
-                <input
-                  className="admin-input"
-                  type="text"
-                  value={editForm.link}
-                  onChange={(e) => setEditForm({ ...editForm, link: e.target.value })}
-                />
-                <input
-                  className="admin-input"
-                  type="text"
-                  value={editForm.image}
-                  onChange={(e) => setEditForm({ ...editForm, image: e.target.value })}
-                />
+                <input className="admin-input" type="text" value={editForm.title} onChange={(e) => setEditForm({ ...editForm, title: e.target.value })} />
+                <input className="admin-input" type="date" value={editForm.date} onChange={(e) => setEditForm({ ...editForm, date: e.target.value })} />
+                <input className="admin-input" type="text" value={editForm.time} onChange={(e) => setEditForm({ ...editForm, time: e.target.value })} />
+                <input className="admin-input" type="text" value={editForm.location} onChange={(e) => setEditForm({ ...editForm, location: e.target.value })} />
+                <textarea className="admin-textarea" value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} />
+                <input className="admin-input" type="text" value={editForm.link} onChange={(e) => setEditForm({ ...editForm, link: e.target.value })} />
+                <input className="admin-input" type="text" value={editForm.image} onChange={(e) => setEditForm({ ...editForm, image: e.target.value })} />
                 <label style={{ display: "block", margin: "10px 0", color: "#5a4c3e" }}>
-                  <input
-                    type="checkbox"
-                    checked={editForm.hidden}
-                    onChange={(e) => setEditForm({ ...editForm, hidden: e.target.checked })}
-                  /> Dölj event
+                  <input type="checkbox" checked={editForm.hidden} onChange={(e) => setEditForm({ ...editForm, hidden: e.target.checked })} /> Dölj event
                 </label>
-
-                <button
-                  className="admin-button"
-                  onClick={() => handleSaveEdit(event.id)}
-                  style={{ marginRight: "10px" }}
-                >
-                  Spara
-                </button>
+                <button className="admin-button" onClick={() => handleSaveEdit(event.id)} style={{ marginRight: "10px" }}>Spara</button>
                 <button className="admin-button" onClick={handleCancelEdit}>Avbryt</button>
               </div>
             ) : (
               <>
-                {event.image && (
-                  <img
-                    src={event.image}
-                    alt={event.title}
-                    className="admin-event-image"
-                  />
-                )}
+                {event.image && <img src={event.image} alt={event.title} className="admin-event-image" />}
                 <div style={{ flexGrow: 1 }}>
-                  <p className="admin-event-name">{event.date} • {event.title}</p>
-                  <p style={{ marginTop: 4, color: "#5a4c3e", fontSize: "0.95em" }}>
-                    {event.description.length > 100
-                      ? event.description.substring(0, 100) + "..."
-                      : event.description}
+                  <p className="admin-event-name">
+                    {event.date} {event.time ? "• " + event.time : ""} • {event.title}
+                  </p>
+                  <p style={{ margin: "3px 0", fontSize: "0.95em", color: "#5a4c3e" }}>
+                    {event.location && <span>{event.location} • </span>}
+                    {event.description.length > 100 ? event.description.substring(0, 100) + "..." : event.description}
                   </p>
                 </div>
                 <div className="admin-event-buttons">
                   <button onClick={() => handleEditClick(event)}>Redigera</button>
                   <button onClick={() => handleDeleteEvent(event.id)}>Ta bort</button>
-                  <button onClick={() => handleToggleHidden(event.id, event.hidden)}>
-                    {event.hidden ? "Visa" : "Dölj"}
-                  </button>
+                  <button onClick={() => handleToggleHidden(event.id, event.hidden)}>{event.hidden ? "Visa" : "Dölj"}</button>
                 </div>
               </>
             )}

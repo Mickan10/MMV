@@ -1,15 +1,15 @@
-// firebaseConfig.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "DIN_API_KEY",
+  apiKey: "AIzaSyDqaO972MvPl1Hjxwi7SMVnwe7yUKKUJ-g",
   authDomain: "lokstallet-5147c.firebaseapp.com",
   projectId: "lokstallet-5147c",
-  storageBucket: "", // tomt, vi använder inte storage
-  messagingSenderId: "DIN_MESSAGING_ID",
-  appId: "DIN_APP_ID"
+  storageBucket: "lokstallet-5147c.firebasestorage.app",
+  messagingSenderId: "1031492726413",
+  appId: "1:1031492726413:web:19b3e635337900aee17cc4",
+  measurementId: "G-ZFDGFC2884"
 };
 
 const app = initializeApp(firebaseConfig);

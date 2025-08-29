@@ -39,10 +39,14 @@ const EvenemangLokstallet = () => {
                   className="event-img"
                 />
               )}
-              <div className="event-content">
+            <div className="event-content">
               <h3 className="event-heading">{event.title}</h3>
-              <p className="event-date">{event.date}</p>
-              <p className="event-description">{event.description}</p>
+              <p className="event-date">
+                {event.date} {event.time ? "• " + event.time : ""} {event.location ? "• " + event.location : ""}
+              </p>
+              <p className="event-description">
+                {event.description}
+              </p>
               {event.link && (
                 <a href={event.link} target="_blank" rel="noopener noreferrer">
                   <button className="btn-l">Mer information/Biljetter</button>

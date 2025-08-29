@@ -1,23 +1,23 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Lokstallet.css";
+import { db } from "../firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
-
-import timo from "../assets/timo.png";
 import img2 from "../assets/scen.jpg";
 import img3 from "../assets/resturang.webp";
 import img4 from "../assets/header.jpg";
 import logoWebbVitMini from "../assets/Logo-webb-vit-mini.webp";
 
 const Lokstallet = () => {
+  const [events, setEvents] = useState([]);
+
   const images = [img2, img3, img4, img2, img3, img4, img2, img3];
   const imagesToShow = 3;
   const [startIndex, setStartIndex] = useState(0);
 
-  // Swipe state
   const touchStartX = useRef(null);
   const touchEndX = useRef(null);
 
-  // Loop-funktionalitet
   const handlePrev = () => {
     setStartIndex((prev) =>
       prev === 0 ? images.length - imagesToShow : prev - 1
@@ -42,16 +42,14 @@ const Lokstallet = () => {
   const handleSwipe = () => {
     if (!touchStartX.current || !touchEndX.current) return;
     const distance = touchStartX.current - touchEndX.current;
-    const minDistance = 50; // Minsta avstånd för swipe
+    const minDistance = 50;
 
     if (distance > minDistance) {
-      // Swipe vänster -> nästa
       handleNext();
     } else if (distance < -minDistance) {
-      // Swipe höger -> föregående
       handlePrev();
     }
-    // Reset
+
     touchStartX.current = null;
     touchEndX.current = null;
   };
@@ -61,36 +59,43 @@ const Lokstallet = () => {
     visibleImages.push(images[(startIndex + i) % images.length]);
   }
 
+  // Hämta events från Firestore
+  const fetchEvents = async () => {
+    const snapshot = await getDocs(collection(db, "events"));
+    let eventList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    eventList.sort((a, b) => new Date(a.date) - new Date(b.date));
+    setEvents(eventList);
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const visibleEvents = events.filter(event => !event.hidden);
+
   return (
     <main>
-      
       <section id="events" className="section">
         <h2>Vad händer på Lokstallet?</h2>
-        <p></p>
         <div className="events">
-          <article className="event">
-            <img src={timo} alt="Julen enligt Timo" />
-            <h3>Lördag 6 dec. • Julen enligt Timo • Kulturaktiebolaget</h3>
-            <a
-              href="https://billetto.se/e/julen-enligt-timo-biljetter-1280249"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <button className="btn-l">Mer information</button>
-            </a>
-          </article>
+          {visibleEvents.length === 0 && <p>Inga aktuella evenemang att visa.</p>}
+          {visibleEvents.map((event) => (
+            <article key={event.id} className="event">
+              {event.image && <img src={event.image} alt={event.title} />}
+            <h3>
+                <span className="event-meta">
+                  {event.date} {event.time ? "• " + event.time : ""}
+                </span>
+                <span className="event-title">{event.title}</span>
+            </h3>
 
-          <article className="event">
-            <img src={img2} alt="Event 1" />
-            <h3>Konsert: Bandnamn</h3>
-            <p>Datum: 25 januari 2025</p>
-            <button className="btn-l">Köp biljett</button>
-          </article>
-          {/* fler events */}
+            <Link to="/EvenemangLokstallet" className="btn-l">
+              Biljetter / Mer info
+            </Link>
+            </article>
+          ))}
         </div>
       </section>
-
-
 
       <div className="border"></div>
 
@@ -101,11 +106,7 @@ const Lokstallet = () => {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          <button
-            className="gallery-prev"
-            onClick={handlePrev}
-            aria-label="Föregående"
-          >
+          <button className="gallery-prev" onClick={handlePrev} aria-label="Föregående">
             &#10094;
           </button>
 
@@ -115,19 +116,9 @@ const Lokstallet = () => {
             ))}
           </div>
 
-          <button
-            className="gallery-next"
-            onClick={handleNext}
-            aria-label="Nästa"
-          >
+          <button className="gallery-next" onClick={handleNext} aria-label="Nästa">
             &#10095;
           </button>
-        </div>
-
-        <div className="gallery-button-container">
-          <Link to="/lokaler" className="gallery-button">
-            Läs mer om våra lokaler
-          </Link>
         </div>
       </section>
 
@@ -146,12 +137,10 @@ const Lokstallet = () => {
                 <img src={logoWebbVitMini} alt="Sponsor 1" />
                 <div className="overlay">
                   Sällskapet i Skövde – Mat från Skaraborg & världen, lunch, á la
-                  carte, after work, brunch, fika, festlokal, mässor,
-                  livespelningar...
+                  carte, after work, brunch, fika, festlokal, mässor, livespelningar...
                 </div>
               </a>
             </div>
-            {/* fler sponsorer */}
           </div>
         </div>
       </section>
