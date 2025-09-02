@@ -1,63 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect} from "react";
 import "./Lokstallet.css";
 import { db } from "../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
-import img2 from "../assets/scen.jpg";
 import img3 from "../assets/resturang.webp";
-import img4 from "../assets/header.jpg";
-import logoWebbVitMini from "../assets/Logo-webb-vit-mini.webp";
+import img9 from "../assets/Concert-konsert-scen-scene-band.jpg";
+import logga from '../assets/headerlok.png';
 
 const Lokstallet = () => {
   const [events, setEvents] = useState([]);
-
-  const images = [img2, img3, img4, img2, img3, img4, img2, img3];
-  const imagesToShow = 3;
-  const [startIndex, setStartIndex] = useState(0);
-
-  const touchStartX = useRef(null);
-  const touchEndX = useRef(null);
-
-  const handlePrev = () => {
-    setStartIndex((prev) =>
-      prev === 0 ? images.length - imagesToShow : prev - 1
-    );
-  };
-
-  const handleNext = () => {
-    setStartIndex((prev) =>
-      prev === images.length - imagesToShow ? 0 : prev + 1
-    );
-  };
-
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.changedTouches[0].screenX;
-  };
-
-  const handleTouchEnd = (e) => {
-    touchEndX.current = e.changedTouches[0].screenX;
-    handleSwipe();
-  };
-
-  const handleSwipe = () => {
-    if (!touchStartX.current || !touchEndX.current) return;
-    const distance = touchStartX.current - touchEndX.current;
-    const minDistance = 50;
-
-    if (distance > minDistance) {
-      handleNext();
-    } else if (distance < -minDistance) {
-      handlePrev();
-    }
-
-    touchStartX.current = null;
-    touchEndX.current = null;
-  };
-
-  const visibleImages = [];
-  for (let i = 0; i < imagesToShow; i++) {
-    visibleImages.push(images[(startIndex + i) % images.length]);
-  }
 
   // Hämta events från Firestore
   const fetchEvents = async () => {
@@ -75,76 +26,81 @@ const Lokstallet = () => {
 
   return (
     <main>
-      <section id="events" className="section">
-        <h2>Vad händer på Lokstallet?</h2>
-        <div className="events">
-          {visibleEvents.length === 0 && <p>Inga aktuella evenemang att visa.</p>}
-          {visibleEvents.map((event) => (
-            <article key={event.id} className="event">
-              {event.image && <img src={event.image} alt={event.title} />}
-            <h3>
-                <span className="event-meta">
-                  {event.date} {event.time ? "• " + event.time : ""}
-                </span>
-                <span className="event-title">{event.title}</span>
-            </h3>
+  {/* ---------------- WELCOME HEADER / LOGO ---------------- */}
+  <header className="home-header">
+    <img src={logga} alt="Lokstallet logo" className="home-logo" />
+  </header>
 
-            <Link to="/EvenemangLokstallet" className="btn-l">
-              Biljetter / Mer info
-            </Link>
-            </article>
-          ))}
-        </div>
-      </section>
+  {/* ---------------- WELCOME SECTION ---------------- */}
+  <section className="welcome-section">
+    <div className="welcome-left">
+      <img src={img9} alt="Lokstallet" />
+    </div>
+    <div className="welcome-right">
+      <h3>Välkommen till </h3>
+      <h3>Lokstallet</h3>
+      <p>
+        Lokstallet är Skövdes hjärta för kultur och evenemang. Här
+        hittar du allt från konserter och teaterföreställningar till
+        workshops och matupplevelser. Vi erbjuder en unik miljö med
+        historia och modern komfort.
+      </p>
+      <p>
+        Utforska vårt program, boka biljetter och upplev
+        oförglömliga stunder hos oss!
+      </p>
+    </div>
+  </section>
 
-      <div className="border"></div>
-
-      <section id="gallery" className="section">
-        <h2>Lokstallet: En Oas För Kultur och Evenemang</h2>
-        <div
-          className="gallery-container"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          <button className="gallery-prev" onClick={handlePrev} aria-label="Föregående">
-            &#10094;
-          </button>
-
-          <div className="gallery">
-            {visibleImages.map((img, i) => (
-              <img key={i} src={img} alt={`Bild ${startIndex + i + 1}`} />
-            ))}
-          </div>
-
-          <button className="gallery-next" onClick={handleNext} aria-label="Nästa">
-            &#10095;
-          </button>
-        </div>
-      </section>
-
-      <div className="border"></div>
-
-      <section className="sponsors">
-        <h2>Våra Samarbetspartners</h2>
-        <div className="sponsors-container">
-          <div className="logos">
-            <div className="sponsor">
-              <a
-                href="https://sallskapetskovde.se/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img src={logoWebbVitMini} alt="Sponsor 1" />
-                <div className="overlay">
-                  Sällskapet i Skövde – Mat från Skaraborg & världen, lunch, á la
-                  carte, after work, brunch, fika, festlokal, mässor, livespelningar...
-                </div>
-              </a>
+  {/* ---------------- EVENTS SECTION ---------------- */}
+    <section id="home-events">
+  <div className="home-events-container">
+    <div className="home-events-header">
+      <h2>Event</h2>
+      <p>Se vad som händer. </p>
+      <Link to="/evenemang-lokstallet" className="home-btn">
+        Se alla evenemang
+      </Link>
+    </div>
+    <div className="home-events">
+      {visibleEvents.map((event) => (
+        <article key={event.id} className="home-event">
+          {event.image && <img src={event.image} alt={event.title} />}
+          <div className="home-event-content">
+            <div className="home-event-date">
+              <span className="home-event-day">
+                {new Date(event.date).toLocaleDateString('sv-SE', { day: '2-digit' })}
+              </span>
+              <span className="home-event-month">
+                {new Date(event.date).toLocaleDateString('sv-SE', { month: 'short' })}
+              </span>
+            </div>
+            <div className="home-event-info">
+              <h3 className="home-event-title">{event.title}</h3>
+              {event.time && <p className="home-event-time">{event.time}</p>}
             </div>
           </div>
-        </div>
-      </section>
-    </main>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+  {/* ---------------- LOKAL SECTION ---------------- */}
+  <section className="lokal-section">
+    <div className="lokal-left">
+      <h3>Din plats. Din upplevelse. Ditt Lokstall.</h3>
+      <p>
+        Hos oss hittar du en lokal med historia, atmosfär och modern komfort.
+        Perfekt för allt från konserter och teater till bröllop, fester och konferenser.
+      </p>
+    </div>
+    <div className="lokal-center">
+      <img src={img3} alt="Lokal" />
+    </div>
+  </section>
+</main>
+
   );
 };
 

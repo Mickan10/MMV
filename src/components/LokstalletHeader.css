@@ -1,119 +1,90 @@
+/* --- HEADER --- */
 .lokstallet-header {
-  position: relative;
-  color: black;
-  text-align: center;
-  padding: 2rem 1rem;
-  background-color: #2f1e11;
-  font-family: 'Josefin Sans', sans-serif;
-  font-weight: 400;
   width: 100%;
-  border-radius: 0;
-  border-bottom: 5px solid #b79c62;
-  box-shadow: 0 2px 5px rgba(183, 156, 98, 0.4);
+  background-color: #B79C62;
+  border-bottom: 4px solid #b79c62;
+  font-family: 'Josefin Sans', sans-serif;
+  position: relative;
+  z-index: 100;
 }
 
-.log-container {
-  position: absolute;
-  top: 20px;
-  left: 20px;
+/* --- INNER --- */
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0;
+  height: 30px;
 }
 
-.log-container img {
-  height: 80px; /* Standardstorlek */
+/* --- LOGO --- */
+.logo-container {
+  display: flex;
+  align-items: center;
+  display: block;
+  margin: 10px 100px 10px 10px;
 }
 
-.hero-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding-top: 2rem;
+.header-logo {
+  height: 70px;
+  width: auto;
 }
 
-.hero-content h1 {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
-  font-weight: 700;
-  color: black;
-}
-
-.hero-content p {
-  font-size: 1.2rem;
-  font-weight: 300;
-  margin-top: 0;
-  color: black;
-}
-
+/* --- MENY --- */
 .hero-nav {
-  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-start; /* länkar start */
+  gap: 3rem;
 }
 
 .links {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0;
+  gap: 3rem;
   list-style: none;
-  margin: 0 auto;
-  max-width: 90%;
-}
-
-.links li {
   margin: 0;
+  padding: 0;
+  white-space: nowrap;
 }
 
-.lokstallet-btn {
-  padding: 12px 24px;
-  color: #000;
-  background: #b79c62;
-  font-weight: 600;
+.links li a {
+  color: #c6b38b;
   text-decoration: none;
-  border-radius: 0;
-  transition: all 0.3s ease;
-  display: inline-block;
-  border: none;
-  min-width: 140px;
-  text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
+  font-size: 1.3rem;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
-.lokstallet-btn:hover,
-.lokstallet-btn.active {
-  background-color: #9b824c;
-  color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+.links li a:hover,
+.links li a.active {
+  color: #b79c62;
+  transform: translateY(-2px);
 }
 
-/* Hamburgerknapp - dold på stora skärmar */
+/* --- HAMBURGER --- */
 .hamburger {
   display: none;
   flex-direction: column;
   justify-content: space-around;
-  width: 30px;
-  height: 24px;
+  width: 35px;
+  height: 28px;
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 0;
-  box-sizing: content-box;
-  position: absolute;
-  top: 25px;
-  right: 20px;
-  z-index: 20;
 }
 
 .hamburger span {
-  width: 30px;
+  width: 35px;
   height: 3px;
   background-color: #b79c62;
   border-radius: 2px;
-  transition: all 0.3s linear;
-  position: relative;
-  transform-origin: 1px;
+  transition: all 0.3s ease;
 }
 
-/* Animera hamburger när öppen */
+/* --- HAMBURGER ANIMATION --- */
 .hamburger.open span:nth-child(1) {
-  transform: rotate(45deg);
+  transform: rotate(45deg) translate(6px, 6px);
 }
 
 .hamburger.open span:nth-child(2) {
@@ -121,73 +92,59 @@
 }
 
 .hamburger.open span:nth-child(3) {
-  transform: rotate(-45deg);
+  transform: rotate(-45deg) translate(6px, -6px);
 }
 
-/* Menyn syns alltid på stora skärmar */
-.hero-nav {
-  display: block;
-  transition: max-height 0.3s ease-in-out;
-  position: relative;
-  z-index: 10;
-}
-
-/* === Hamburgermeny vid iPad och mindre === */
+/* === RESPONSIVE 1024px === */
 @media (max-width: 1024px) {
-  /* Dölj menyn som standard */
-  .hero-nav {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.3s ease-in-out;
-  }
-
-  /* Visa menyn när öppen */
-  .hero-nav.open {
-    max-height: 500px;
-  }
-
-  /* Länkar i kolumn */
-  .links {
+  .header-inner {
     flex-direction: column;
-    align-items: center;
-    gap: 0.7rem;
+    align-items: center;  /* logga centrerad */
+    height: auto;
+    padding: 1rem 2rem;
   }
 
-  /* Visa hamburgaren */
   .hamburger {
     display: flex;
   }
 
-  /* Knappar anpassade för mobil/iPad */
-  .lokstallet-btn {
-    width: 200px;
-    height: 48px;
-    padding: 0;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  .hero-nav {
+    width: 100%;
+    flex-direction: column;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease;
   }
 
-  /* Justera rubriker */
-  .hero-content h1 {
-    font-size: 2.2rem;
+  .hero-nav.open {
+    max-height: 500px;
   }
 
-  .hero-content p {
-    font-size: 1rem;
+  .links {
+    flex-direction: column;
+    gap: 1.3rem;
+    width: 100%;
+    align-items: flex-start;  /* flytta länkar till vänster */
+    padding-left: 1rem;       /* lite luft från kanten */
   }
 
-  /* Loggan mindre på iPad och under */
-  .log-container img {
-    height: 60px;
+  .links li a {
+    font-size: 1.2rem;
   }
 }
 
-/* === Extra liten logga på små mobiler === */
+
+/* === RESPONSIVE 600px === */
 @media (max-width: 600px) {
-  .log-container img {
-    height: 50px;
+  .header-logo {
+    height: 55px; /* lite mindre logga */
+  }
+
+  .links li a {
+    font-size: 1.1rem;
+  }
+
+  .links {
+    gap: 1rem;
   }
 }
