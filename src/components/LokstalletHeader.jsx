@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
+import img9 from "../assets/lokstalletheader.png"; // logga för små skärmar
 import './LokstalletHeader.css';
 
 const LokstalletHeader = () => {
@@ -10,8 +11,9 @@ const LokstalletHeader = () => {
   return (
     <header className="lokstallet-header">
       <div className="header-inner">
-        {/* Logga */}
+        {/* Logga som bara visas på små skärmar */}
         <div className="logo-container">
+          <img src={img9} alt="Lokstallet" className="header-logo"/>
         </div>
 
         {/* Hamburger-knapp */}

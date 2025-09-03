@@ -84,9 +84,10 @@ const Lokstallet = () => {
                   : event.description}
               </p>
             )}
-            <Link to={`/evenemang-lokstallet/:id${event.id}`} className="home-btn">
-            Läs mer
-          </Link>
+                <Link to={"/evenemang-lokstallet"} className="home-btn">
+                Läs mer
+              </Link>
+
           </div>
         </div>
       </article>
@@ -98,17 +99,21 @@ const Lokstallet = () => {
 
   {/* ---------------- LOKAL SECTION ---------------- */}
   <section className="lokal-section">
-    <div className="lokal-left">
-      <h3>Din plats. Din upplevelse. Ditt Lokstall.</h3>
-      <p>
-        Hos oss hittar du en lokal med historia, atmosfär och modern komfort.
-        Perfekt för allt från konserter och teater till bröllop, fester och konferenser.
-      </p>
-    </div>
-    <div className="lokal-center">
-      <img src={img3} alt="Lokal" />
-    </div>
-  </section>
+  <div className="lokal-left">
+    <h3>Din plats.</h3>
+    <h3>Din upplevelse.</h3> 
+    <h3>Ditt Lokstall.</h3>
+    <p>
+      Hos oss hittar du en lokal med historia, atmosfär och modern komfort.
+      Perfekt för allt från konserter och teater till bröllop, fester och konferenser.
+    </p>
+    <Link to="/lokaler" className="lokal-btn">Utforska lokalerna</Link>
+  </div>
+  <div className="lokal-center">
+    <img src={img3} alt="Lokal" />
+  </div>
+</section>
+
 </main>
 
   );

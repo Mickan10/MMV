@@ -2,7 +2,6 @@
 .lokstallet-header {
   width: 100%;
   background-color: #2F1E11;
-  border-bottom: 4px solid #b79c62;
   font-family: 'Josefin Sans', sans-serif;
   position: relative;
   z-index: 100;
@@ -12,30 +11,32 @@
 .header-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center; /* centrera meny på stora skärmar */
   max-width: 1200px;
-  margin: 0;
-  height: 30px;
+  margin: 0 auto;
+  height: 60px; /* standardhöjd */
+  position: relative; /* för absolut placerad logga och hamburger */
 }
 
 /* --- LOGO --- */
 .logo-container {
-  display: flex;
-  align-items: center;
-  display: block;
-  margin: 10px 100px 10px 10px;
+  display: none; /* bara små skärmar */
+  position: relative; /* ändra från absolute till relative */
+  margin-right: 10px; /* lite avstånd från menyn/hamburger */
 }
 
 .header-logo {
-  height: 70px;
+  height: 70px; /* större logga */
   width: auto;
+  display: block;
 }
 
 /* --- MENY --- */
 .hero-nav {
   display: flex;
-  justify-content: flex-start; /* länkar start */
+  justify-content: center; /* centrera meny */
   gap: 3rem;
+  transition: max-height 0.4s ease;
 }
 
 .links {
@@ -53,7 +54,7 @@
   font-weight: 700;
   font-size: 1.3rem;
   padding: 0.5rem 0;
-  position: relative; 
+  position: relative;
   transition: color 0.3s ease, transform 0.2s ease;
 }
 
@@ -71,13 +72,12 @@
 
 .links li a:hover::after,
 .links li a.active::after {
-  width: 100%; 
+  width: 100%;
 }
-
 
 /* --- HAMBURGER --- */
 .hamburger {
-  display: none;
+  display: none; /* endast små skärmar */
   flex-direction: column;
   justify-content: space-around;
   width: 35px;
@@ -85,6 +85,11 @@
   background: transparent;
   border: none;
   cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
 }
 
 .hamburger span {
@@ -95,7 +100,6 @@
   transition: all 0.3s ease;
 }
 
-/* --- HAMBURGER ANIMATION --- */
 .hamburger.open span:nth-child(1) {
   transform: rotate(45deg) translate(6px, 6px);
 }
@@ -108,13 +112,17 @@
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
-/* === RESPONSIVE 1024px === */
-@media (max-width: 1024px) {
-  .header-inner {
-    flex-direction: column;
-    align-items: center;  /* logga centrerad */
-    height: auto;
-    padding: 1rem 2rem;
+/* --- RESPONSIVE 768px och mindre --- */
+@media (max-width: 768px) {
+  .logo-container {
+    display: block; /* visa logga på små skärmar */
+  }
+
+.header-inner {
+    justify-content: space-between; /* logga vänster, hamburger höger */
+    align-items: center; /* vertikal centrering av logga och hamburger */
+    padding: 0 10px;
+    height: 70px; /* ge header lite mer höjd för loggan */
   }
 
   .hamburger {
@@ -122,42 +130,29 @@
   }
 
   .hero-nav {
+    position: absolute;
+    top: 60px; /* börjar precis under headern */
+    left: 0;
     width: 100%;
+    background-color: #2F1E11;
     flex-direction: column;
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.4s ease;
+    z-index: 10;
   }
 
   .hero-nav.open {
-    max-height: 500px;
+    max-height: 500px; /* öppnar menyn utan att headern växer */
   }
 
   .links {
     flex-direction: column;
-    gap: 1.3rem;
-    width: 100%;
-    align-items: flex-start;  /* flytta länkar till vänster */
-    padding-left: 1rem;       /* lite luft från kanten */
+    gap: 1rem;
+    padding: 1rem;
   }
 
   .links li a {
     font-size: 1.2rem;
-  }
-}
-
-
-/* === RESPONSIVE 600px === */
-@media (max-width: 600px) {
-  .header-logo {
-    height: 55px; /* lite mindre logga */
-  }
-
-  .links li a {
-    font-size: 1.1rem;
-  }
-
-  .links {
-    gap: 1rem;
+    color: #B79C62;
   }
 }
