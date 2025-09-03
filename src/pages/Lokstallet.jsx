@@ -4,8 +4,8 @@ import { db } from "../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import img3 from "../assets/resturang.webp";
-import img9 from "../assets/Concert-konsert-scen-scene-band.jpg";
-import logga from '../assets/headerlok.png';
+import img9 from "../assets/lokstalletheader.png";
+{/*import logga from '../assets/headerlok.png';*/}
 
 const Lokstallet = () => {
   const [events, setEvents] = useState([]);
@@ -27,9 +27,9 @@ const Lokstallet = () => {
   return (
     <main>
   {/* ---------------- WELCOME HEADER / LOGO ---------------- */}
-  <header className="home-header">
+  {/*<header className="home-header">
     <img src={logga} alt="Lokstallet logo" className="home-logo" />
-  </header>
+  </header>*/}
 
   {/* ---------------- WELCOME SECTION ---------------- */}
   <section className="welcome-section">
@@ -64,23 +64,33 @@ const Lokstallet = () => {
     </div>
     <div className="home-events">
       {visibleEvents.map((event) => (
-        <article key={event.id} className="home-event">
-          {event.image && <img src={event.image} alt={event.title} />}
-          <div className="home-event-content">
-            <div className="home-event-date">
-              <span className="home-event-day">
-                {new Date(event.date).toLocaleDateString('sv-SE', { day: '2-digit' })}
-              </span>
-              <span className="home-event-month">
-                {new Date(event.date).toLocaleDateString('sv-SE', { month: 'short' })}
-              </span>
-            </div>
-            <div className="home-event-info">
-              <h3 className="home-event-title">{event.title}</h3>
-              {event.time && <p className="home-event-time">{event.time}</p>}
-            </div>
+      <article key={event.id} className="home-event">
+        {event.image && <img src={event.image} alt={event.title} className="home-event-img" />}
+        <div className="home-event-content">
+          <div className="home-event-date">
+            <span className="home-event-day">
+              {new Date(event.date).toLocaleDateString('sv-SE', { day: '2-digit' })}
+            </span>
+            <span className="home-event-month">
+              {new Date(event.date).toLocaleDateString('sv-SE', { month: 'short' }).toUpperCase()}
+            </span>
           </div>
-        </article>
+          <div className="home-event-info">
+            <h3 className="home-event-title">{event.title}</h3>
+            {event.description && (
+              <p className="home-event-desc">
+                {event.description.length > 100 
+                  ? event.description.substring(0, 100) + "..." 
+                  : event.description}
+              </p>
+            )}
+            <Link to={`/evenemang-lokstallet/:id${event.id}`} className="home-btn">
+            Läs mer
+          </Link>
+          </div>
+        </div>
+      </article>
+
       ))}
     </div>
   </div>

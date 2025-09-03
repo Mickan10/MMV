@@ -16,22 +16,26 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  height: 500px;
+  height: auto;
+  min-height: 500px;
+
 }
 
 .welcome-left {
   flex: 1;
   overflow: hidden;
+  background-color: #2F1E11;
 }
 
 .welcome-left img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  max-height: 600px;
+  object-fit: contain;
 }
 
 .welcome-right {
-  flex: 1;
+  flex: 2;
   padding: 50px;
   display: flex;
   flex-direction: column;
@@ -58,6 +62,7 @@
 #home-events {
   background-color: #d9d6d1;
   padding: 60px 20px;
+  border-bottom: #B79C62 6px solid;
 }
 
 .home-events-container {
@@ -70,13 +75,24 @@
 
 .home-events-header {
   flex: 0 0 250px; /* rubriksektionen till vänster */
+  display: flex;
+  flex-direction: column; /* lägger barnen under varandra */
+  align-items: flex-start; /* vänsterjusterar texten */
+  text-align: left; /* säkerställer vänsterjustering */
 }
 
 .home-events-header h2 {
   font-family: 'Bungee Shade', cursive;
   font-size: 3rem; /* större rubrik */
   color: #000;
-  margin-bottom: 20px;
+}
+
+.home-events-header p 
+{
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 30px;
+  color: #333;
+  line-height: 1.2;
 }
 
 .home-events {
@@ -89,8 +105,6 @@
 }
 
 .home-event {
-  background-color: #2a2723;
-  border-radius: 14px;
   flex: 0 0 300px; /* alltid kort i rad */
 }
 
@@ -98,40 +112,60 @@
   width: 100%;
   height: 420px;
   object-fit: cover;
+  border-radius: 12px 12px 0 0;
 }
 
 .home-event-content {
   padding: 15px;
+  background-color: #f8f6f3;
 }
 
 .home-event-date {
-  background-color: #ffffff;
-  color: #000;
+  background-color: #403B3B; /* guldfärg för att sticka ut? */
+  color: #fff;
   text-align: center;
-  border-radius: 10px;
-  padding: 10px;
-  min-width: 60px;
+  border-radius: 12px;
+  padding: 15px 10px;
+  width: 70px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* gör att den poppar ut */
+  margin: -30px auto 10px auto; /* lyfter den lite över kortet */
+}
+
+.home-event-day {
+  display: block;
+  font-size: 22px; /* större dag-siffra */
+  font-weight: 700;
+  line-height: 1;
+}
+
+.home-event-month {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.home-event-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 10px 0 5px 0;
+  color: #000000; 
+  border-bottom: #B79C62 2px solid;
 }
 
 /* Knapp */
 .home-btn {
-  display: inline-block;
-  padding: 12px 28px;
+  display: flex;
+  padding: 19px 28px;
   border-radius: 12px;
-  background: linear-gradient(145deg, #b79c62, #d4af37);
+  background: #403B3B;
   color: #fff;
   font-weight: 600;
   text-decoration: none;
   font-family: 'Josefin Sans', sans-serif;
-  box-shadow: 0 4px 12px rgba(183, 156, 98, 0.5);
   transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
   margin-top: 20px;
-}
-
-.home-btn:hover {
-  transform: scale(1.05);
-  filter: brightness(1.15);
-  box-shadow: 0 6px 20px rgba(183, 156, 98, 0.7);
 }
 
 /* Scrollbar styling för bättre UX */

@@ -1,7 +1,7 @@
 /* --- HEADER --- */
 .lokstallet-header {
   width: 100%;
-  background-color: #B79C62;
+  background-color: #2F1E11;
   border-bottom: 4px solid #b79c62;
   font-family: 'Josefin Sans', sans-serif;
   position: relative;
@@ -48,19 +48,32 @@
 }
 
 .links li a {
-  color: #c6b38b;
+  color: #B79C62;
   text-decoration: none;
   font-weight: 700;
   font-size: 1.3rem;
   padding: 0.5rem 0;
+  position: relative; 
   transition: color 0.3s ease, transform 0.2s ease;
 }
 
-.links li a:hover,
-.links li a.active {
-  color: #b79c62;
-  transform: translateY(-2px);
+.links li a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 0%;
+  height: 2px;
+  background-color: #B79C62;
+  transition: width 0.3s ease;
 }
+
+.links li a:hover::after,
+.links li a.active::after {
+  width: 100%; 
+}
+
 
 /* --- HAMBURGER --- */
 .hamburger {
