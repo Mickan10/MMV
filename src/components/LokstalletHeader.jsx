@@ -1,33 +1,36 @@
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
-import img9 from "../assets/lokstalletheader.png"; // logga för små skärmar
+import logga from "../assets/headerlok.png";
 import './LokstalletHeader.css';
+import menuIcon from '../assets/line_weight_24dp_FFFFFF_FILL0_wght500_GRAD0_opsz24.png'; 
+import closeIcon from '../assets/cancel_24dp_FFFFFF_FILL0_wght500_GRAD0_opsz24.png'; 
 
 const LokstalletHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
 
   return (
     <header className="lokstallet-header">
       <div className="header-inner">
-        {/* Logga som bara visas på små skärmar */}
-        <div className="logo-container">
-          <img src={img9} alt="Lokstallet" className="header-logo"/>
-        </div>
+        <img src={logga} alt="Lokstallet logo" className="header-logo" />
 
-        {/* Hamburger-knapp */}
-        <button 
-          className={`hamburger ${menuOpen ? 'open' : ''}`} 
-          onClick={toggleMenu} 
-          aria-label="Toggle menu"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+          <button
+        className="ham-icon"
+        onClick={toggleMenu}
+        aria-label="Toggle menu"
+      >
+        <img
+          src={menuOpen ? closeIcon : menuIcon}  // här byter du ikon
+          alt={menuOpen ? "Close menu" : "Open menu"}
+          className="ham-icon-img"
+        />
+      </button>
 
-        {/* Meny */}
+
+
         <nav className={`hero-nav ${menuOpen ? 'open' : ''}`}>
           <ul className="links">
             <li><NavLink onClick={() => setMenuOpen(false)} to="/lokstallet">Home</NavLink></li>
