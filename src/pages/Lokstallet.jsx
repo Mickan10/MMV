@@ -3,7 +3,7 @@ import "./Lokstallet.css";
 import { db } from "../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
-import img3 from "../assets/resturang.webp";
+import img3 from "../assets/loklokal.jpg";
 import img9 from "../assets/lokstalletheader.png";
 {/*import logga from '../assets/headerlok.png';*/}
 

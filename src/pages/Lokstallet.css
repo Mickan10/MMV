@@ -43,7 +43,7 @@ html, body {
 .welcome-left {
   flex: 1;
   overflow: hidden;
-  background-color: #2F1E11;
+  background-color: #2f1e11b9;
   position: relative;
 }
 
@@ -201,27 +201,30 @@ html, body {
   border-radius: 5px;
 }
 
-/* LOKAL SECTION */
+/*lokal*/
 .lokal-section {
   display: flex;
   gap: 40px;
-  padding: 80px 20px;
+  padding: 0; 
   background-color: #C1B6A8;
   color: #000;
-  align-items: center;
-  flex-wrap: wrap;
-  max-width: 1200px;
-  margin: 0 auto;
+  align-items: stretch;  
+  max-width: none;
+  margin: 0px;
   width: 100%;
   box-sizing: border-box;
+  min-height: 500px;  
 }
 
 .lokal-left {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; 
+  justify-content: center; 
+  align-items: flex-start;
   gap: 15px;
+  padding-left: 90px;  
+  padding-right: 20px     
 }
 
 .lokal-left h3 {
@@ -258,18 +261,26 @@ html, body {
 .lokal-center {
   flex: 1;
   display: flex;
-  justify-content: center;
+  margin-left: -200px;
+  position: relative;
 }
 
 .lokal-center img {
   width: 100%;
-  height: auto;             
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 24px 24px 0 0; 
+  height: 100%;        
+  object-fit: cover;  
+  border-radius: 0; 
+  display: block;
 }
 
-
+/* Overlay */
+.lokal-center::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(64, 40, 8, 0.681); 
+  pointer-events: none; 
+}
 
 /* Tablets (<= 1024px) */
 @media (max-width: 1024px) {

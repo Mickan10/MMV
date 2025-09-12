@@ -51,7 +51,7 @@ const KontaktLokstallet = () => {
     <main className="kontakt-wrapper">
       <div className="kontakt-left">
         <h2>Kontakt</h2>
-        <p><strong>Telefon:</strong> 0123-456 789</p>
+        {/*<p><strong>Telefon:</strong> 0123-456 789</p>*/}
         <p><strong>E-post:</strong> info@lokstallet.se</p>
         <p><strong>Adress:</strong> Drottninggatan 17, 541 51 Skövde</p>
       </div>
