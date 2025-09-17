@@ -1,195 +1,163 @@
+/* === Grundlayout === */
 .container {
   width: 100%;
-  background-color: #c1b6a8;
-  padding: 60px 20px;
+  background-color: #C1B6A8;
+  padding: 60px 0;
+  box-sizing: border-box;
 }
 
 .inner {
   max-width: 1200px;
   margin: 0 auto;
   font-family: 'Josefin Sans', sans-serif;
-  font-weight: 300;
   color: #382615;
 }
 
-/* Flexrader */
-.row {
+/* Sektion med text vänster, bild höger */
+.historia-section {
   display: flex;
   gap: 40px;
-  margin-bottom: 80px;
-  align-items: center;
-  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 500px;
 }
 
-/* Bildruta med en guldig kant och skugga */
-.imageBox {
-  flex: 1 1 45%;
-  max-width: 600px;
-  overflow: hidden;
-  border-radius: 20px;
-  border: 5px solid #b79c62; /* Guldig ram */
-  box-shadow: 0 8px 20px rgba(55, 38, 21, 0.2);
-  transition: transform 0.3s ease;
-  cursor: pointer;
+.historia-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* flex-start för att texten ligger i toppen */
+  gap: 15px;
+  padding: 30px 40px; /* mer padding runt texten */
+  border: 3px solid #B79C62;
+  border-radius: 12px;
 }
 
-.imageBox:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 30px rgba(183, 156, 98, 0.5);
+.historia-left h2 {
+  font-family: "Playfair Display";
+  font-weight: 900;         
+  text-transform: uppercase; 
+  font-size: 40px;
+  color: #2a2828;
+  margin: 0;
 }
 
-.imageBox img {
+.historia-left p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.historia-left strong {
+  color: #403B3B;
+}
+
+.historia-center {
+  flex: 1;
+  position: relative;
+  display: flex;
+}
+
+.historia-center img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  border-radius: 15px;
-  filter: grayscale(10%);
-  transition: filter 0.3s ease;
+  border-radius: 12px;
 }
 
-.imageBox:hover img {
-  filter: grayscale(0%);
+/* Overlay */
+.historia-center::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(64, 40, 8, 0.4);
+  pointer-events: none;
 }
 
-/* Textbox */
-.textBox {
-  flex: 1 1 45%;
-  max-width: 600px;
-  padding: 10px 20px;
-  box-sizing: border-box;
-  background-color: #f4f1f1; /* ljusgrå bakgrund */
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(55, 38, 21, 0.15);
+/* Knapp (valfritt) */
+.historia-btn {
+  margin-top: 15px;
+  display: inline-block;
+  padding: 14px 32px;
+  background: rgba(183, 156, 98, 0.7);
+  color: #fff;
+  text-decoration: none;
   font-family: 'Josefin Sans', sans-serif;
-  font-weight: 400;
-  color: #382615;
-  position: relative;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-/* En dekorativ guldig "ribbon" i textboxens övre vänstra hörn */
-.textBox::before {
-  content: " ";
-  position: absolute;
-  top: 15px;
-  left: -10px;
-  width: 8px;
-  height: 60px;
-  background-color: #b79c62;
-  border-radius: 5px;
+.historia-btn:hover {
+  background: #403B3B;
+  transform: translateY(-2px);
 }
 
-/* Rubrik med lekfullt typsnitt */
-.textBox h2 {
-  font-family: 'Bungee Shade', cursive;
-  font-size: 2.8rem;
-  margin-bottom: 25px;
-  color: #b79c62; /* guldig färg */
+/* === Responsiv === */
+@media (max-width: 1024px) {
+  .historia-left h2 {
+    font-size: 32px;
+  }
+  .historia-left p {
+    font-size: 1rem;
+  }
 }
 
-/* Paragraf */
-.textBox p {
-  font-size: 1.25rem;
-  line-height: 1.7;
-  color: #382615;
-}
-
-.imageStack {
-  position: relative;
-  width: 450px;  /* Större bredd */
-  height: 380px; /* Större höjd */
-  margin: 0 auto; 
-}
-
-.imageLarge {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  position: relative;
-  z-index: 1;
-}
-
-.imageSmall {
-  width: 270px;  
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  position: absolute;
-  bottom: -30px;  /* Flyttar ner utanför botten */
-  left: -30px;    /* Flyttar ut till vänster */
-  z-index: 2;
-  border: 5px solid #b79c62;
-}
-
-/* === Responsiv anpassning === */
-@media (max-width: 900px) {
-  .row {
+@media (max-width: 768px) {
+  .historia-section {
     flex-direction: column;
-    gap: 30px;
+    padding: 20px 10px;
   }
-  .imageBox,
-  .textBox {
-    max-width: 100%;
-    flex: 1 1 100%;
-  }
-  .textBox {
-    padding: 25px 15px;
-  }
-  .imageStack {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-  }
-  .imageSmall {
-    width: 180px;
-    bottom: -20px;
-    left: -20px;
-    border-width: 4px;
-  }
-}
 
-@media (max-width: 600px) {
-  .container {
-    padding: 40px 15px;
-  }
-  .textBox h2 {
-    font-size: 2rem;
+  .historia-left {
+    width: 100%;
+    padding: 20px 30px; /* mer padding på små skärmar */
+    text-align: left; /* behåll vänsterjusterad text */
     margin-bottom: 20px;
   }
-  .textBox p {
+
+  .historia-left h2 {
+    font-size: 1.9rem;
+  }
+
+  .historia-left p {
     font-size: 1rem;
-    line-height: 1.5;
+    max-width: 100%;
   }
-  .imageStack {
-    max-width: 320px;
+
+  .historia-center {
+    width: 100%;
+    margin: 0;
   }
-  .imageSmall {
-    width: 140px;
-    bottom: -15px;
-    left: -15px;
-    border-width: 3px;
+
+  .historia-center img {
+    width: 100%;
+    height: auto; /* tar hela skärmen bredd */
+    border-radius: 0;
+  }
+
+  .historia-center::after {
+    background: rgba(64, 40, 8, 0.3);
   }
 }
 
-@media (max-width: 400px) {
-  .container {
-    padding: 30px 10px;
-  }
-  .textBox h2 {
+@media (max-width: 480px) {
+  .historia-left h2 {
     font-size: 1.7rem;
   }
-  .textBox p {
-    font-size: 0.9rem;
-    line-height: 1.4;
+
+  .historia-left p {
+    font-size: 0.95rem;
   }
-  .imageStack {
-    max-width: 280px;
+
+  .historia-left {
+    padding: 20px; /* mer inre luft */
   }
-  .imageSmall {
-    width: 120px;
-    bottom: -10px;
-    left: -10px;
-    border-width: 2px;
+
+  .historia-center img {
+    height: auto;
+    width: 100%;
   }
 }

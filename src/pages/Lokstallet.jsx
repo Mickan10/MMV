@@ -37,8 +37,7 @@ const Lokstallet = () => {
       <img src={img9} alt="Lokstallet" />
     </div>
     <div className="welcome-right">
-      <h3>Välkommen till </h3>
-      <h3>Lokstallet</h3>
+      <h3>Välkommen till Lokstallet </h3>
       <p>
         Lokstallet är Skövdes hjärta för kultur och evenemang. Här
         hittar du allt från konserter och teaterföreställningar till
@@ -56,8 +55,10 @@ const Lokstallet = () => {
     <section id="home-events">
   <div className="home-events-container">
     <div className="home-events-header">
+      <div className="inner-line">
       <h2>Event</h2>
-      <p>Se vad som händer. </p>
+      <p>Detta händer hos oss. </p>
+      </div>
       <Link to="/evenemang-lokstallet" className="home-btn">
         Se alla evenemang
       </Link>
@@ -84,7 +85,7 @@ const Lokstallet = () => {
                   : event.description}
               </p>
             )}
-                <Link to={"/evenemang-lokstallet"} className="home-btn">
+                <Link to={"/evenemang-lokstallet"} className="homes-btn">
                 Läs mer
               </Link>
 
@@ -100,9 +101,11 @@ const Lokstallet = () => {
   {/* ---------------- LOKAL SECTION ---------------- */}
   <section className="lokal-section">
   <div className="lokal-left">
-    <h3>Din plats.</h3>
-    <h3>Din upplevelse.</h3> 
-    <h3>Ditt Lokstall.</h3>
+    <div className="inner-deco">
+    <h3>Musik.</h3>
+    <h3>Evenemang.</h3> 
+    <h3>Möten.</h3>
+    </div>
     <p>
       Hos oss hittar du en lokal med historia, atmosfär och modern komfort.
       Perfekt för allt från konserter och teater till bröllop, fester och konferenser.

@@ -3,8 +3,12 @@ html, body {
   padding: 0;
   height: 100%;
   background-color: #c1b6a8;
+  font-family: 'Josefin Sans', sans-serif;
+  color: #382615;
+  line-height: 1.6;
 }
 
+/* Felmeddelanden */
 .error {
   color: #b00020;
   font-weight: 700;
@@ -13,8 +17,8 @@ html, body {
   user-select: none;
 }
 
+/* Wrapper */
 .bokamain {
-  height: 100%;
   min-height: 100vh;
   background-color: #c1b6a8;   
   margin: 0;
@@ -22,63 +26,61 @@ html, body {
   box-sizing: border-box;
 }
 
+/* Form-container */
 .forme-container {
   max-width: 1000px;
-  margin: 60px auto 60px auto;  /* Mer luft ovanför och under */
+  margin: 60px auto;
   padding: 40px 30px;
-  background-color: #c1b6a8; /* Beige bakgrund som matchar övrigt */
+  background-color: #c1b6a8;
   border-radius: 16px;
   box-shadow: 0 6px 25px rgba(183, 156, 98, 0.35);
-  font-family: 'Josefin Sans', sans-serif;
-  color: #382615;
-  line-height: 1.6;
-  user-select: none;
   transition: box-shadow 0.3s ease;
 }
 
-h1, h2, h3 {
+/* Rubriker */
+h1, h2 {
   text-align: center;
   color: #382615;
   margin-bottom: 20px;
-  font-weight: 700;
-  font-family: 'Bungee Shade', cursive;
+  font-family: "Playfair Display", serif;
+  font-weight: 900;         
+  text-transform: uppercase; 
 }
 
-h2 {
-  font-style: normal;
-  font-size: 1.8rem;
-  margin-top: 0;
+h1 { 
+  font-size: 2.5rem;
+  border-bottom: 2px solid #b79c62;
 }
+
+h2 { font-size: 1.8rem; margin-top: 0; }
 
 h3 {
   font-family: 'Josefin Sans', sans-serif;
   font-weight: 600;
   font-size: 1.3rem;
-  margin-top: 40px;
-  margin-bottom: 10px;
+  margin: 40px 0 10px;
   color: #5a4826;
 }
 
-/* Steg-sektion som kort med bakgrund */
+/* Sektioner */
 section {
   background: #fdfaf4;
   border-radius: 12px;
-  padding: 25px 25px 35px 25px;
+  padding: 25px 25px 35px;
   margin-bottom: 35px;
   transition: background-color 0.3s ease;
 }
 
-/* Formulär etiketter */
+/* Etiketter */
 label {
   display: block;
   font-weight: 600;
   font-size: 1.1rem;
-  margin-top: 15px;
-  margin-bottom: 6px;
+  margin: 15px 0 6px;
   color: #4d3a0f;
 }
 
-/* Inputs och select */
+/* Inputs, selects, textarea */
 input, select, textarea {
   width: 100%;
   padding: 12px 14px;
@@ -87,16 +89,11 @@ input, select, textarea {
   font-size: 1.1rem;
   background-color: #fdfaf4;
   color: #382615;
-  font-family: 'Josefin Sans', sans-serif;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  resize: vertical;
-  min-height: 40px;
   box-sizing: border-box;
 }
 
-textarea {
-  min-height: 130px;
-}
+textarea { min-height: 130px; resize: vertical; }
 
 input:focus, select:focus, textarea:focus {
   border-color: #7a5c2e;
@@ -104,36 +101,14 @@ input:focus, select:focus, textarea:focus {
   outline: none;
 }
 
-/* Number input fix - för att ta bort pilar men behålla styling */
+/* Number input fix */
 input[type="number"] {
   -moz-appearance: textfield;
-  padding: 12px 14px;
-  height: 40px;
-  box-sizing: border-box;
-  font-size: 1.1rem;
-  font-family: 'Josefin Sans', sans-serif;
-  color: #382615;
-  background-color: #fdfaf4;
-  border: 2px solid #b79c62;
-  border-radius: 10px;
 }
 input[type="number"]::-webkit-inner-spin-button, 
 input[type="number"]::-webkit-outer-spin-button { 
   -webkit-appearance: none;
   margin: 0;
-}
-
-/* Specifik styling för extraPersonnel input */
-#extraPersonnel {
-  padding: 12px 14px;
-  height: 40px;
-  box-sizing: border-box;
-  font-size: 1.1rem;
-  font-family: 'Josefin Sans', sans-serif;
-  color: #382615;
-  background-color: #fdfaf4;
-  border: 2px solid #b79c62;
-  border-radius: 10px;
 }
 
 /* Knappar */
@@ -149,7 +124,6 @@ button {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.15s ease;
   margin-top: 25px;
-  user-select: none;
   box-shadow: 0 3px 10px rgba(122, 92, 46, 0.4);
   text-align: center;
 }
@@ -160,8 +134,7 @@ button:hover {
   box-shadow: 0 5px 15px rgba(90, 67, 31, 0.6);
 }
 
-button:disabled,
-button[disabled] {
+button:disabled {
   background-color: #bcb8a4;
   cursor: not-allowed;
   box-shadow: none;
@@ -178,28 +151,26 @@ button[disabled] {
   user-select: none;
 }
 
+/* Sammanfattning */
 #summarySection {
-  background-color: #edeae6; /* Beige som resten */
-  border: 2px solid #b79c62; /* Samma som input-borders */
+  background-color: #edeae6;
+  border: 2px solid #b79c62;
   border-radius: 16px;
   padding: 30px 25px;
   max-width: 600px;
   margin: 1.5em auto;
-  box-shadow: 0 6px 25px rgba(183, 156, 98, 0.35); /* Samma skugga som .forme-container */
-  font-family: 'Josefin Sans', sans-serif;
-  color: #382615;
-  line-height: 1.6;
-  user-select: none;
+  box-shadow: 0 6px 25px rgba(183, 156, 98, 0.35);
   transition: box-shadow 0.3s ease;
 }
 
 #summarySection h3 {
   margin-bottom: 20px;
-  font-weight: 700;
   color: #382615;
-  font-size: 1.6rem;
-  font-family: 'Bungee Shade', cursive;
-  border-bottom: 2px solid #7a5c2e; /* Mörkare brun linje */
+  font-size: 1.9rem;
+  font-family: "Playfair Display", serif;
+  font-weight: 900;         
+  text-transform: uppercase;
+  border-bottom: 2px solid #7a5c2e; 
   padding-bottom: 8px;
 }
 
@@ -208,30 +179,49 @@ button[disabled] {
   font-size: 1.15rem;
   color: #382615;
   line-height: 1.6;
+  display: flex;
 }
 
 #summaryContent p strong {
-  color: #7a5c2e; /* Mörk brun som knappar */
+  color: #7a5c2e; 
   font-weight: 600;
-  min-width: 140px;
-  display: inline-block;
+  flex: 0 0 200px;
+  margin-right: 10px;
 }
-
-
 
 /* Mobilanpassning */
 @media (max-width: 600px) {
-  .form-container {
+  .forme-container {
     margin: 30px 15px;
     padding: 30px 20px;
   }
 
-  h1, h2 {
-    font-size: 1.8rem;
+  .forme-container h1 { 
+    font-size: 2rem; 
+     white-space: nowrap;
   }
+
+  #step2 h2 { font-size: 1.5rem; }
+
+  #summarySection h3 { font-size: 1.6rem !important; }
 
   button {
     width: 100%;
     padding: 16px;
+  }
+
+   #summaryContent {
+    display: flex;
+    flex-direction: column; /* staplar innehållet */
+    gap: 2px;               /* mellanrum mellan rader */
+  }
+
+  #summaryContent p {
+    flex-direction: column;
+  }
+
+  #summaryContent p strong {
+    flex: none;
+    margin-bottom: 0px;
   }
 }

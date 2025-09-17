@@ -13,7 +13,6 @@ section {
   padding: 40px 30px;
   background-color: #c1b6a8;
   border-radius: 16px;
-  box-shadow: 0 6px 25px rgba(183, 156, 98, 0.35);
 }
 
 .lokaler-container h1 {
@@ -21,7 +20,9 @@ section {
   margin: 0 0 2rem 0;
   font-size: 3rem;
   color: #382615;
-  font-family: 'Bungee Shade', cursive;
+  font-family: "Playfair Display";
+  font-weight: 900;         
+  text-transform: uppercase;
   font-weight: 700;
   line-height: 1.1;
 }
@@ -34,14 +35,11 @@ section {
   border-radius: 12px;
   padding: 2rem;
   background-color: #c1b6a8;
-  box-shadow: 0 6px 20px rgba(183, 156, 98, 0.15);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .lokal:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(183, 156, 98, 0.4);
-  background-color: #d0c7ba;
 }
 
 .lokal-text {
@@ -60,7 +58,7 @@ section {
 }
 
 .lokal-text p {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   line-height: 1.7;
   color: #5a4826;
   margin: 0;
@@ -71,18 +69,13 @@ section {
 .lokal-bild {
   flex: 1 1 55%;
   position: relative;
-  min-width: 300px;
-  max-width: 600px;
-  height: 330px;
-  border-radius: 16px;
+  min-width: 500px;
+  max-width: 650px;
+  height: 420px;
   overflow: hidden;
-  box-shadow: 0 6px 20px rgba(122, 92, 46, 0.3);
-  transition: box-shadow 0.3s ease;
   cursor: pointer;
-}
-
-.lokal-bild:hover {
-  box-shadow: 0 12px 30px rgba(122, 92, 46, 0.5);
+  display: flex;  
+  align-items: stretch;  
 }
 
 .slide-image {
@@ -126,6 +119,10 @@ section {
     width: 100%;
     max-width: 100%;
     height: 260px;
+  }
+
+  .lokaler-container{
+    margin-top: 20px;
   }
 
   .lokal-text {

@@ -1,23 +1,25 @@
 .evenemang-lokstallet {
-  background-color: #f2f0e9;
+  background-color: #d9d6d1;
   color: #2e2e2e;
   font-family: 'Josefin Sans', sans-serif;
   padding: 60px 20px;
   display: flex;
-  justify-content: center; /* Centrerar hela innehållet horisontellt */
+  justify-content: center; 
 }
 
 .evenemang-container {
-  max-width: 900px; /* Begränsar bredden på event-sektionen */
+  max-width: 900px; 
   width: 100%;
   text-align: center;
   margin-bottom: 40px;
 }
 
 .evenemang-title {
-  font-size: 2.4em;
+  font-size: 2.9em;
   margin-bottom: 10px;
-  font-family: 'Bungee Shade', cursive;
+  font-family: "Playfair Display";
+  font-weight: 900;         
+  text-transform: uppercase;
   color: #4b3b2b;
 }
 
@@ -39,107 +41,104 @@
 
 .event-card {
   display: flex;
-  align-items: flex-start;
-  background: linear-gradient(135deg, #f5f2ed, #ece4db); /* Beige gradient */
-  padding: 25px 30px;
-  border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  background: #fffaf0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
-  /* Guldig stilren ram */
-  border: 3px solid #b79c62;
+  border: 1px solid #d6c7a3;
+  position: relative;
 }
 
 .event-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-  border-color: #c9ab71;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
 }
 
-/* Bild */
+/* Bild tar hela vänstersidan */
 .event-img {
-  width: 280px;
-  border-radius: 12px;
-  margin-right: 30px;
-  flex-shrink: 0;
+  width: 45%;
+  min-width: 250px;
   object-fit: cover;
-  box-shadow: 0 4px 10px rgba(125, 90, 79, 0.25);
+  border-right: 1px solid #d6c7a3;
 }
 
+/* Höger textdel */
 .event-content {
   flex: 1;
-  text-align: left;
+  padding: 25px 30px;
   display: flex;
   flex-direction: column;
-  /* Viktig ändring för att knappen ska ligga längst ner */
   justify-content: flex-start;
+  text-align: left;
+  align-items: center;
 }
 
-/* Textdel */
 .event-heading {
-  font-size: 1.6em;
-  font-weight: 700;
-  margin-bottom: 6px;
-  color: #4b3b2b; /* Djup brun */
+  font-size: 2.1em;
+  font-weight: 900;
+  font-family: "Playfair Display";
+  color: #4b3b2b;
+  margin-bottom: 12px;
 }
 
+/* Datum, tid och plats som chips */
 .event-date {
-  font-size: 1.2em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+  justify-content: center;
+  border-bottom: #7a5c2e 1px solid;
+}
+
+.event-date-item {
+  color: #7a5c2e;
+  padding: 6px 12px;
+  border-radius: 14px;
   font-weight: 600;
-  color: #7d6a5a; /* Brunbeige */
-  margin-bottom: 15px;
-  text-align: center;
+  font-size: 1rem;
+  display: inline-block;
 }
 
 .event-description {
   font-size: 1.05em;
-  margin-bottom: 20px;
   color: #5a4c3e;
   line-height: 1.6;
+  margin-bottom: 20px;
 }
 
-/* Knapp */
-.btn-l {
-  margin-top: auto;
-  background: linear-gradient(135deg, #b79c62, #a4884b);
-  color: white;
-  border: none; 
-  padding: 12px 22px;
-  font-size: 1em;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 7px rgba(125, 90, 79, 0.4);
-  font-family: 'Josefin Sans', sans-serif;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
+.bt-l2 {
+    margin-top: 15px;
+    display: inline-block;
+    padding: 14px 32px;
+    background: #403B3B;
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 600;
+    border-radius: 8px;
+    align-self: center;
 }
 
-.btn-l:hover {
-  background: linear-gradient(135deg, #c9ab71, #b28a50);
-  box-shadow: 0 4px 10px rgba(184, 148, 95, 0.6);
+.bt-l2:hover {
+  background: #403B3B;
 }
 
 .event-content a {
   text-decoration: none;
 }
 
-
 /* Mobilanpassning */
 @media (max-width: 768px) {
   .event-card {
     flex-direction: column;
-    text-align: center;
-    padding: 20px;
-    align-items: center;
   }
 
   .event-img {
-    margin-right: 0;
-    margin-bottom: 20px;
-    max-width: 300px;
     width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #d6c7a3;
   }
 
   .event-content {
@@ -147,7 +146,15 @@
     align-items: center;
   }
 
+  .evenemang-title{
+    font-size: 1.9rem;
+  }
+
+  .event-date {
+    justify-content: center;
+  }
+
   .btn-l {
-    margin-top: 20px;
+    align-self: center;
   }
 }
