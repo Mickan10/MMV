@@ -49,38 +49,69 @@ const LokstalletHeader = () => {
 
         {/* Menyn */}
         <nav className={`hero-nav ${menuOpen ? 'open' : ''}`}>
-        <ul className="links">
+  <ul className="links">
   <li>
-    <NavLink end onClick={() => setMenuOpen(false)} to="/lokstallet">
+    <NavLink
+      to="/lokstallet"
+      end
+      onClick={() => setMenuOpen(false)}
+      className={({ isActive }) => (isActive ? "active" : "")}
+    >
       Home
     </NavLink>
   </li>
   <li>
-    <NavLink end onClick={() => setMenuOpen(false)} to="/boka-lokstallet">
+    <NavLink
+      to="/boka-lokstallet"
+      end
+      onClick={() => setMenuOpen(false)}
+      className={({ isActive }) => (isActive ? "active" : "")}
+    >
       Boka Lokstallet
     </NavLink>
   </li>
   <li>
-    <NavLink end onClick={() => setMenuOpen(false)} to="/evenemang-lokstallet">
+    <NavLink
+      to="/evenemang-lokstallet"
+      end
+      onClick={() => setMenuOpen(false)}
+      className={({ isActive }) => (isActive ? "active" : "")}
+    >
       Evenemang & Biljetter
     </NavLink>
   </li>
   <li>
-    <NavLink end onClick={() => setMenuOpen(false)} to="/lokaler">
+    <NavLink
+      to="/lokaler"
+      end
+      onClick={() => setMenuOpen(false)}
+      className={({ isActive }) => (isActive ? "active" : "")}
+    >
       Lokstallets lokaler
     </NavLink>
   </li>
   <li>
-    <NavLink end onClick={() => setMenuOpen(false)} to="/historia">
+    <NavLink
+      to="/historia"
+      end
+      onClick={() => setMenuOpen(false)}
+      className={({ isActive }) => (isActive ? "active" : "")}
+    >
       Historia
     </NavLink>
   </li>
   <li>
-    <NavLink end onClick={() => setMenuOpen(false)} to="/kontakt-lokstallet">
+    <NavLink
+      to="/kontakt-lokstallet"
+      end
+      onClick={() => setMenuOpen(false)}
+      className={({ isActive }) => (isActive ? "active" : "")}
+    >
       Kontakt
     </NavLink>
   </li>
 </ul>
+
 
         </nav>
       </div>

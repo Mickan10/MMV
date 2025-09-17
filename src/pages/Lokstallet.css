@@ -402,6 +402,33 @@ html, body {
     margin-left: 0; /* ligger i vänsterkant */
   }
 
+  .home-event-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  width: 70px;       /* anpassa efter layout */
+  min-height: 10px;  /* ser mer balanserat ut */
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  overflow: hidden;
+}
+
+.home-event-day {
+  font-size: 1.4rem;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.home-event-month {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+
   .home-events-header h2 {
     font-size: 2rem;
     margin-bottom: 1px;
@@ -525,7 +552,7 @@ html, body {
   border-bottom-left-radius: 0;    /* rak vänsterkant */
   color: white;
   box-sizing: border-box;
-  margin-left: -10px
+  margin-left: -14px
 }
 
   .home-events-header h2 {
@@ -536,12 +563,17 @@ html, body {
   .home-events-header p {
     font-size: 1rem;
     margin-bottom: 1px;
+    margin: 10px 20px 10px -27px;
   }
 
   .homes-btn {
     padding: 10px 18px;
     font-size: 1rem;
-    margin-top: 5px;   /* kortare mellanrum ovanför knappen */
+    margin-top: 2px;   /* kortare mellanrum ovanför knappen */
+  }
+
+  .home-btn{
+    padding: 10px 15px;
   }
 
    .lokal-left {
