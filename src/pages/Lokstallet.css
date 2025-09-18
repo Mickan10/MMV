@@ -311,6 +311,17 @@ html, body {
   pointer-events: none; 
 }
 
+@keyframes bounceOut {
+  0% { transform: translateX(-100%); opacity: 0; }
+  60% { transform: translateX(15%); opacity: 1; }
+  80% { transform: translateX(-5%); }
+  100% { transform: translateX(0); }
+}
+
+.inner-line.animate {
+  animation: bounceOut 0.8s ease-out forwards;
+}
+
 /* Tablets (<= 1024px) */
 @media (max-width: 1024px) {
   .welcome-right {
@@ -361,8 +372,15 @@ html, body {
 
   .welcome-right h3 {
     font-size: 1.6rem;
-    margin-bottom: 6px;
+    margin-bottom: 3px;
     line-height: 1.2;
+    background-color: #b79c624b;
+    border-top-right-radius: 15px;  
+    border-bottom-right-radius: 15px; 
+    border-top-left-radius: 0;      
+    border-bottom-left-radius: 0; 
+    margin-left: -14px;
+    padding: 10px 0px 10px 30px;
   }
 
   .welcome-right p {
@@ -383,8 +401,8 @@ html, body {
   }
 
   .home-events-container .home-btn {
-  display: block;          /* ser till att knappen blir block */
-  margin: 50px auto 0 80px; /* centrerar knappen horisontellt och ger lite mellanrum ovan */
+  display: block;        
+  margin: 50px auto 0 80px; 
  }
 
    .home-event img {
@@ -395,7 +413,7 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: flex-start; /* inner-line vid vänsterkant */
-    gap: 5px; /* kort mellanrum mellan inner-line och knapp */
+    gap: 2px; /* kort mellanrum mellan inner-line och knapp */
   }
 
   .inner-line {
@@ -409,7 +427,8 @@ html, body {
     border-bottom-left-radius: 0;
     color: white;
     box-sizing: border-box;
-    margin-left: 0; /* ligger i vänsterkant */
+    margin-left: 0; 
+    margin-bottom: -20px;
   }
 
   .home-event-date {
@@ -462,7 +481,8 @@ html, body {
   .home-events {
     flex-wrap: wrap;
     justify-content: center;
-    gap: 8px; /* kortare mellanrum mellan event-korten */
+    gap: 10px; 
+    margin-top: -40px;
   }
 
   .home-event {
@@ -550,20 +570,20 @@ html, body {
     box-sizing: border-box;
   }
 
-.inner-line {
-  background-color: rgba(29, 29, 28, 0.79);
-  width: 100%;
-  width: calc(100% + 80px);
-  text-align: center;
-  padding: 5px 55px 5px 0;       /* lite luft runt texten */
-  border-top-right-radius: 15px;   /* rundar övre högra hörnet */
-  border-bottom-right-radius: 15px; /* rundar nedre högra hörnet */
-  border-top-left-radius: 0;       /* rak vänsterkant */
-  border-bottom-left-radius: 0;    /* rak vänsterkant */
-  color: white;
-  box-sizing: border-box;
-  margin-left: -14px
-}
+  .inner-line {
+    background-color: rgba(29, 29, 28, 0.79);
+    width: 100%;
+    width: calc(100% + 80px);
+    text-align: center;
+    padding: 5px 55px 5px 0;       /* lite luft runt texten */
+    border-top-right-radius: 15px;   /* rundar övre högra hörnet */
+    border-bottom-right-radius: 15px; /* rundar nedre högra hörnet */
+    border-top-left-radius: 0;       /* rak vänsterkant */
+    border-bottom-left-radius: 0;    /* rak vänsterkant */
+    color: white;
+    box-sizing: border-box;
+    margin-left: -14px
+  }
 
   .home-events-header h2 {
     font-size: 2rem;
