@@ -142,19 +142,31 @@
   }
 
   .event-content {
-    text-align: center;
-    align-items: center;
+     text-align: left;     
+     align-items: flex-start;
   }
 
   .evenemang-title{
-    font-size: 1.9rem;
+    font-size: 2.2rem;
+  }
+
+  .evenemang-intro{
+    border-bottom: 2px solid #B79C62;
   }
 
   .event-date {
-    justify-content: center;
+    flex-direction: column;  
+    align-items: flex-start; 
+    gap: 1px;                
+    border-bottom: #7a5c2e 1px solid;
+    margin-bottom: 18px;
   }
 
-  .btn-l {
+   .event-date-item {
+    display: block; /* säkerställ att varje item tar en egen rad */
+  }
+
+  .btn-l2 {
     align-self: center;
   }
 }
