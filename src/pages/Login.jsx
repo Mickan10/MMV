@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth, db } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
@@ -14,6 +14,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+
     try {
       // Logga in med Firebase Auth
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -25,7 +26,7 @@ export default function Login() {
         navigate("/admin"); // Till adminpanelen
       } else {
         setError("Du har inte adminbehörighet.");
-        await auth.signOut(); // logga ut
+        await signOut(auth); // logga ut direkt
       }
     } catch (err) {
       console.error("Login error:", err.code, err.message);

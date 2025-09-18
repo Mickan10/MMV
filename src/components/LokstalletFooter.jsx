@@ -24,7 +24,7 @@ export default function LokstalletFooter() {
         <div className="lokstallet-footer-section">
           <h3>Kontakt</h3>
           <p>
-            Lokstallet
+            Adress:
             <br />
             Drottninggatan 17
             <br />

@@ -125,42 +125,48 @@ html, body {
   display: flex;
   gap: 25px;
   overflow-x: auto;
-  flex: 1; /* tar upp resten av utrymmet */
+  flex: 1; 
   padding-bottom: 10px;
-  scroll-behavior: smooth;
+  scroll-behavior: stretch;
 }
 
 .home-event {
   flex: 0 0 300px; /* alltid kort i rad */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .home-event img {
   width: 100%;
-  height: auto;
-  max-height: 350px; 
-  object-fit: cover;
+  height: 200px;     
+  object-fit: cover;  
   border-radius: 12px 12px 0 0;
 }
 
 .home-event-content {
   padding: 15px;
   background-color: #f8f6f3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1; 
 }
 
 .home-event-date {
   background-color: #403B3B; 
   color: #fff;
   text-align: center;
-  border-radius: 12px;
-  padding: 15px 10px;
-  width: 70px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* gör att den poppar ut */
-  margin: -30px auto 10px auto; 
+  border-radius: 0 0 12px 12px;
+  padding: 10px 10px;
+  width: 60px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+  margin: -16px auto 10px auto; 
 }
 
 .home-event-day {
   display: block;
-  font-size: 22px; /* större dag-siffra */
+  font-size: 22px;
   font-weight: 700;
   line-height: 1;
 }
@@ -381,6 +387,10 @@ html, body {
   margin: 50px auto 0 80px; /* centrerar knappen horisontellt och ger lite mellanrum ovan */
  }
 
+   .home-event img {
+    height: 150px;
+  }
+
   .home-events-header {
     display: flex;
     flex-direction: column;
@@ -408,8 +418,8 @@ html, body {
   align-items: center;
   justify-content: center;
   color: #fff;
-  width: 70px;       /* anpassa efter layout */
-  min-height: 10px;  /* ser mer balanserat ut */
+  width: 50px;
+  min-height: 10px;  
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   border-bottom-left-radius: 12px;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { db, auth } from "../firebaseConfig";
-import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc } from "firebase/firestore";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import "./EventAdmin.css";
@@ -28,76 +28,107 @@ const EventAdmin = () => {
     hidden: false
   });
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
 
-  // Säker inloggning: kolla Auth + admin i Firestore
+  // --- Kolla om användaren är admin ---
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        navigate("/admin-panel"); // Inte inloggad
+        navigate("/admin-panel");
         return;
       }
-      const adminDoc = await getDocs(collection(db, "admins"));
-      const isAdmin = adminDoc.docs.some(doc => doc.id === user.uid);
-      if (!isAdmin) {
+      try {
+        const adminDoc = await getDoc(doc(db, "admins", user.uid));
+        if (adminDoc.exists()) {
+          setIsAdmin(true);
+          setLoading(false);
+        } else {
+          await signOut(auth);
+          navigate("/admin-panel");
+        }
+      } catch (err) {
+        console.error("Admin check error:", err);
         await signOut(auth);
         navigate("/admin-panel");
-      } else {
-        setLoading(false);
       }
     });
 
     return () => unsubscribe();
   }, [navigate]);
 
-  // Hämta events
+  // --- Hämta events ---
   const fetchEvents = async () => {
-    const snapshot = await getDocs(collection(db, "events"));
-    let eventList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    eventList.sort((a, b) => new Date(a.date) - new Date(b.date));
-    setEvents(eventList);
+    try {
+      const snapshot = await getDocs(collection(db, "events"));
+      const eventList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      eventList.sort((a, b) => new Date(a.date) - new Date(b.date));
+      setEvents(eventList);
+    } catch (err) {
+      console.error("Fetch events error:", err);
+    }
   };
 
   useEffect(() => {
     fetchEvents();
   }, []);
 
-  // Lägg till nytt event
+  // --- Lägg till nytt event ---
   const handleAddEvent = async (e) => {
     e.preventDefault();
-    await addDoc(collection(db, "events"), { ...form, hidden: false });
-    setForm({ title: "", date: "", time: "", location: "", description: "", link: "", image: "" });
-    fetchEvents();
+    if (!isAdmin) return;
+    try {
+      await addDoc(collection(db, "events"), { ...form, hidden: false });
+      setForm({ title: "", date: "", time: "", location: "", description: "", link: "", image: "" });
+      fetchEvents();
+    } catch (err) {
+      console.error("Add event error:", err);
+    }
   };
 
-  // Redigering
+  // --- Redigering ---
   const handleEditClick = (event) => {
     setEditingId(event.id);
     setEditForm({ ...event });
   };
 
   const handleSaveEdit = async (id) => {
-    await updateDoc(doc(db, "events", id), { ...editForm });
-    setEditingId(null);
-    fetchEvents();
+    if (!isAdmin) return;
+    try {
+      await updateDoc(doc(db, "events", id), { ...editForm });
+      setEditingId(null);
+      fetchEvents();
+    } catch (err) {
+      console.error("Update event error:", err);
+    }
   };
 
   const handleCancelEdit = () => setEditingId(null);
 
-  // Ta bort event
+  // --- Ta bort event ---
   const handleDeleteEvent = async (id) => {
-    await deleteDoc(doc(db, "events", id));
-    fetchEvents();
+    if (!isAdmin) return;
+    try {
+      await deleteDoc(doc(db, "events", id));
+      fetchEvents();
+    } catch (err) {
+      console.error("Delete event error:", err);
+    }
   };
 
-  // Dölj / visa
+  // --- Dölj / visa event ---
   const handleToggleHidden = async (id, currentHidden) => {
-    await updateDoc(doc(db, "events", id), { hidden: !currentHidden });
-    fetchEvents();
+    if (!isAdmin) return;
+    try {
+      await updateDoc(doc(db, "events", id), { hidden: !currentHidden });
+      fetchEvents();
+    } catch (err) {
+      console.error("Toggle hidden error:", err);
+    }
   };
 
-  // Logga ut
+  // --- Logga ut ---
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -111,66 +142,19 @@ const EventAdmin = () => {
 
   return (
     <div className="admin-container">
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <button className="admin-button logout" onClick={handleLogout}>
-          Logga ut
-        </button>
-        <h2 className="admin-title">Admin - Hantera Evenemang</h2>
-      </div>
+      <button className="admin-button logout" onClick={handleLogout}>Logga ut</button>
+      <h2 className="admin-title" style={{ fontFamily: "'Josefin Sans', sans-serif" }}>
+      Hantera Evenemang
+      </h2>
 
       <form onSubmit={handleAddEvent}>
-        <input
-          className="admin-input"
-          type="text"
-          placeholder="Titel"
-          value={form.title}
-          onChange={(e) => setForm({ ...form, title: e.target.value })}
-          required
-        />
-        <input
-          className="admin-input"
-          type="date"
-          value={form.date}
-          onChange={(e) => setForm({ ...form, date: e.target.value })}
-          required
-        />
-        <input
-          className="admin-input"
-          type="text"
-          placeholder="Tid (t.ex. 18:30)"
-          value={form.time}
-          onChange={(e) => setForm({ ...form, time: e.target.value })}
-          required
-        />
-        <input
-          className="admin-input"
-          type="text"
-          placeholder="Plats"
-          value={form.location}
-          onChange={(e) => setForm({ ...form, location: e.target.value })}
-          required
-        />
-        <textarea
-          className="admin-textarea"
-          placeholder="Beskrivning"
-          value={form.description}
-          onChange={(e) => setForm({ ...form, description: e.target.value })}
-          required
-        />
-        <input
-          className="admin-input"
-          type="text"
-          placeholder="Länk"
-          value={form.link}
-          onChange={(e) => setForm({ ...form, link: e.target.value })}
-        />
-        <input
-          className="admin-input"
-          type="text"
-          placeholder="Bild-URL"
-          value={form.image}
-          onChange={(e) => setForm({ ...form, image: e.target.value })}
-        />
+        <input className="admin-input" type="text" placeholder="Titel" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required />
+        <input className="admin-input" type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} required />
+        <input className="admin-input" type="text" placeholder="Tid" value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })} required />
+        <input className="admin-input" type="text" placeholder="Plats" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} required />
+        <textarea className="admin-textarea" placeholder="Beskrivning" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required />
+        <input className="admin-input" type="text" placeholder="Länk" value={form.link} onChange={(e) => setForm({ ...form, link: e.target.value })} />
+        <input className="admin-input" type="text" placeholder="Bild-URL" value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} />
         <button type="submit" className="admin-button">Lägg till event</button>
       </form>
 
@@ -197,9 +181,7 @@ const EventAdmin = () => {
               <>
                 {event.image && <img src={event.image} alt={event.title} className="admin-event-image" />}
                 <div style={{ flexGrow: 1 }}>
-                  <p className="admin-event-name">
-                    {event.date} {event.time ? "• " + event.time : ""} • {event.title}
-                  </p>
+                  <p className="admin-event-name">{event.date} {event.time ? "• " + event.time : ""} • {event.title}</p>
                   <p style={{ margin: "3px 0", fontSize: "0.95em", color: "#5a4c3e" }}>
                     {event.location && <span>{event.location} • </span>}
                     {event.description.length > 100 ? event.description.substring(0, 100) + "..." : event.description}

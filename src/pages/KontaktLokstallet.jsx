@@ -22,7 +22,7 @@ const KontaktLokstallet = () => {
     setErrorMessage('');
 
     try {
-      const response = await fetch('/api/kontakt.php', {
+      const response = await fetch('https://www.lokstallett.se/kontakt.php', { // byt ut till din One.com-url
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -51,7 +51,6 @@ const KontaktLokstallet = () => {
     <main className="kontakt-wrapper">
       <div className="kontakt-left">
         <h2>Kontakt</h2>
-        {/*<p><strong>Telefon:</strong> 0123-456 789</p>*/}
         <p><strong>E-post:</strong> info@lokstallet.se</p>
         <p><strong>Adress:</strong> Drottninggatan 17, 541 51 Skövde</p>
       </div>
@@ -90,7 +89,6 @@ const KontaktLokstallet = () => {
           ></textarea>
         </label>
 
-        {/*Här visas meddelandena INNAN knappen */}
         {status === 'success' && (
           <p className="success-message">Tack för ditt meddelande!</p>
         )}

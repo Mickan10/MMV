@@ -1,14 +1,4 @@
 /* EventAdmin.css */
-.admin-button.logout {       
-  font-size: 0.9rem;       
-  border-radius: 4px;     
-  background-color: #5a4c3e; 
-  color: white;
-  border: none;
-  cursor: pointer;
-  width: 100px;
-}
-
 .admin-container {
   font-family: 'Josefin Sans', sans-serif;
   color: #5a4c3e;
@@ -21,10 +11,10 @@
 }
 
 .admin-title {
-  font-family: 'Bungee Shade', cursive;
+  font-family: 'Josefin Sans', sans-serif !important;
   color: #7d5a4f;
   font-size: 2em;
-  margin-bottom: 25px;
+  margin: 20px 0 25px; 
   text-align: center;
 }
 
@@ -53,20 +43,16 @@
   min-height: 80px;
 }
 
-.admin-button {
-  background-color: #7d5a4f;
+.admin-button.logout {
+  font-size: 0.9rem;
+  border-radius: 4px;
+  background-color: #5a4c3e;
   color: white;
   border: none;
-  padding: 12px 25px;
-  font-size: 1.1em;
-  border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 3px 10px rgba(125, 90, 79, 0.6);
-  font-family: 'Josefin Sans', sans-serif;
-  transition: background-color 0.3s ease;
-  margin-bottom: 25px;
+  width: 100px;
+  margin: 0 auto 20px;
   display: block;
-  width: 100%;
 }
 
 .admin-button:hover {
