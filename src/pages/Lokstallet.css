@@ -258,8 +258,7 @@ html, body {
   font-family: "Playfair Display";
   font-weight: 900;         
   text-transform: uppercase; 
-  font-size: 40px;       
-  margin: 0;
+  font-size: 50px;       
 }
 
 .lokal-left p {
@@ -270,7 +269,7 @@ html, body {
 }
 
 .lokal-btn {
-  margin-top: 15px;
+  margin-top: 10px;
   display: inline-block;
   padding: 14px 32px;
   background: rgba(183, 156, 98, 0.7);
@@ -311,16 +310,21 @@ html, body {
   pointer-events: none; 
 }
 
-@keyframes bounceOut {
-  0% { transform: translateX(-100%); opacity: 0; }
-  60% { transform: translateX(15%); opacity: 1; }
-  80% { transform: translateX(-5%); }
-  100% { transform: translateX(0); }
+@keyframes fadeLiftIn {
+  0% {
+    transform: translateY(40px) scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
 }
 
 .inner-line.animate {
-  animation: bounceOut 0.8s ease-out forwards;
+  animation: fadeLiftIn 1s ease-out forwards;
 }
+
 
 /* Tablets (<= 1024px) */
 @media (max-width: 1024px) {

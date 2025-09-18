@@ -23,27 +23,29 @@ const Lokstallet = () => {
     fetchEvents();
   }, []);
 
-  // Scroll-trigger animation för inner-line
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && lineRef.current) {
-            lineRef.current.classList.add("animate");
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
+    useEffect(() => {
+      const observer = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("animate");
+              observer.unobserve(entry.target); // bara en gång
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
 
-    if (lineRef.current) observer.observe(lineRef.current);
+      const elements = document.querySelectorAll(".inner-line");
+      elements.forEach((el) => observer.observe(el));
 
-    return () => {
-      if (lineRef.current) observer.unobserve(lineRef.current);
-    };
-  }, []);
+      return () => {
+        elements.forEach((el) => observer.unobserve(el));
+      };
+    }, []);
 
-  const visibleEvents = events.filter((event) => !event.hidden);
+    const visibleEvents = events.filter((event) => !event.hidden);
+
 
   return (
     <main>
