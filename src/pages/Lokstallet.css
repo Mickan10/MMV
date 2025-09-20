@@ -601,11 +601,11 @@ html, body {
     width: 100%;
     width: calc(100% + 80px);
     text-align: center;
-    padding: 5px 55px 5px 0;       /* lite luft runt texten */
-    border-top-right-radius: 15px;   /* rundar övre högra hörnet */
-    border-bottom-right-radius: 15px; /* rundar nedre högra hörnet */
-    border-top-left-radius: 0;       /* rak vänsterkant */
-    border-bottom-left-radius: 0;    /* rak vänsterkant */
+    padding: 5px 55px 5px 0;   
+    border-top-right-radius: 15px;   
+    border-bottom-right-radius: 15px; 
+    border-top-left-radius: 0;     
+    border-bottom-left-radius: 0;   
     color: white;
     box-sizing: border-box;
     margin-left: -14px
@@ -625,7 +625,7 @@ html, body {
   .homes-btn {
     padding: 10px 18px;
     font-size: 1rem;
-    margin-top: 2px;   /* kortare mellanrum ovanför knappen */
+    margin-top: 2px;  
   }
 
   .home-btn{
@@ -633,8 +633,8 @@ html, body {
   }
 
    .lokal-left {
-    padding: 10px 0;          /* tar bort extra marginal på sektionen */
-    text-align: center;       /* centrerar texten */
+    padding: 10px 0; 
+    text-align: center;   
   }
 
   .inner-deco{
@@ -652,9 +652,9 @@ html, body {
   .lokal-left p {
     font-size: 1rem;
     margin-bottom: 6px;
-    padding: 5px 15px;       /* 15px inre luft till vänster och höger */
-    max-width: 95%;           /* max bredd så den inte flyter ut */
-    box-sizing: border-box;   /* inkluderar padding i bredden */
+    padding: 5px 15px; 
+    max-width: 95%;   
+    box-sizing: border-box;  
   }
 
   .lokal-btn {

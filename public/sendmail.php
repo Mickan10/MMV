@@ -1,69 +1,77 @@
 <?php
-// Ställ in rätt headers för CORS om behövs (kan behövas i vissa fall)
-// header("Access-Control-Allow-Origin: *");
-// header("Content-Type: application/json; charset=UTF-8");
+header("Content-Type: application/json");
 
-// Läs in JSON-data från POST
-$input = file_get_contents('php://input');
+// Läs in JSON från POST
+$input = file_get_contents("php://input");
 $data = json_decode($input, true);
 
-if (!$data) {
-    echo json_encode(["success" => false, "message" => "Ingen data mottagen"]);
+// Kolla om data finns
+if (!$data || !isset($data["name"]) || !isset($data["email"])) {
+    echo json_encode(["success" => false, "message" => "Ogiltig data"]);
     exit;
 }
 
-// Hämta variabler
-$local = $data['local'] ?? '';
-$eventType = $data['eventType'] ?? '';
-$otherEventDescription = $data['otherEventDescription'] ?? '';
-$audioTech = $data['audioTech'] ?? '';
-$lightTech = $data['lightTech'] ?? '';
-$extraPersonnel = $data['extraPersonnel'] ?? 0;
-$catering = $data['catering'] ?? '';
-$price = $data['price'] ?? 0;
-$name = $data['name'] ?? '';
-$email = $data['email'] ?? '';
-$customerType = $data['customerType'] ?? '';
-$orgNumber = $data['orgNumber'] ?? '';
-$phone = $data['phone'] ?? '';
+$name = htmlspecialchars($data["name"]);
+$email = filter_var($data["email"], FILTER_SANITIZE_EMAIL);
 
-// Validering (t.ex. kolla så viktiga fält finns)
-if (!$name || !$email) {
-    echo json_encode(["success" => false, "message" => "Namn och e-post krävs"]);
-    exit;
+// === SKICKA TILL ADMIN ===
+$to = "info@lokstallet.se"; // ändra vid behov
+$subject = "Ny bokningsförfrågan från $name";
+
+// Bygg upp admin-mail i HTML
+$message = "<h2>Ny bokningsförfrågan</h2>";
+$message .= "<p><strong>Namn:</strong> $name<br>";
+$message .= "<strong>E-post:</strong> $email</p>";
+$message .= "<h3>Detaljer:</h3><ul>";
+
+foreach ($data as $key => $value) {
+    $safeKey = ucfirst(htmlspecialchars($key));
+    $safeVal = nl2br(htmlspecialchars($value));
+    $message .= "<li><strong>$safeKey:</strong> $safeVal</li>";
 }
 
-// Skapa mailinnehåll
-$to = "info@lokstallet.se";
-$subject = "Bokningsförfrågan från webbplatsen";
+$message .= "</ul>";
 
-$message = "Bokningsförfrågan:\n\n";
-$message .= "Lokal: $local\n";
-$message .= "Evenemangstyp: $eventType\n";
-if ($eventType === "annat") {
-    $message .= "Beskrivning: $otherEventDescription\n";
-}
-$message .= "Ljudtekniker: $audioTech\n";
-$message .= "Ljustekniker: $lightTech\n";
-$message .= "Extra personal: $extraPersonnel\n";
-$message .= "Catering: $catering\n";
-$message .= "Totalpris: $price SEK\n\n";
-$message .= "Kontaktuppgifter:\n";
-$message .= "Namn: $name\n";
-$message .= "E-post: $email\n";
-$message .= "Typ av kund: $customerType\n";
-$message .= "Organisationsnummer: $orgNumber\n";
-$message .= "Telefon: $phone\n";
-
-// Sätt header för från-adress
-$headers = "From: $email\r\n";
+// Headers för HTML-mail
+$headers = "From: no-reply@lokstallet.se\r\n";
 $headers .= "Reply-To: $email\r\n";
+$headers .= "MIME-Version: 1.0\r\n";
+$headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
 $mailSent = mail($to, $subject, $message, $headers);
 
+// === SKICKA BEKRÄFTELSE TILL KUND ===
 if ($mailSent) {
-    echo json_encode(["success" => true]);
-} else {
-    echo json_encode(["success" => false, "message" => "Misslyckades att skicka e-post"]);
+    $confirmSubject = "Tack för din bokningsförfrågan hos Lokstallet";
+    
+    // URL till loggan på servern (byt ut mot korrekt path)
+    $logoUrl = "https://www.lokstallett.se//assets/lokstalletheader.png"; 
+
+    $confirmMessage = "<div style='font-family:Arial,sans-serif;'>";
+    $confirmMessage .= "<img src='$logoUrl' alt='Lokstallet' style='max-width:300px; margin-bottom:20px;'><br>";
+    $confirmMessage .= "<h2>Hej $name!</h2>";
+    $confirmMessage .= "<p>Tack för din förfrågan om att boka <strong>Lokstallet</strong>. 
+    Vi återkommer så snart som möjligt med mer information.</p>";
+    $confirmMessage .= "<h3>Vi har mottagit följande uppgifter:</h3><ul>";
+
+    foreach ($data as $key => $value) {
+        $safeKey = ucfirst(htmlspecialchars($key));
+        $safeVal = nl2br(htmlspecialchars($value));
+        $confirmMessage .= "<li><strong>$safeKey:</strong> $safeVal</li>";
+    }
+
+    $confirmMessage .= "</ul>";
+    $confirmMessage .= "<p>Med vänliga hälsningar,<br><strong>Lokstallet Teamet</strong></p>";
+    $confirmMessage .= "</div>";
+
+    $confirmHeaders = "From: info@lokstallet.se\r\n";
+    $confirmHeaders .= "Reply-To: info@lokstallet.se\r\n";
+    $confirmHeaders .= "MIME-Version: 1.0\r\n";
+    $confirmHeaders .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+    mail($email, $confirmSubject, $confirmMessage, $confirmHeaders);
 }
+
+
+echo json_encode(["success" => $mailSent]);
 ?>

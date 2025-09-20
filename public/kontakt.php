@@ -17,7 +17,7 @@ if (!$data || !isset($data['namn'], $data['email'], $data['meddelande'])) {
 }
 
 // Mottagare
-$to = "mikaela.e.an@gmail.com"; // hit kommer mejlet
+$to = "info@lokstallet.se"; // här skickas mejlet till Lokstallet
 $subject = "Kontaktformulär - Lokstallet";
 
 // Skapa meddelandet

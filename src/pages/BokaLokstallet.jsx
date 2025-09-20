@@ -27,7 +27,7 @@ export default function BokaLokstallet() {
   // --- spara direkt när namn + epost fylls i ---
   function saveLead() {
     if (name && email) {
-      fetch("/api/saveLead.php", {
+      fetch("/sendmail.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email }),
@@ -79,10 +79,16 @@ export default function BokaLokstallet() {
     setPrice(totalPrice);
   }
 
-  function handleSubmit() {
+    function handleSubmit() {
     setSubmitError("");
-    if (!name || !email || !customerType || !orgNumber || !phone) {
-      setSubmitError("Vänligen fyll i alla fält innan du skickar din förfrågan.");
+    if (
+      !name ||
+      !email ||
+      !customerType ||
+      (customerType === "företag" && !orgNumber) || // endast företag måste ha org.nr
+      !phone
+    ) {
+      setSubmitError("Vänligen fyll i alla obligatoriska fält innan du skickar din förfrågan.");
       return;
     }
 
@@ -102,7 +108,7 @@ export default function BokaLokstallet() {
       phone,
     };
 
-    fetch("/api/sendmail.php", {
+    fetch("/sendmail.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -119,6 +125,7 @@ export default function BokaLokstallet() {
         setSubmitError("Nätverksfel, försök igen senare.");
       });
   }
+
 
   const summary = (
     <>
@@ -273,23 +280,40 @@ export default function BokaLokstallet() {
             </section>
 
             {/* Kontaktuppgifter steg 2 */}
-            <section id="contactForm" style={{ marginTop: "2em" }}>
-              <h2>Fyll i mer kontaktinfo</h2>
+              <section id="contactForm" style={{ marginTop: "2em" }}>
+          <h2>Fyll i mer kontaktinfo</h2>
 
-              {submitError && <p className="error">{submitError}</p>}
+          {submitError && <p className="error">{submitError}</p>}
 
-              <label htmlFor="customerType">Välj typ:</label>
-              <select
-                id="customerType"
-                value={customerType}
-                onChange={(e) => setCustomerType(e.target.value)}
-              >
-                <option value="">Välj...</option>
-                <option value="privatperson">Privatperson</option>
-                <option value="företag">Företag</option>
-                <option value="arrangör">Arrangör</option>
-              </select>
+          {/* Välj kundtyp */}
+          <label htmlFor="customerType">Välj typ:</label>
+          <select
+            id="customerType"
+            value={customerType}
+            onChange={(e) => setCustomerType(e.target.value)}
+          >
+            <option value="">Välj...</option>
+            <option value="privatperson">Privatperson</option>
+            <option value="företag">Företag</option>
+            <option value="arrangör">Arrangör</option>
+          </select>
 
+          {/* Visa fält baserat på typ */}
+          {customerType === "privatperson" && (
+            <>
+              <label htmlFor="phone">Telefonnummer:</label>
+              <input
+                type="tel"
+                id="phone"
+                placeholder="070-123 45 67"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </>
+          )}
+
+          {customerType === "företag" && (
+            <>
               <label htmlFor="orgNumber">Organisationsnummer:</label>
               <input
                 type="text"
@@ -307,21 +331,53 @@ export default function BokaLokstallet() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
-            </section>
+            </>
+          )}
 
-           <section id="summarySection" style={{ marginTop: "1em" }}>
-              <h3>Sammanfattning.</h3>
-              <div id="summaryContent">{summary}</div>
+          {customerType === "arrangör" && (
+            <>
+              <label htmlFor="orgNumber">Organisationsnummer (valfritt):</label>
+              <input
+                type="text"
+                id="orgNumber"
+                placeholder="ÅÅÅÅMMDD-XXXX"
+                value={orgNumber}
+                onChange={(e) => setOrgNumber(e.target.value)}
+              />
 
-              <button
-                id="submitForm"
-                onClick={handleSubmit}
-                disabled={!name || !email || !customerType || !orgNumber || !phone}
-                style={{ marginTop: "1.5em" }}
-              >
-                Skicka förfrågan
-              </button>
-            </section>
+              <label htmlFor="phone">Telefonnummer:</label>
+              <input
+                type="tel"
+                id="phone"
+                placeholder="070-123 45 67"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </>
+          )}
+        </section>
+
+  <section id="summarySection" style={{ marginTop: "1em" }}>
+    <h3>Sammanfattning.</h3>
+    <div id="summaryContent">{summary}</div>
+
+        <button
+          id="submitForm"
+          onClick={handleSubmit}
+          disabled={
+            !name ||
+            !email ||
+            !customerType ||
+            (customerType === "företag" && !orgNumber) || // endast företag måste fylla i
+            !phone
+          }
+            style={{ marginTop: "1.5em" }}
+          >
+            Skicka förfrågan
+        </button>
+
+  </section>
+
 
           </>
         )}
