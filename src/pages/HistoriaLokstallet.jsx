@@ -9,15 +9,15 @@ export default function HistoriaLokstallet() {
           {/* Text vänster */}
           <div className={styles["historia-left"]}>
             <h2>Lokstallets historia</h2>
-            <p>
-              Mitt i hjärtat av Skövde ligger <strong>Lokstallet</strong>, en plats där rostiga räls möter nya minnen. Här, där lok en gång pustade ut efter långa resor, får nu fester, bröllop och möten ta plats.
-            </p>
-            <p>
-              Lokstallet byggdes ursprungligen som en del av järnvägens pulsåder, en plats där tunga lok rullade in för service, vila och omstart. Idag har byggnaden fått nytt liv – men utan att förlora sin själ.
-            </p>
-            <p>
-              Med respekt för historien och öga för framtiden har Lokstallet bevarats och förvandlats till en inspirerande miljö. Här samlas människor för att fira, skapa och mötas – mitt bland spår av dåtid.
-            </p>
+          <p>
+            Namnet <strong>Lokstallet</strong> är en påminnelse om hur järnvägen en gång formade stadens puls. Fastighetsbeteckningen är Lokstallet 1. Det ursprungliga lokstallet låg inte precis på den plats där den nya scenen byggs, men alldeles nära, på andra sidan järnvägen där Skolgatan slutar, vid Kavelbrovägen — nu platsen för Volvos hus med det sågtandade taket.
+          </p>
+          <p>
+            Det gamla lokstallet uppfördes på 1870-talet i tegel med stallplatser, vattentorn, övernattningsrum och förråd. Under åren byggdes det ut — bland annat 1888 då ytterligare stallplatser tillkom.
+          </p>
+          <p>
+            Som en blinkning till historien har vi också designat den nya takhuven med inspiration från gamla ånglok. En liten detalj som knyter ihop det förflutna med det vi skapar idag.
+          </p>
           </div>
 
           {/* Bild höger */}
