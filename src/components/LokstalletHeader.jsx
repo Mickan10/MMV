@@ -60,7 +60,7 @@ const LokstalletHeader = () => {
       Home
     </NavLink>
   </li>
-  <li>
+  {/*<li>
     <NavLink
       to="/boka-lokstallet"
       end
@@ -69,7 +69,7 @@ const LokstalletHeader = () => {
     >
       Boka Lokstallet
     </NavLink>
-  </li>
+  </li>*/}
   <li>
     <NavLink
       to="/evenemang-lokstallet"

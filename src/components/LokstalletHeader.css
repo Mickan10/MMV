@@ -2,7 +2,7 @@
 .lokstallet-header {
   width: 100%;
   /*background: linear-gradient(135deg, #4B2E1F, #2F1E11, #5C3A24);*/
-  background: linear-gradient(135deg, #29201a, #443327, #1f120b);
+  background: #301e12;
   font-family: 'Josefin Sans', sans-serif;
   position: relative;
   z-index: 100;
@@ -40,7 +40,7 @@
 }
 
 .links li a {
-  color: #B79C62;
+  color: #ae9366;
   text-decoration: none;
   font-weight: 700;
   font-size: 1.3rem;
@@ -106,7 +106,6 @@
   z-index: 3001;
 }
 
-/* Om du vill ha den mitt i skärmen istället */
 .hero-nav .close-icon.centered {
   position: absolute;
   top: 50%;
