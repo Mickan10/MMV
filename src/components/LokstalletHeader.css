@@ -221,8 +221,8 @@
   .links {
     flex-direction: column;
     gap: 1rem;
-    text-align: center;
-    align-items: center;
+    text-align: left;
+    align-items: left;
   }
 
   .links li a {

@@ -1,690 +1,537 @@
-/* base */ 
-h2, h3 {
+/* =====================================
+   FÄRGPALETT & GRUNDSTIL
+   ===================================== */
+
+:root {
+  --lok-primary: #3a2c1f;      /* mörk espresso */
+  --lok-secondary: #d6cec4;    /* vintage beige */
+  --lok-accent: #b79c62;       /* guldbrun */
+  --lok-bg-light: #f8f3eb;     /* ljus bakgrund */
+  --lok-text-main: #201713;
+  --lok-text-muted: #5c4a3d;
+  --lok-border-soft: #c2b3a2;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: "Josefin Sans", sans-serif;
+  color: var(--lok-text-main);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Playfair Display", serif;
   line-height: 1.2;
+  margin: 0;
 }
 
 img {
   max-width: 100%;
   height: auto;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  overflow-x: hidden; 
-}
-
-/* Header med logga */
-.home-header {
-  text-align: center;
-  padding: 50px 0;
-  background-color: #4a4038;
-  border-top: 1px solid #B79C62;
-}
-
-.home-logo {
-  max-width: 100%;
-  height: auto;
   display: block;
-  margin: 0 auto;
 }
 
-/* Welcome section */
+.lokstallet-main {
+  background-color: var(--lok-secondary);
+}
+
+/* =====================================
+   ANIMATION / SCROLL FADE
+   ===================================== */
+
+.section-fade {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.section-fade.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =====================================
+   HERO / WELCOME SECTION 
+   ===================================== */
+
 .welcome-section {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  height: auto;
-  min-height: 500px;
-  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.4fr);
+  min-height: 520px;
+  background-color: var(--lok-primary);
+  color: #fdf8f2;
+  border-bottom: 2px solid var(--lok-accent);
 }
 
 .welcome-left {
-  flex: 1.5;
-  overflow: hidden;
   position: relative;
-  background-image: url('../assets/testlokis.jpg');
+  overflow: hidden;
+  background-image: url("../assets/testlokis.jpg");
   background-size: cover;
   background-position: center center;
-  background-repeat: no-repeat;
-  border-top: 2px solid #B79C62;
-  border-bottom: 2px solid #B79C62;
 }
 
-/* Mörkbrun overlay */
 .welcome-left::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(47, 30, 17, 0.5); 
-  z-index: 1; 
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(32, 17, 8, 0.8),
+    rgba(32, 17, 8, 0.3)
+  );
 }
 
-.welcome-left img {
-  position: absolute;
-  top: 7px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 350px;
-  height: auto;
-  z-index: 2; 
+.welcome-logo {
+  position: relative;
+  z-index: 2;
+  width: 70%;
+  max-width: 380px;
+  margin: 40px auto;
 }
 
+/* Textsida */
 .welcome-right {
-  flex: 2;
-  padding: 50px;
+  padding: 60px 60px 60px 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: #c1b6a8;
-  border-bottom: 2px solid #B79C62;
-  border-top: 2px solid #B79C62;
+  background: radial-gradient(
+      circle at top left,
+      rgba(183, 156, 98, 0.16),
+      transparent 55%
+    ),
+    var(--lok-primary);
 }
 
-.welcome-right h3
-{
-  font-family: "Playfair Display";
-  font-weight: 900;         
-  text-transform: uppercase; 
-  font-size: 45px;
-  text-align: start;
+.welcome-tagline {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  color: #e9ddce;
 }
 
-.welcome-right p{
-  font-size: 20px;
+.welcome-right h3 {
+  font-size: 2.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #e9ddce;
+  margin-bottom: 16px;
 }
 
-/* EVENTS */
+.welcome-right p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  color: #f2e7d9;
+}
+
+.welcome-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 26px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease,
+    color 0.2s ease, border-color 0.2s ease;
+}
+
+.hero-btn-primary {
+  background: var(--lok-accent);
+  color: #1c140e;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.hero-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+  background: #c8a96b;
+}
+
+.hero-btn-ghost {
+  background: transparent;
+  color: #f7efe4;
+  border-color: rgba(247, 239, 228, 0.4);
+}
+
+.hero-btn-ghost:hover {
+  background: rgba(0, 0, 0, 0.15);
+  border-color: rgba(247, 239, 228, 0.9);
+}
+
+/* =====================================
+   EVENT-TEASER
+   ===================================== */
+
 #home-events {
-  background-color: #c1b6a8;
-  padding: 60px 20px;
-  border-bottom: #B79C62 2px solid;
-  box-sizing: border-box;
-  width: 100%;
+  background: var(--lok-primary);
+  padding: 60px 20px 90px; /* MINDRE padding upptill */
+  border-bottom: 2px solid var(--lok-accent);
+  box-shadow: inset 0 0 60px rgba(0,0,0,0.35);
+  border-radius: 0;
 }
 
+/* Flyttar upp rubrik + knapp */
 .home-events-container {
-  display: flex;
-  align-items: flex-start;
   max-width: 1200px;
-  height: auto;
   margin: 0 auto;
-  gap: 40px;
+  display: grid;
+  grid-template-columns: 0.6fr 2fr; 
+  gap: 40px; 
+  align-items: flex-start;
 }
 
-.home-events-header {
-  flex: 0 0 250px; /* rubriksektionen till vänster */
-  display: flex;
-  flex-direction: column; /* lägger barnen under varandra */
-  align-items: flex-start; /* vänsterjusterar texten */
-  text-align: left; /* säkerställer vänsterjustering */
+/* Rubrikbox – kompaktare */
+.inner-line {
+  padding: 10px 0px; 
+  border-left: 4px solid var(--lok-accent);
+  margin-bottom: 6px;
 }
 
-.home-events-header h2 {
-  font-family: 'Bungee Shade', cursive;
-  font-size: 3rem; /* större rubrik */
-  color: #000;
-  margin: 0 80px 10px 10px;
+.inner-line h2 {
+  font-size: 1.4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #f5ede2;
 }
 
-.home-events-header p 
-{
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 30px;
-  color: #333;
-  line-height: 1.2;
+/* "Se alla evenemang"-knappen flyttas upp */
+.home-event-btn {
+  margin-top: 8px; 
+  display: inline-flex;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--lok-accent);
+  color: #1c140e;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.25s ease;
+}
+.home-event-btn:hover {
+  background: #c8a96b;
+  transform: translateY(-2px);
 }
 
+/* Eventlistan */
 .home-events {
   display: flex;
-  gap: 25px;
+  gap: 10px; 
   overflow-x: auto;
-  flex: 1; 
-  padding-bottom: 10px;
-  scroll-behavior: stretch;
+  padding-bottom: 6px;
 }
 
+/* Eventkort – LÄGRE höjd */
 .home-event {
-  flex: 0 0 300px; /* alltid kort i rad */
+  flex: 0 0 290px; /* lite smalare */
+  background: #e7e3e3;
+  border-radius: 24px 24px 0 0;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.32);
+  transition: 0.25s ease;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  height: 420px; /* SÄNK KORTENS TOTALHÖJD */
 }
 
-.home-event img {
+.home-event:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 38px rgba(0,0,0,0.45);
+}
+
+/* Bild – lägre och fyller 100% */
+.home-event-img {
+  height: 160px;
   width: 100%;
-  height: 200px;     
-  object-fit: cover;  
-  border-radius: 12px 12px 0 0;
+  object-fit: cover;
 }
 
+/* Innehåll */
 .home-event-content {
-  padding: 15px;
-  background-color: #f8f6f3;
+  padding: 16px 18px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  flex: 1; 
+  gap: 8px;
+  flex-grow: 1;
 }
 
+/* Datumplatta – mindre */
 .home-event-date {
-  background-color: #38220c; 
+  background: var(--lok-primary);
   color: #fff;
+  padding: 6px 6px;
+  width: 60px;
   text-align: center;
   border-radius: 0 0 12px 12px;
-  padding: 10px 10px;
-  width: 60px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
-  margin: -16px auto 10px auto; 
+  margin: -20px auto 6px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
 }
 
 .home-event-day {
-  display: block;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1;
+  font-size: 1.2rem;
+  font-weight: 800;
 }
 
 .home-event-month {
-  display: block;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  font-weight: 800;
 }
+
+/* Titel */
 .home-event-title {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 10px 0 5px 0;
-  color: #000000; 
-  border-bottom: #B79C62 2px solid;
+  font-size: 1.1rem;
+  font-weight: 800;
+  border-bottom: 2px solid var(--lok-accent);
+  padding-bottom: 4px;
 }
 
-/* Knapp */
+/* Beskrivning */
+.home-event-desc {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--lok-text-muted);
+  flex-grow: 1; 
+}
+
+/* Knappen i eventkort – alltid i botten */
 .homes-btn {
-  display: flex;
-  padding: 19px 20px;
-  border-radius: 12px;
-  background: #38220c;
-  color: #fff;
+  margin-top: auto;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: var(--lok-accent);
+  color: #1c140e;
   font-weight: 600;
-  text-decoration: none;
-  font-family: 'Josefin Sans', sans-serif;
-  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
-  margin-top: 20px;
-  text-align: center;
-  justify-content: center;
+  transition: 0.25s ease;
+}
+.homes-btn:hover {
+  background: #c8a96b;
+  transform: translateY(-2px);
 }
 
-.home-btn{
-  display: flex;
-  padding: 19px 28px;
-  border-radius: 12px;
-  background: #38220c;
-  color: #fff;
-  font-weight: 600;
-  text-decoration: none;
-  font-family: 'Josefin Sans', sans-serif;
-  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
-  margin-top: 20px;
-  text-align: center;
-  justify-content: center;
-}
-
-/* Scrollbar styling för bättre UX */
 .home-events::-webkit-scrollbar {
   height: 10px;
 }
 
-.home-events::-webkit-scrollbar-thumb {
-  background-color: rgba(183, 156, 98, 0.7);
-  border-radius: 5px;
+.home-events::-webkit-scrollbar-track {
+  background: rgba(56,34,12,0.4);
+  border-radius: 6px;
 }
 
-/*lokal*/
-.lokal-section {
-  display: flex;
-  gap: 40px;
-  padding: 0; 
-  background-color: #C1B6A8;
-  color: #000;
-  align-items: stretch;  
-  max-width: none;
-  margin: 0px;
-  width: 100%;
-  box-sizing: border-box;
-  min-height: 600px;  
+.home-events::-webkit-scrollbar-thumb {
+  background: repeating-linear-gradient(
+    45deg,
+    #b79c62,
+    #b79c62 6px,
+    #8d784e 6px,
+    #8d784e 12px
+  );
+  border-radius: 6px;
 }
+
+.home-events::-webkit-scrollbar-thumb:hover {
+  background: repeating-linear-gradient(
+    45deg,
+    #c8a96b,
+    #c8a96b 6px,
+    #9e875b 6px,
+    #9e875b 12px
+  );
+}
+
+/* =====================================
+   LOKAL-SECTION — FIXAD VERSION
+   ===================================== */
+
+.lokal-section {
+  background: var(--lok-secondary);
+  padding: 0 20px 40px; /* smalare sektion */
+  display: grid;
+  grid-template-columns: 1fr 1.7fr;
+  gap: 40px;
+  align-items: center;
+}
+
+/* --- VÄNSTER TEXT --- */
 
 .lokal-left {
-  flex: 1;
+  padding: 40px;
   display: flex;
   flex-direction: column;
-  justify-content: center; 
-  align-items: flex-start;
-  gap: 15px;
-  padding-left: 90px;  
-  padding-right: 20px     
+  gap: 14px;
+  max-width: 490px;
 }
 
-.lokal-left h3 {
-  font-family: "Playfair Display";
-  font-weight: 900;         
-  text-transform: uppercase; 
-  font-size: 50px;       
+.inner-deco {
+  background: rgba(56, 34, 12, 0.9);
+  padding: 8px 18px;
+  border-radius: 0 24px 24px 0;
+  border-left: 4px solid var(--lok-accent);
 }
 
-.lokal-left p {
-  font-size: 1.2rem;
-  font-family: 'Josefin Sans', sans-serif;
-  line-height: 1.6;
-  max-width: 500px;
-}
-
-.lokal-btn {
-  margin-top: 10px;
-  display: inline-block;
-  padding: 14px 32px;
-  background: rgba(183, 156, 98, 0.7);
-  color: #fff;
-  text-decoration: none;
-  font-family: 'Josefin Sans', sans-serif;
-  font-weight: 600;
-  border-radius: 8px;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.lokal-btn:hover {
-  background: #333;
-  transform: translateY(-2px);
-}
-
-.lokal-center {
-  flex: 1;
-  display: flex;
-  margin-left: -200px;
-  position: relative;
-}
-
-.lokal-center img {
-  width: 100%;
-  height: auto;
-  max-height: 400px;       
-  object-fit: cover;  
-  border-radius: 0; 
-  display: block;
-}
-
-/* Overlay */
-.lokal-center::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(64, 40, 8, 0.681); 
-  pointer-events: none; 
-}
-
-@keyframes fadeLiftIn {
-  0% {
-    transform: translateY(40px) scale(0.95);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-}
-
-.inner-line.animate {
-  animation: fadeLiftIn 1s ease-out forwards;
-}
-
-
-/* Tablets (<= 1024px) */
-@media (max-width: 1024px) {
-  .welcome-right {
-    padding: 40px 20px;
-  }
-
-  .welcome-right h3 {
-    font-size: 2rem;
-  }
-
-  .welcome-right p {
-    font-size: 1rem;
-  }
-
-  .lokal-left h3 {
-    font-size: 2rem;
-  }
-
-  .lokal-left p {
-    font-size: 1rem;
-  }
-
-  .home-event {
-    flex: 0 0 250px;
-  }
-}
-/* Småskärmar (≤768px) */
-@media (max-width: 768px) {
-
- /* Welcome section */
-  .welcome-section {
-    position: relative;
-    background-image: url('../assets/testlokis.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    padding: 60px 15px;  
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 200px; 
-    border-top: 3px solid #B79C62;
-    border-bottom: 4px solid #B79C62;
-  }
-
-  /* Overlay för bättre läsbarhet */
-  .welcome-section::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    right: 0; bottom: 0;
-    background-color: rgba(0,0,0,0.35); /* mörk overlay */
-    z-index: 1;
-  }
-
-  .welcome-left {
-    display: none;
-  }
-
-  .welcome-right {
-    position: relative;
-    z-index: 2; 
-    padding: 20px 15px;
-    width: 100%;
-    text-align: center;
-    background-color: transparent; 
-    border: none
-  }
-
-  .welcome-right h3 {
-    font-size: 1.6rem;
-    margin-bottom: 5px;
-    line-height: 1.3;
-    color: #cec2ad; 
-    border-radius: 8px;
-    padding: 3px 1px;
-    text-align: flex-start;
-  }
-
-  .welcome-right p {
-    font-size: 0.95rem;
-    line-height: 1.4;
-    color: #cec2ad; 
-    margin-bottom: 8px;
-    text-align: start;
-  }
-
-  /* Events section */
-  #home-events {
-    padding: 20px 10px;
-    box-sizing: border-box;
-  }
-
-  .home-events-container {
-    flex-direction: column;
-    gap: 0px;
-  }
-
-  .home-events-container .home-btn {
-  display: block;        
-  margin: 50px auto 0 80px; 
- }
-
-   .home-event img {
-    height: 150px;
-  }
-
-  .home-events-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* inner-line vid vänsterkant */
-    gap: 2px; /* kort mellanrum mellan inner-line och knapp */
-  }
-
-  .inner-line {
-    background-color: rgba(29, 29, 28, 0.79);
-    width: 100%;
-    text-align: center;
-    padding: 5px 55px 5px 0;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    color: white;
-    box-sizing: border-box;
-    margin-left: 0; 
-    margin-bottom: -20px;
-  }
-
-  .home-event-date {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  width: 50px;
-  min-height: 10px;  
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-  overflow: hidden;
-}
-
-.home-event-day {
-  font-size: 1.4rem;
-  font-weight: bold;
-  line-height: 1.2;
-}
-
-.home-event-month {
-  font-size: 0.9rem;
+.inner-deco h3 {
+  color: #f7efe4;
+  font-size: 1.3rem;
+  font-weight: 800;
   text-transform: uppercase;
 }
 
+.lokal-left p {
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--lok-text-main);
+}
 
-  .home-events-header h2 {
-    font-size: 2rem;
-    margin-bottom: 1px;
-    color: white;
-  }
+/* --- KNAPP --- */
 
-  .home-events-header p {
-    font-size: 1rem;
-    margin-bottom: 1px;
-    color: white;
-  }
+.lokal-btn {
+  margin-top: 8px;
+  display: inline-flex;
+  padding: 12px 24px;
+  background: var(--lok-accent);
+  color: #1c140e;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.25s ease;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
 
-  .homes-btn {
-    align-self: center;  /* centrerar knappen */
-    margin-top: 10px;    /* kortare luft ovanför */
-    margin-bottom: 15px; /* mer luft under */
-    padding: 10px 18px;
-    font-size: 1rem;
-  }
+/* --- BILD --- */
 
-  .home-events {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px; 
-    margin-top: -40px;
-  }
+.lokal-center {
+  width: 100%;
+  height: auto; /* låt sektionen styra */
+}
 
-  .home-event {
-    flex: 1 1 100%;
-    max-width: 100%;
-    margin-top: 0; /* drar upp eventen mot knappen */
-    margin-bottom: 0;
-  }
+.lokal-image-wrap {
+  width: 100%;
+  height: 350px;      /* <<< JUSTERA HÖJDEN HÄR (inte på sektionen) */
+  overflow: hidden;
+  border-radius: 18px;
+  position: relative;
+}
 
-  .home-event-content {
-    padding: 10px;
-  }
+.lokal-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-  .home-event-date {
-    margin: -20px auto 6px auto;
-  }
+/* =====================================
+   MOBIL
+   ===================================== */
 
-  /* Lokal section */
+@media (max-width: 900px) {
   .lokal-section {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    padding: 20px 20px 40px;
+  }
+
+  .lokal-image-wrap {
+    height: 300px;
+  }
+
+    .lokal-left {
+    max-width: 100%;
     padding: 0;
-  }
-
-  .lokal-left {
-    width: 100%;
-    padding: 20px 10px 10px 10px;
-    text-align: center;
-  }
-
-  .lokal-left h3 {
-    font-size: 1.9rem;
-    margin-bottom: 5px;
-    font-family: 'Bungee Shade', cursive;
-  }
-
-  .lokal-left p {
-    font-size: 0.95rem;
-    margin-bottom: 8px;
-  }
-
-  .lokal-btn {
-    display: block;
-    margin: 0 auto 10px auto;
-  }
-
-  .lokal-center {
-    width: 100%;
-    margin-left: 0;
-  }
-
-  .lokal-center img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    margin-bottom: 0;
-  }
-
-  .inner-deco {
-    background-color: #b79c6258;
-    text-align: center;
-    padding: 10px 0;
-    width: 100%;
+    text-align: left;
   }
 }
 
-/* Extra små mobiler (≤480px) */
 @media (max-width: 480px) {
-  .welcome-right {
-    padding: 35px 10px;
-    box-sizing: border-box;
+  .lokal-section {
+    padding: 20px 16px 30px;
   }
 
-  .welcome-right h3 {
-    font-size: 1.9rem;
-    margin-bottom: 5px;
+  .lokal-image-wrap {
+    height: 240px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lokal-section {
+    padding: 20px 16px 30px;
   }
 
-  .welcome-right p {
-    font-size: 0.9rem;
-    margin-bottom: 8px;
+  .lokal-image-wrap {
+    height: 240px; 
   }
 
+  .inner-deco {
+    border-radius: 0 20px 20px 0;
+  }
+
+  .inner-deco h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+}
+
+@media (max-width: 1024px) {
+  .welcome-section {
+    grid-template-columns: 1fr;
+  }
+
+  .home-events-container,
+  .lokal-section {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
   #home-events {
-    padding: 30px 10px; /* vanlig padding för allt annat */
-    box-sizing: border-box;
+    padding: 60px 16px;
+  }
+
+  .home-event {
+    flex: 0 0 260px;
   }
 
   .inner-line {
-    background-color: rgba(29, 29, 28, 0.79);
-    width: 100%;
-    width: calc(100% + 80px);
-    text-align: center;
-    padding: 5px 55px 5px 0;       
-    border-top-right-radius: 15px;   
-    border-bottom-right-radius: 15px; 
-    border-top-left-radius: 0;     
-    border-bottom-left-radius: 0;   
-    color: white;
-    box-sizing: border-box;
-    margin-left: -14px
+    padding: 10px;
   }
 
-  .home-events-header h2 {
-    font-size: 2rem;
-    margin-bottom: 1px;
+  .inner-line h2 {
+    font-size: 1.2rem;
+    margin-right: 110px;
   }
 
-  .home-events-header p {
-    font-size: 1rem;
-    margin-bottom: 1px;
-    margin: 10px 20px 10px -27px;
+  .welcome-right h3 {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-right {
+    padding: 32px 18px;
   }
 
-  .homes-btn {
-    padding: 10px 18px;
-    font-size: 1rem;
-    margin-top: 2px;  
+  .home-event {
+    flex: 0 0 230px;
   }
 
-  .home-btn{
-    padding: 10px 15px;
-  }
-
-   .lokal-left {
-    padding: 10px 0; 
-    text-align: center;   
-  }
-
-  .inner-deco{
-      background-color: #b79c6258;
-      text-align: center;
-      padding: 10px 0;
-      width: 100%;
-  }
-
-  .lokal-left h3 {
-    font-size: 1.9rem;
-    margin: 6px;
-  }
-
-  .lokal-left p {
-    font-size: 1rem;
-    margin-bottom: 6px;
-    padding: 5px 15px; 
-    max-width: 95%;   
-    box-sizing: border-box;  
-  }
-
-  .lokal-btn {
-    margin-bottom: 0px;
-    color: black;
-    border: 1px solid #403b3b;
-  }
-
-  .lokal-center img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    max-height: 250px;
+  .lokal-image-wrap img {
+    height: 300px;
   }
 }

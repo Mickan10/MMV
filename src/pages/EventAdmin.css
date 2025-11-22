@@ -1,154 +1,190 @@
-/* EventAdmin.css */
+/* =======================================
+   ADMINPANEL – MATCHAD FÖR LOKSTALLET
+   ======================================= */
+
 .admin-container {
   font-family: 'Josefin Sans', sans-serif;
-  color: #5a4c3e;
-  max-width: 700px;
-  margin: 40px auto;
-  background-color: #fff9f0;
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(125, 90, 79, 0.3);
+  color: #4b3b2b;
+  max-width: 900px;
+  margin: 60px auto;
+  background: #fffaf3;
+  padding: 40px 50px;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(32, 17, 8, 0.25);
+  border: 1px solid rgba(183, 140, 80, 0.3);
 }
 
 .admin-title {
-  font-family: 'Josefin Sans', sans-serif !important;
-  color: #7d5a4f;
-  font-size: 2em;
-  margin: 20px 0 25px; 
+  font-family: "Playfair Display", serif !important;
+  color: #38220c;
+  font-size: 2.4rem;
+  font-weight: 900;
   text-align: center;
+  margin-bottom: 35px;
 }
 
+/* Logga ut-knappen */
+.admin-button.logout {
+  background: #38220c;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 30px;
+  margin-left: auto;
+  margin-bottom: 20px;
+  display: block;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(32, 17, 8, 0.4);
+  transition: 0.2s;
+}
+
+.admin-button.logout:hover {
+  background: #241408;
+}
+
+/* FORMULÄR */
 .admin-input,
-.admin-textarea,
-.admin-file {
+.admin-textarea {
   width: 100%;
-  padding: 10px 12px;
-  margin-bottom: 15px;
+  padding: 12px 14px;
   border: 2px solid #d6cbb3;
-  border-radius: 8px;
+  border-radius: 12px;
+  background: #fff;
   font-size: 1em;
-  font-family: 'Josefin Sans', sans-serif;
-  transition: border-color 0.3s ease;
-  resize: vertical;
+  margin-bottom: 18px;
+  transition: border-color 0.3s ease, background 0.3s ease;
 }
 
 .admin-input:focus,
-.admin-textarea:focus,
-.admin-file:focus {
-  border-color: #7d5a4f;
+.admin-textarea:focus {
+  border-color: #b78c50;
+  background: #fdf7ee;
   outline: none;
 }
 
 .admin-textarea {
-  min-height: 80px;
+  min-height: 90px;
 }
 
-.admin-button.logout {
-  font-size: 0.9rem;
-  border-radius: 4px;
-  background-color: #5a4c3e;
-  color: white;
-  border: none;
+/* Lägg till event-knappen */
+.admin-button {
+  background: var(--lok-accent, #b78c50);
+  color: #1c140e;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 12px 20px;
+  border-radius: 999px;
+  display: inline-block;
   cursor: pointer;
-  width: 100px;
-  margin: 0 auto 20px;
-  display: block;
+  border: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  transition: 0.25s ease;
 }
 
 .admin-button:hover {
-  background-color: #a67b63;
+  background: #c8a96b;
+  transform: translateY(-2px);
 }
 
+/* LISTA */
 .admin-event-list {
   list-style: none;
   padding: 0;
+  margin-top: 40px;
 }
 
 .admin-event-item {
   display: flex;
+  gap: 18px;
+  padding: 18px;
+  border-radius: 16px;
+  background: #fffdf7;
+  border: 1px solid #e2d7c7;
+  box-shadow: 0 6px 16px rgba(32, 17, 8, 0.15);
+  margin-bottom: 18px;
   align-items: center;
-  border-bottom: 1px solid #d6cbb3;
-  padding: 15px 0;
+  transition: 0.25s ease;
 }
 
+.admin-event-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px rgba(32, 17, 8, 0.25);
+}
+
+/* Bild */
 .admin-event-image {
-  width: 100px;
-  height: auto;
-  border-radius: 10px;
-  margin-right: 20px;
-  box-shadow: 0 4px 10px rgba(125, 90, 79, 0.3);
+  width: 110px;
+  height: 90px;
+  border-radius: 14px;
   object-fit: cover;
+  box-shadow: 0 4px 10px rgba(32, 17, 8, 0.35);
+  flex-shrink: 0;
 }
 
+/* Titel/date */
 .admin-event-name {
-  flex-grow: 1;
-  font-size: 1.2em;
-  color: #5c4a3a;
-  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #38220c;
+  margin-bottom: 6px;
 }
 
+/* Buttons */
 .admin-event-buttons {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  gap: 6px;
+  margin-left: auto;
 }
 
 .admin-event-buttons button {
-  width: auto;
   padding: 8px 15px;
-  font-size: 0.95em;
-  border-radius: 6px;
+  border-radius: 999px;
   border: none;
+  color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: 0.2s ease;
 }
 
-.admin-event-buttons button:first-child {
-  background-color: #f0ad4e;
-  color: white;
+/* Redigera */
+.admin-event-buttons button:nth-child(1) {
+  background: #d9a441;
 }
 
-.admin-event-buttons button:first-child:hover {
-  background-color: #ec971f;
+/* Ta bort */
+.admin-event-buttons button:nth-child(2) {
+  background: #b23a35;
+}
+.admin-event-buttons button:nth-child(2):hover {
+  background: #952e2a;
 }
 
-.admin-event-buttons button:last-child {
-  background-color: #d9534f;
-  color: white;
+/* Dölj/Visa */
+.admin-event-buttons button:nth-child(3) {
+  background: #6c4d2c;
+}
+.admin-event-buttons button:nth-child(3):hover {
+  background: #4b361f;
 }
 
-.admin-event-buttons button:last-child:hover {
-  background-color: #c9302c;
-}
-
-@media (max-width: 600px) {
-  .admin-container {
-    padding: 20px;
-    margin: 20px 15px;
-  }
-
+/* MOBIL */
+@media (max-width: 700px) {
   .admin-event-item {
     flex-direction: column;
     align-items: flex-start;
   }
 
   .admin-event-image {
-    margin-bottom: 10px;
-    margin-right: 0;
     width: 100%;
-    max-width: 300px;
+    height: 180px;
   }
 
   .admin-event-buttons {
+    flex-direction: row;
     width: 100%;
-    justify-content: flex-start;
-  }
-
-  .admin-event-buttons button {
-    flex: 1;
-  }
-
-    .admin-event-name {
-    word-wrap: break-word;
-    font-size: 1.1em;
+    margin-top: 12px;
+    gap: 8px;
+    justify-content: space-between;
   }
 }

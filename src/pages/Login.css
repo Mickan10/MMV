@@ -1,75 +1,107 @@
-/* Login.css */
+/* ============================================
+   ADMIN LOGIN – PREMIUM DESIGN
+   ============================================ */
+
+body {
+  background: linear-gradient(
+      135deg,
+      rgba(58, 44, 31, 0.95),
+      rgba(183, 156, 98, 0.35)
+    ),
+    url("/assets/lokstallet-bg.jpg") center/cover no-repeat;
+  background-attachment: fixed;
+}
 
 .login-container {
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 30px 40px;
-  background-color: #fff9f0;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(125, 90, 79, 0.3);
+  max-width: 420px;
+  margin: 90px auto;
+  padding: 40px 45px;
+  background: rgba(255, 250, 240, 0.92);
+  backdrop-filter: blur(8px);
+  border-radius: 22px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
   font-family: 'Josefin Sans', sans-serif;
-  color: #5a4c3e;
+  color: #38220c;
   text-align: center;
+  border: 2px solid rgba(183, 156, 98, 0.4);
+  animation: fadeIn 0.7s ease forwards;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Rubrik */
 .login-container h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #3a2c1f;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   margin-bottom: 25px;
-  font-family: 'Bungee Shade', cursive;
-  color: #7d5a4f;
-  font-size: 2.2em;
 }
 
+/* Form */
 .login-container form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 }
 
-.login-container input[type="email"],
-.login-container input[type="password"] {
-  padding: 12px 15px;
-  border: 2px solid #d6cbb3;
-  border-radius: 8px;
-  font-size: 1em;
+.login-container input {
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 2px solid #d2c5b2;
+  font-size: 1rem;
   font-family: 'Josefin Sans', sans-serif;
-  transition: border-color 0.3s ease;
+  background: #fffdf8;
+  transition: all 0.25s ease;
 }
 
-.login-container input[type="email"]:focus,
-.login-container input[type="password"]:focus {
-  border-color: #7d5a4f;
+.login-container input:focus {
+  border-color: var(--lok-accent);
+  box-shadow: 0 0 0 3px rgba(183, 156, 98, 0.25);
   outline: none;
 }
 
+/* Error */
 .login-container .error {
-  color: #c14b4b;
+  color: #b82929;
   font-weight: 600;
-  font-size: 0.9em;
-  margin-top: -10px;
-  margin-bottom: 5px;
+  font-size: 0.9rem;
+  margin-top: -5px;
 }
 
+/* Knapp */
 .login-container button {
-  background-color: #7d5a4f;
-  color: white;
+  background: var(--lok-accent);
+  color: #1c140e;
   border: none;
-  padding: 12px;
-  font-size: 1.1em;
-  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 1.1rem;
+  border-radius: 999px;
   cursor: pointer;
-  box-shadow: 0 3px 10px rgba(125, 90, 79, 0.6);
-  font-family: 'Josefin Sans', sans-serif;
-  transition: background-color 0.3s ease;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(183, 156, 98, 0.4);
+  transition: 0.25s ease;
 }
 
 .login-container button:hover {
-  background-color: #a67b63;
+  background: #c9a870;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
 }
 
-/* Responsivitet */
+/* Mobil */
 @media (max-width: 480px) {
   .login-container {
     margin: 40px 20px;
-    padding: 20px;
+    padding: 28px 30px;
+  }
+
+  .login-container h2 {
+    font-size: 1.7rem;
   }
 }

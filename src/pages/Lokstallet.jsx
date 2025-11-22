@@ -5,7 +5,6 @@ import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import img3 from "../assets/loklokal.jpg";
 import img9 from "../assets/lokstalletheader.png";
-// import logga from '../assets/headerlok.png';
 
 const Lokstallet = () => {
   const [events, setEvents] = useState([]);
@@ -15,7 +14,10 @@ const Lokstallet = () => {
   const fetchEvents = async () => {
     const snapshot = await getDocs(collection(db, "events"));
     let eventList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+    // Sortera på datum om det finns
     eventList.sort((a, b) => new Date(a.date) - new Date(b.date));
+
     setEvents(eventList);
   };
 
@@ -23,67 +25,86 @@ const Lokstallet = () => {
     fetchEvents();
   }, []);
 
-    useEffect(() => {
-      const observer = new IntersectionObserver(
-        (entries, observer) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("animate");
-              observer.unobserve(entry.target); // bara en gång
-            }
-          });
-        },
-        { threshold: 0.3 }
-      );
+  // Scroll-animation för sektioner och rubrikblock
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries, observerInstance) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate");
+            observerInstance.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
 
-      const elements = document.querySelectorAll(".inner-line");
-      elements.forEach((el) => observer.observe(el));
+    const elements = document.querySelectorAll(".section-fade, .inner-line");
+    elements.forEach((el) => observer.observe(el));
 
-      return () => {
-        elements.forEach((el) => observer.unobserve(el));
-      };
-    }, []);
+    return () => {
+      elements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
 
-    const visibleEvents = events.filter((event) => !event.hidden);
-
+  const visibleEvents = events.filter((event) => !event.hidden);
+  const featuredEvents = visibleEvents.slice(0, 3); // max 3 på startsidan
 
   return (
-    <main>
-      {/* ---------------- WELCOME SECTION ---------------- */}
-      <section className="welcome-section">
+    <main className="lokstallet-main">
+      {/* -------- HERO / WELCOME -------- */}
+      <section className="welcome-section section-fade">
         <div className="welcome-left">
-          <img src={img9} alt="Lokstallet" />
+          {/* Bakgrundsbild ligger i CSS, här visar vi logga/poster */}
+          <img src={img9} alt="Lokstallet" className="welcome-logo" />
         </div>
+
         <div className="welcome-right">
+          <p className="welcome-tagline">Musik. Evenemang. Möten.</p>
           <h3>Välkommen till Lokstallet</h3>
           <p>
-            Lokstallet är Skövdes hjärta för kultur och evenemang. Här hittar du
-            allt från konserter och teaterföreställningar till workshops och
-            matupplevelser. Vi erbjuder en unik miljö med historia och modern
-            komfort.
+            Lokstallet är Skövdes nav för kultur, musik och möten. Här
+            arrangeras konserter, scenkonst, gästspel, företagsevent och
+            föreställningar i en unik miljö där industrikultur möter nutid.
           </p>
           <p>
-            Utforska vårt program, boka biljetter och upplev oförglömliga
-            stunder hos oss!
+            Utforska aktuella evenemang, hitta din nästa upplevelse eller
+            upptäck våra lokaler för konferens, bröllop, fester och andra
+            sammanhang.
           </p>
+          <div className="welcome-actions">
+            <Link to="/evenemang-lokstallet" className="hero-btn hero-btn-primary">
+              Se aktuella evenemang
+            </Link>
+            <Link to="/lokaler" className="hero-btn hero-btn-ghost">
+              Läs mer om lokalerna
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* ---------------- EVENTS SECTION ---------------- */}
-      <section id="home-events">
+      {/* -------- EVENT-TEASER -------- */}
+      <section id="home-events" className="section-fade">
         <div className="home-events-container">
           <div className="home-events-header">
             <div ref={lineRef} className="inner-line">
-              <h2>Event</h2>
-              <p>Detta händer hos oss.</p>
+              <h2>På scen hos oss</h2>
             </div>
-            <Link to="/evenemang-lokstallet" className="home-btn">
+
+            <Link to="/evenemang-lokstallet" className="home-event-btn">
               Se alla evenemang
             </Link>
           </div>
 
           <div className="home-events">
-            {visibleEvents.map((event) => (
+            {featuredEvents.length === 0 && (
+              <p className="no-events-text">
+                Just nu finns inga publicerade evenemang. Håll utkik – programmet
+                uppdateras löpande.
+              </p>
+            )}
+
+            {featuredEvents.map((event) => (
               <article key={event.id} className="home-event">
                 {event.image && (
                   <img
@@ -92,6 +113,7 @@ const Lokstallet = () => {
                     className="home-event-img"
                   />
                 )}
+
                 <div className="home-event-content">
                   <div className="home-event-date">
                     <span className="home-event-day">
@@ -105,17 +127,22 @@ const Lokstallet = () => {
                         .toUpperCase()}
                     </span>
                   </div>
+
                   <div className="home-event-info">
                     <h3 className="home-event-title">{event.title}</h3>
                     {event.description && (
                       <p className="home-event-desc">
-                        {event.description.length > 100
-                          ? event.description.substring(0, 100) + "..."
+                        {event.description.length > 120
+                          ? event.description.substring(0, 120) + "..."
                           : event.description}
                       </p>
                     )}
-                    <Link to={"/evenemang-lokstallet"} className="homes-btn">
-                      Läs mer
+
+                    <Link
+                      to="/evenemang-lokstallet"
+                      className="homes-btn"
+                    >
+                      Läs mer & biljetter
                     </Link>
                   </div>
                 </div>
@@ -125,25 +152,31 @@ const Lokstallet = () => {
         </div>
       </section>
 
-      {/* ---------------- LOKAL SECTION ---------------- */}
-      <section className="lokal-section">
+      {/* -------- LOKALER -------- */}
+      <section className="lokal-section section-fade">
         <div className="lokal-left">
           <div className="inner-deco">
-            <h3>Musik.</h3>
-            <h3>Evenemang.</h3>
-            <h3>Möten.</h3>
+            <h3>Musik. Evenemang. Möten.</h3>
           </div>
           <p>
-            Hos oss hittar du en lokal med historia, atmosfär och modern
-            komfort. Perfekt för allt från konserter och teater till bröllop,
-            fester och konferenser.
+            Lokstallet erbjuder flexibla lokaler med karaktär – från intima
+            scenrum till större ytor för konserter, konferenser, mässor och
+            privata tillställningar.
+          </p>
+          <p>
+            Med professionell teknik, scen, serveringsytor och en unik industriell
+            miljö skapar vi ramarna för både publikarrangemang och skräddarsydda
+            event.
           </p>
           <Link to="/lokaler" className="lokal-btn">
             Utforska lokalerna
           </Link>
         </div>
+
         <div className="lokal-center">
-          <img src={img3} alt="Lokal" />
+          <div className="lokal-image-wrap">
+            <img src={img3} alt="Lokstallets lokaler" />
+          </div>
         </div>
       </section>
     </main>
