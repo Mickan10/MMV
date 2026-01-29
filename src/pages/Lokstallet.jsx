@@ -47,8 +47,20 @@ const Lokstallet = () => {
     };
   }, []);
 
-  const visibleEvents = events.filter((event) => !event.hidden);
-  const featuredEvents = visibleEvents.slice(0, 3); // max 3 på startsidan
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const visibleEvents = events.filter((event) => {
+      if (event.hidden) return false;
+
+      const date =
+        event.date?.toDate ? event.date.toDate() : new Date(event.date);
+
+      return date >= today;
+    });
+
+    const featuredEvents = visibleEvents.slice(0, 3);
+
 
   return (
     <main className="lokstallet-main">
