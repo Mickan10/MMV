@@ -48,6 +48,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid #d6c7a3;
   position: relative;
+  align-items: stretch; /* höger & vänster lika höga */
 }
 
 .event-card:hover {
@@ -57,11 +58,10 @@
 
 /* Bild tar hela vänstersidan */
 .event-img {
-  width: 45%;
-  min-width: 250px;
-  object-fit: cover;
-  border-right: 1px solid #d6c7a3;
+  width: 50%;
+  height: auto;              
 }
+
 
 /* Höger textdel */
 .event-content {
@@ -101,11 +101,11 @@
   display: inline-block;
 }
 
-.event-description {
-  font-size: 1.05em;
-  color: #5a4c3e;
-  line-height: 1.6;
-  margin-bottom: 20px;
+.event-description{
+  display: -webkit-box;
+  -webkit-line-clamp: 3;     /* antal rader */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .bt-l2 {

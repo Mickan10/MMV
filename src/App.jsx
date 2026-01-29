@@ -76,8 +76,8 @@ export default function App() {
         <Route path="/lokstallet" element={<LokstalletLayout><Lokstallet /></LokstalletLayout>} />
         <Route path="/boka-lokstallet" element={<LokstalletLayout><BokaLokstallet /></LokstalletLayout>} />
         <Route path="/evenemang-lokstallet" element={<LokstalletLayout><EvenmangLokstallet /></LokstalletLayout>} />
-        <Route path="/lokaler" element={<LokstalletLayout><LokalerLokstallet /></LokstalletLayout>} />
-        <Route path="/historia" element={<LokstalletLayout><HistoriaLokstallet /></LokstalletLayout>} />
+        {/*<Route path="/lokaler" element={<LokstalletLayout><LokalerLokstallet /></LokstalletLayout>} />*/}
+        {/*<Route path="/historia" element={<LokstalletLayout><HistoriaLokstallet /></LokstalletLayout>} />*/}
         <Route path="/kontakt-lokstallet" element={<LokstalletLayout><KontaktLokstallet /></LokstalletLayout>} />
 
         {/* Admin-sidor utan header/footer */}

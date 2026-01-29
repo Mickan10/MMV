@@ -76,9 +76,9 @@ const Lokstallet = () => {
             <Link to="/evenemang-lokstallet" className="hero-btn hero-btn-primary">
               Se aktuella evenemang
             </Link>
-            <Link to="/lokaler" className="hero-btn hero-btn-ghost">
+          {/*}  <Link to="/lokaler" className="hero-btn hero-btn-ghost">
               Läs mer om lokalerna
-            </Link>
+            </Link>*/}
           </div>
         </div>
       </section>
@@ -168,9 +168,9 @@ const Lokstallet = () => {
             miljö skapar vi ramarna för både publikarrangemang och skräddarsydda
             event.
           </p>
-          <Link to="/lokaler" className="lokal-btn">
+          {/*<Link to="/lokaler" className="lokal-btn">
             Utforska lokalerna
-          </Link>
+          </Link>*/}
         </div>
 
         <div className="lokal-center">

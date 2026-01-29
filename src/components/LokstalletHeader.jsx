@@ -80,7 +80,7 @@ const LokstalletHeader = () => {
       Evenemang & Biljetter
     </NavLink>
   </li>
-  <li>
+{/*  <li>
     <NavLink
       to="/lokaler"
       end
@@ -99,7 +99,7 @@ const LokstalletHeader = () => {
     >
       Historia
     </NavLink>
-  </li>
+  </li>*/}
   <li>
     <NavLink
       to="/kontakt-lokstallet"
