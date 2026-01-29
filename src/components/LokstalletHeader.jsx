@@ -32,6 +32,7 @@ const LokstalletHeader = () => {
             />
           </button>
 
+
           {/* Sociala medier (bara på småskärmar) */}
           <ul className="social-icons">
             <li>
@@ -114,6 +115,22 @@ const LokstalletHeader = () => {
 
 
         </nav>
+
+          <ul className="lokstalletheader-social-icons">
+            <li>
+              <a href="https://www.facebook.com/lokstallet.skovde" title="Facebook">
+                <i className="fab fa-facebook"></i>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.instagram.com/lokstallet.skovde/"
+                title="Instagram"
+              >
+                <i className="fab fa-instagram"></i>
+              </a>
+            </li>
+          </ul>
       </div>
     </header>
   );

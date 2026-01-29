@@ -9,6 +9,25 @@
   box-shadow: inset 0 0 30px rgba(0,0,0,0.3); /* ger lite djup */
 }
 
+.lokstalletheader-social-icons {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: flex;
+  gap: 14px;
+}
+
+.lokstalletheader-social-icons li a {
+  font-size: 2rem; /* större ikoner */
+  color: #d7c7a8;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.lokstalletheader-social-icons li a:hover {
+  color: #b79c62;
+  transform: scale(1.2);
+}
+
 
 /* --- INNER --- */
 .header-inner {

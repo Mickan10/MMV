@@ -103,7 +103,7 @@ const Lokstallet = () => {
               <h2>På scen hos oss</h2>
             </div>
 
-            <Link to="/evenemang-lokstallet" className="home-event-btn">
+            <Link to="https://billetto.se/search?text=lokstallet" className="home-event-btn">
               Se alla evenemang
             </Link>
           </div>
