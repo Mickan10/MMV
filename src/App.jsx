@@ -1,16 +1,5 @@
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 
-import Home from "./pages/Home.jsx";
-
-// MMV-sidor
-import Events from "./pages/Events.jsx";
-import MmvEvent from "./pages/MmvEvent.jsx";
-import About from "./pages/About.jsx";
-import Arkiv from "./pages/Arkiv.jsx";
-import FAQ from "./pages/FAQ.jsx";
-import Contact from "./pages/Contact.jsx";
-import Bandpages from "./pages/Bandpages.jsx";
-
 // Lokstallet-sidor
 import Lokstallet from "./pages/Lokstallet.jsx";
 import BokaLokstallet from "./pages/BokaLokstallet.jsx";
@@ -22,22 +11,9 @@ import KontaktLokstallet from "./pages/KontaktLokstallet.jsx";
 import Login from "./pages/Login.jsx";
 import EventAdmin from "./pages/EventAdmin.jsx";
 
-import Header from "./components/Header.jsx";
-import Footer from "./components/Footer.jsx";
-
 import LokstalletHeader from "./components/LokstalletHeader.jsx";
 import LokstalletFooter from "./components/LokstalletFooter.jsx";
 
-// Layout för MMV
-function MMVLayout({ children }) {
-  return (
-    <>
-      <Header />
-      <main>{children}</main>
-      <Footer />
-    </>
-  );
-}
 
 // Layout för Lokstallet
 function LokstalletLayout({ children }) {
@@ -48,11 +24,6 @@ function LokstalletLayout({ children }) {
       <LokstalletFooter />
     </>
   );
-}
-
-// Layout utan header/footer (t.ex. för startsidan)
-function NoLayout({ children }) {
-  return <>{children}</>;
 }
 
 export default function App() {

@@ -1,33 +1,22 @@
 /* --- HEADER --- */
 .lokstallet-header {
   width: 100%;
-  /*background: linear-gradient(135deg, #4B2E1F, #2F1E11, #5C3A24);*/
   background: #301e12;
-  font-family: 'Josefin Sans', sans-serif;
+  font-family: "Josefin Sans", sans-serif;
   position: relative;
   z-index: 100;
-  box-shadow: inset 0 0 30px rgba(0,0,0,0.3); /* ger lite djup */
-}
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.3);
 
-.lokstalletheader-social-icons {
-  list-style: none;
+  /* tar bort ev "ram" runt headern */
+  margin: 0 !important;
   padding: 0;
-  margin: 10px 0 0;
-  display: flex;
-  gap: 14px;
+  display: block;
 }
 
-.lokstalletheader-social-icons li a {
-  font-size: 2rem; /* större ikoner */
-  color: #d7c7a8;
-  transition: color 0.3s ease, transform 0.3s ease;
+/* Om något efter headern får margin-top: nolla det */
+.lokstallet-header + * {
+  margin-top: 0 !important;
 }
-
-.lokstalletheader-social-icons li a:hover {
-  color: #b79c62;
-  transform: scale(1.2);
-}
-
 
 /* --- INNER --- */
 .header-inner {
@@ -36,19 +25,35 @@
   justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
-  height: 60px; 
-  position: relative; 
+  height: 70px; /* lite högre så ikon/meny syns bra */
+  padding: 0 20px;
+  position: relative;
+}
+
+/* --- LOGGA --- */
+.header-logo {
+  height: 50px;
+  margin: 0;
+  display: block;
+}
+
+/* --- HÖGERDEL (burger + social) --- */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 /* --- MENY --- */
 .hero-nav {
   display: flex;
-  justify-content: center; /* centrera meny på desktop */
+  justify-content: center;
   gap: 3rem;
   transition: max-height 0.4s ease;
   box-shadow: none;
 }
 
+/* --- LÄNKLISTA --- */
 .links {
   display: flex;
   gap: 3rem;
@@ -76,7 +81,7 @@
   transform: translateX(-50%);
   width: 0%;
   height: 2px;
-  background-color: #B79C62;
+  background-color: #b79c62;
   transition: width 0.3s ease;
 }
 
@@ -91,7 +96,7 @@
   border: none;
   padding: 0;
   margin: 0;
-  display: flex;
+  display: none; /* visas i mobil media query */
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -101,43 +106,15 @@
 
 .ham-icon-img {
   display: block;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
-  margin: 0;
 }
 
-.close-icon {
-  display: block;
-  margin: 1rem auto; /* centrerar horisontellt */
-  width: 30px;
-  cursor: pointer;
-}
-
-/* Close-ikon inne i fullscreen-menyn */
-.hero-nav .close-icon {
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-  z-index: 3001;
-}
-
-.hero-nav .close-icon.centered {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
-}
-
-/* --- SOCIAL ICONS --- */
+/* --- SOCIAL ICONS (mobil) --- */
 .social-icons {
-  display: flex;
-  gap: 12px;
+  display: none; /* visas i mobil media query */
+  gap: 10px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -145,20 +122,25 @@
 
 .social-icons li a {
   color: #d7c7a8;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   text-decoration: none;
+}
+
+.social-icons li a:hover {
+  color: #b79c62;
+  transform: scale(1.1);
 }
 
 /* --- STORA SKÄRMAR --- */
 @media (min-width: 993px) {
-   /* Dölj logga + burger + sociala medier */
+  /* Dölj logga + burger + sociala medier */
   .ham-icon,
   .header-logo,
   .social-icons {
     display: none !important;
   }
 
-  /* Menyn centrerad */
+  /* Menyn centrerad på desktop */
   .hero-nav {
     display: flex;
     justify-content: center;
@@ -172,48 +154,20 @@
     margin: 0 auto;
   }
 
-  .links { flex-direction: row; gap: 3rem; }
+  .links {
+    flex-direction: row;
+    gap: 3rem;
+  }
 }
 
 /* --- MOBIL / TABLET --- */
 @media (max-width: 992px) {
-  .header-inner {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center;
-    height: 70px; 
-    padding: 0 20px;
-  }
-
-  .header-logo {
-    height: 50px;
-    margin: 0;
-  }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 65px; /* mellanrum mellan burger & social media */
-  }
-
   .ham-icon {
     display: flex;
-    background: none;
-    border: none;
-    cursor: pointer;
   }
 
-  .ham-icon-img {
-    width: 36px;
-    height: 36px;
-    object-fit: contain;
-  }
-
-   .social-icons {
+  .social-icons {
     display: flex;
-    gap: 10px;
-    margin: 0 40px;
-    padding: 0;
   }
 
   /* Fullscreen-menyn */
@@ -223,7 +177,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #2F1E11;
+    background-color: #2f1e11;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -239,31 +193,39 @@
 
   .links {
     flex-direction: column;
-    gap: 1rem;
-    text-align: left;
-    align-items: left;
+    gap: 1.2rem;
+    text-align: center;
+    align-items: center;
   }
 
   .links li a {
-    font-size: 1.5rem;
-    padding: 4px 0;
+    font-size: 1.8rem;
+    padding: 6px 0;
     display: block;
   }
 }
 
-/* --- EXTRA SMÅ (iPhone SE, 320px) --- */
+/* --- EXTRA SMÅ (iPhone SE / 320px) --- */
 @media (max-width: 400px) {
   .header-inner {
-    height: 40px;
-    padding: 0 0px;
+    height: 64px;     /* var 40 – gjorde att ikoner “försvann” */
+    padding: 0 12px;
+  }
+
+  .header-right {
+    gap: 12px;
   }
 
   .header-logo {
-    height: 30px;
+    height: 38px;
   }
 
   .ham-icon-img {
-    width: 28px; 
-    height: 28px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .social-icons li a {
+    font-size: 1.5rem;
   }
 }

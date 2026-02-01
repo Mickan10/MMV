@@ -59,7 +59,7 @@ const Lokstallet = () => {
       return date >= today;
     });
 
-    const featuredEvents = visibleEvents.slice(0, 3);
+    const featuredEvents = visibleEvents.slice(0, 6);
 
 
   return (

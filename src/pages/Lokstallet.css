@@ -22,6 +22,14 @@ body {
   color: var(--lok-text-main);
 }
 
+section, header, footer {
+  margin: 0 !important;
+}
+
+section h1, section h2, section h3, section p {
+  margin-top: 0;
+}
+
 h1,
 h2,
 h3,
@@ -47,8 +55,9 @@ img {
 
 .section-fade {
   opacity: 0;
-  transform: translateY(35px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(12px); /* var 35px: kändes som glapp */
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
 }
 
 .section-fade.animate {
@@ -183,7 +192,7 @@ img {
 
 #home-events {
   background: var(--lok-primary);
-  padding: 60px 20px 90px; /* MINDRE padding upptill */
+  padding: 50px 20px 50px; /* var 60 20 90: gav glapp-känsla */
   border-bottom: 2px solid var(--lok-accent);
   box-shadow: inset 0 0 60px rgba(0,0,0,0.35);
   border-radius: 0;
@@ -240,7 +249,7 @@ img {
 
 /* Eventkort – LÄGRE höjd */
 .home-event {
-  flex: 0 0 290px; /* lite smalare */
+  flex: 0 0 290px;
   background: #e7e3e3;
   border-radius: 24px 24px 0 0;
   overflow: hidden;
@@ -248,7 +257,7 @@ img {
   transition: 0.25s ease;
   display: flex;
   flex-direction: column;
-  height: 420px; /* SÄNK KORTENS TOTALHÖJD */
+  height: 420px;
 }
 
 .home-event:hover {
@@ -320,6 +329,10 @@ img {
   color: #1c140e;
   font-weight: 600;
   transition: 0.25s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .homes-btn:hover {
   background: #c8a96b;
@@ -362,10 +375,10 @@ img {
 
 .lokal-section {
   background: var(--lok-secondary);
-  padding: 0 0px 0px; /* smalare sektion */
+  padding: 0; /* sektionerna sitter tight */
   display: grid;
   grid-template-columns: 1fr 1.7fr;
-  gap: 0px;
+  gap: 0;
   align-items: center;
 }
 
@@ -420,12 +433,12 @@ img {
 
 .lokal-center {
   width: 100%;
-  height: auto; /* låt sektionen styra */
+  height: auto;
 }
 
 .lokal-image-wrap {
   width: 100%;
-  height: 450px;      /* <<< JUSTERA HÖJDEN HÄR (inte på sektionen) */
+  height: 450px;
   overflow: hidden;
   border-radius: 1px;
   position: relative;
@@ -440,54 +453,8 @@ img {
 }
 
 /* =====================================
-   MOBIL
+   RESPONSIVE
    ===================================== */
-
-@media (max-width: 900px) {
-  .lokal-section {
-    grid-template-columns: 1fr;
-    padding: 20px 20px 40px;
-  }
-
-  .lokal-image-wrap {
-    height: 300px;
-  }
-
-    .lokal-left {
-    max-width: 100%;
-    padding: 0;
-    text-align: left;
-  }
-}
-
-@media (max-width: 480px) {
-  .lokal-section {
-    padding: 20px 16px 30px;
-  }
-
-  .lokal-image-wrap {
-    height: 240px;
-  }
-}
-
-@media (max-width: 480px) {
-  .lokal-section {
-    padding: 20px 16px 30px;
-  }
-
-  .lokal-image-wrap {
-    height: 240px; 
-  }
-
-  .inner-deco {
-    border-radius: 0 20px 20px 0;
-  }
-
-  .inner-deco h3 {
-    font-size: 1.2rem;
-    font-weight: 500;
-  }
-}
 
 @media (max-width: 1024px) {
   .welcome-section {
@@ -497,13 +464,30 @@ img {
   .home-events-container,
   .lokal-section {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 18px; /* var 40: gav mycket luft */
+  }
+}
+
+@media (max-width: 900px) {
+  .lokal-section {
+    grid-template-columns: 1fr;
+    padding: 20px 20px 20px; /* var 20 20 40 */
+  }
+
+  .lokal-image-wrap {
+    height: 300px;
+  }
+
+  .lokal-left {
+    max-width: 100%;
+    padding: 0;
+    text-align: left;
   }
 }
 
 @media (max-width: 768px) {
   #home-events {
-    padding: 60px 16px;
+    padding: 50px 16px 50px;
   }
 
   .home-event {
@@ -533,7 +517,26 @@ img {
     flex: 0 0 230px;
   }
 
-  .lokal-image-wrap img {
-    height: 300px;
+  .lokal-section {
+    padding: 20px 16px 20px;
   }
+
+  .lokal-image-wrap {
+    height: 240px;
+  }
+
+  .inner-deco {
+    border-radius: 0 20px 20px 0;
+  }
+
+  .inner-deco h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+}
+
+/* DÖDAR global section-card-stil */
+.lokstallet-main > section {
+  margin-bottom: 0 !important;  /* tar bort glappet från global regeln */
+  border-radius: 0 !important;  /* tar bort card-rounding från global regeln */
 }
