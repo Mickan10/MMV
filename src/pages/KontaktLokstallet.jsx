@@ -52,7 +52,7 @@ const KontaktLokstallet = () => {
       <div className="kontakt-left">
         <h2>Kontakt</h2>
         <p>Välkommen att kontakta oss för bokning eller frågor.</p>
-        <p><strong>E-post:</strong> info@lokstallet.se</p>
+        <p><strong>E-post:</strong> info@lokstallett.se</p>
         <p><strong>Adress:</strong> Drottninggatan 17, 541 51 Skövde</p>
       </div>
 

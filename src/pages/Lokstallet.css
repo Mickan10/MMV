@@ -418,7 +418,7 @@ img {
   margin-top: 8px;
   display: inline-flex;
   padding: 12px 24px;
-  background: var(--lok-accent);
+  background: var(--lok-primary);
   color: #1c140e;
   border-radius: 999px;
   font-weight: 600;

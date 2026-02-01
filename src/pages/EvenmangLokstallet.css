@@ -82,7 +82,7 @@
   margin-bottom: 12px;
 }
 
-/* Datum, tid och plats som chips */
+/* Datum, tid och plats*/
 .event-date {
   display: flex;
   flex-wrap: wrap;
