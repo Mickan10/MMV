@@ -48,7 +48,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid #d6c7a3;
   position: relative;
-  align-items: stretch; /* höger & vänster lika höga */
+  align-items: cover;
 }
 
 .event-card:hover {
@@ -58,10 +58,9 @@
 
 /* Bild tar hela vänstersidan */
 .event-img {
-  width: 50%;
-  height: auto;              
+  width: 45%;
+  height: auto;
 }
-
 
 /* Höger textdel */
 .event-content {
@@ -82,7 +81,7 @@
   margin-bottom: 12px;
 }
 
-/* Datum, tid och plats*/
+/* Datum, tid och plats */
 .event-date {
   display: flex;
   flex-wrap: wrap;
@@ -101,24 +100,59 @@
   display: inline-block;
 }
 
-.event-description{
+/* ✅ Kort text som standard */
+.event-description {
   display: -webkit-box;
-  -webkit-line-clamp: 3;     /* antal rader */
+  -webkit-line-clamp: 4;     /* antal rader när stängt */
   -webkit-box-orient: vertical;
   overflow: hidden;
+  margin-bottom: 4px;
+}
+
+/* ✅ Full text när öppet */
+.event-description.is-open {
+  -webkit-line-clamp: unset;
+  display: block;
+  overflow: visible;
+}
+
+/* ✅ Mer information-knapp */
+.more-info-btn {
+  margin-top: 6px;
+  padding: 14px ;            
+  background: transparent;
+  border: 1px solid #7a5c2e;
+  color: #7a5c2e;
+  border-radius: 999px;         /* exakt samma "rounded" känsla */
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+}
+
+
+.more-info-btn:hover {
+  background: rgba(122, 92, 46, 0.08);
 }
 
 .bt-l2 {
-    margin-top: 15px;
-    display: inline-block;
-    padding: 14px 32px;
-    background: #38220c;
-    color: #fff;
-    text-decoration: none;
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 600;
-    border-radius: 8px;
-    align-self: center;
+  margin-top: 12px;
+  display: inline-block;
+  padding: 13px 25px;
+  background: #38220c;
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+  border-radius: 8px;
+  align-self: center;
+  border: none;
+  cursor: pointer;
+  
 }
 
 .bt-l2:hover {
@@ -127,6 +161,13 @@
 
 .event-content a {
   text-decoration: none;
+}
+
+.billetto-widget-wrap {
+  margin-top: 14px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 /* Mobilanpassning */
@@ -142,40 +183,47 @@
   }
 
   .event-content {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .evenemang-title{
+  .evenemang-title {
     font-size: 2.2rem;
   }
 
   .event-heading {
-  text-align: left; 
-  white-space: normal;       
-  word-break: keep-all;    
-  min-width: 280px; 
-}
+    text-align: left; 
+    white-space: normal;
+    word-break: keep-all;
+    min-width: 280px; 
+  }
 
-  .evenemang-intro{
+  .evenemang-intro {
     border-bottom: 2px solid #B79C62;
     align-items: flex-start;
   }
 
   .event-date {
-    flex-direction: column;  
-    align-items: flex-start; 
-    gap: 1px;                
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
     border-bottom: #7a5c2e 1px solid;
     margin-bottom: 18px;
   }
 
-   .event-date-item {
-    display: block; 
+  .event-date-item {
+    display: block;
   }
 
-  .btn-l2 {
+  .more-info-btn {
     align-self: center;
+    width: 100%;
+    text-align: center;
+  }
+
+  .billetto-widget-wrap {
+    justify-content: center;
+    width: 100%;
   }
 }

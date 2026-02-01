@@ -30,7 +30,7 @@ export default function LokstalletFooter() {
             <br />
             541 51 Skövde
             <br />
-            E-post: <a href="mailto:info@lokstallet.se">info@lokstallet.se</a>
+            E-post: <a href="mailto:info@lokstallet.se">info@lokstallett.se</a>
           </p>
         </div>
 

@@ -29,8 +29,10 @@ const KontaktLokstallet = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Serverfel: ${response.statusText}`);
+        const err = await response.json().catch(() => null);
+        throw new Error(err?.message || `Serverfel: ${response.status}`);
       }
+
 
       const result = await response.json();
 
