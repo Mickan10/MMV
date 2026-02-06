@@ -2,10 +2,10 @@
 .lokstallet-footer {
   background: linear-gradient(135deg, #2d2c2c, #4a463f);
   color: #f5f0e6;
-  padding: 80px 70px 60px;
+  padding: 30px 70px 30px;
   font-family: 'Josefin Sans', sans-serif;
   font-weight: 400;
-  margin-bottom: 160px;
+  margin-bottom: 0px;
 }
 
 .lokstallet-footer-container {
@@ -13,7 +13,7 @@
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
-  gap: 40px; /* Ökat gap för jämnt avstånd mellan sections */
+  gap: 0px; /* Ökat gap för jämnt avstånd mellan sections */
   justify-content: space-between;
   align-items: flex-start;
   position: relative;

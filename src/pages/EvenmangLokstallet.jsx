@@ -58,7 +58,31 @@ const EvenemangLokstallet = () => {
         };
       });
 
-      eventList.sort((a, b) => new Date(a.date) - new Date(b.date));
+      const toMinutes = (t) => {
+  if (!t) return 9999; // om tid saknas hamnar den sist
+  const s = String(t).trim().replace(".", ":"); // stöd "19.30" -> "19:30"
+  const [hh, mm] = s.split(":");
+  const h = Number(hh);
+  const m = Number(mm ?? 0);
+  if (Number.isNaN(h) || Number.isNaN(m)) return 9999;
+  return h * 60 + m;
+};
+
+eventList.sort((a, b) => {
+  // sortera på datum först
+  const da = a.date instanceof Date ? a.date : new Date(a.date);
+  const db = b.date instanceof Date ? b.date : new Date(b.date);
+
+  da.setHours(0, 0, 0, 0);
+  db.setHours(0, 0, 0, 0);
+
+  const diff = da - db;
+  if (diff !== 0) return diff;
+
+  // samma datum -> sortera på tid
+  return toMinutes(a.time) - toMinutes(b.time);
+});
+
       setEvents(eventList);
       setLoading(false);
     } catch (err) {
@@ -99,10 +123,11 @@ const EvenemangLokstallet = () => {
 
             return (
               <article key={event.id} className={`event-card ${isOpen ? "open" : ""}`}>
-                {event.image && (
-                  <img src={event.image} alt={event.title} className="event-img" />
-                )}
-
+              {event.image && (
+                <div className="event-image-wrap">
+                  <img src={event.image} alt={event.title} />
+                </div>
+              )}
                 <div className="event-content">
                   <h3 className="event-heading">{event.title}</h3>
 
@@ -161,7 +186,7 @@ const EvenemangLokstallet = () => {
                   {/* ✅ Fallback om billettoId saknas: visa din gamla knapp om link finns */}
                   {!billettoId && event.link && (
                     <a href={event.link} target="_blank" rel="noopener noreferrer">
-                      <button className="bt-l2">Köp biljetter</button>
+                      <button className="bt-l2">Skaffa biljetter</button>
                     </a>
                   )}
                 </div>

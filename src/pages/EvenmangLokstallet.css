@@ -2,7 +2,7 @@
   background-color: #c1b6a8;
   color: #2e2e2e;
   font-family: 'Josefin Sans', sans-serif;
-  padding: 60px 20px;
+  padding: 40px 20px;
   display: flex;
   justify-content: center; 
 }
@@ -36,7 +36,7 @@
 .event-grid {
   display: flex;
   flex-direction: column;
-  gap: 35px;
+  gap: 20px;
 }
 
 .event-card {
@@ -44,22 +44,26 @@
   background: #fffaf0;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid #d6c7a3;
   position: relative;
   align-items: cover;
-}
-
-.event-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+  height: auto;
 }
 
 /* Bild tar hela vänstersidan */
-.event-img {
-  width: 45%;
+.event-image-wrap {
+  width: 520px;        
+  height: auto;         
+  overflow: hidden;
+  border-radius: 0px;  
+  flex: 0 0 auto;
+}
+
+.event-image-wrap img {
+  width: 100%;
   height: auto;
+  object-fit: contain;   
+  display: block;
 }
 
 /* Höger textdel */
@@ -106,7 +110,7 @@
   -webkit-line-clamp: 4;     /* antal rader när stängt */
   -webkit-box-orient: vertical;
   overflow: hidden;
-  margin-bottom: 4px;
+  margin-bottom: 1px;
 }
 
 /* ✅ Full text när öppet */
@@ -119,7 +123,7 @@
 /* ✅ Mer information-knapp */
 .more-info-btn {
   margin-top: 6px;
-  padding: 14px ;            
+  padding: 10px;            
   background: transparent;
   border: 1px solid #7a5c2e;
   color: #7a5c2e;
@@ -136,31 +140,49 @@
 
 
 .more-info-btn:hover {
-  background: rgba(122, 92, 46, 0.08);
+  background: rgba(234, 231, 226, 0.08);
 }
 
 .bt-l2 {
-  margin-top: 12px;
-  display: inline-block;
-  padding: 13px 25px;
-  background: #38220c;
-  color: #fff;
-  text-decoration: none;
+  margin-top: 15px;
+  padding:  5px 20px;            
+  background: #bfa567;
+  border: 1px solid #7a5c2e;
+  color: #f9f9f9;
+  border-radius: 999px;         
   font-family: 'Josefin Sans', sans-serif;
-  font-weight: 400;
-  border-radius: 8px;
-  align-self: center;
-  border: none;
+  font-weight: 500;
+  font-size: 1rem;
   cursor: pointer;
-  
+  text-align: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .bt-l2:hover {
-  background: #403B3B;
+  background: #bfa567;
+  border: 1px solid #a08750;
 }
 
-.event-content a {
+a {
   text-decoration: none;
+}
+
+.more-info-btn,
+.bt-l2 {
+  outline: none;
+  box-shadow: none;
+}
+
+.more-info-btn:hover,
+.more-info-btn:focus,
+.more-info-btn:focus-visible,
+.bt-l2:hover,
+.bt-l2:focus,
+.bt-l2:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .billetto-widget-wrap {
@@ -176,12 +198,16 @@
     flex-direction: column;
   }
 
-  .event-img {
+    .event-image-wrap {
     width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #d6c7a3;
+    height: 200px;          
+    background: #2e2419;     
   }
 
+  .event-image-wrap img {
+    object-fit: contain;        
+    background: transparent;
+  }
   .event-content {
     display: flex;
     flex-direction: column;

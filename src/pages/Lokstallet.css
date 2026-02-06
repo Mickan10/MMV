@@ -388,20 +388,28 @@ img {
   padding: 40px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 5px;
   max-width: 490px;
 }
 
 .inner-deco {
-  background: rgba(56, 34, 12, 0.9);
+    background: radial-gradient(
+      circle at top left,
+      rgba(183, 156, 98, 0.16),
+      transparent 55%
+    ),
+    var(--lok-primary);
   padding: 8px 18px;
   border-radius: 0 24px 24px 0;
   border-left: 4px solid var(--lok-accent);
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .inner-deco h3 {
   color: #f7efe4;
   font-size: 1.3rem;
+  margin: 6px;
   font-weight: 800;
   text-transform: uppercase;
 }
@@ -440,7 +448,7 @@ img {
   width: 100%;
   height: 450px;
   overflow: hidden;
-  border-radius: 1px;
+  border-radius: 14px 0 0 14px;
   position: relative;
   line-height: 0;
 }
