@@ -1,10 +1,10 @@
 .evenemang-lokstallet {
   background-color: #c1b6a8;
   color: #2e2e2e;
-  font-family: 'Josefin Sans', sans-serif;
+  font-family: "Josefin Sans", sans-serif;
   padding: 40px 20px;
   display: flex;
-  justify-content: center; 
+  justify-content: center;
 }
 
 .evenemang-container {
@@ -18,7 +18,7 @@
   font-size: 2.9em;
   margin-bottom: 10px;
   font-family: "Playfair Display";
-  font-weight: 900;         
+  font-weight: 900;
   text-transform: uppercase;
   color: #4b3b2b;
 }
@@ -33,56 +33,59 @@
   text-align: center;
 }
 
+/* GRID: 2 och 2 på rad */
 .event-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
 }
 
+/* Stående kort */
 .event-card {
   display: flex;
+  flex-direction: column;
   background: #fffaf0;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #d6c7a3;
   position: relative;
-  align-items: cover;
-  height: auto;
+  height: 100%;
 }
 
-/* Bild tar hela vänstersidan */
+/* Bild överst */
 .event-image-wrap {
-  width: 520px;        
-  height: auto;         
+  width: 100%;
+  height: 310px; 
   overflow: hidden;
-  border-radius: 0px;  
-  flex: 0 0 auto;
+  background: #2e2419;
 }
 
 .event-image-wrap img {
   width: 100%;
-  height: auto;
-  object-fit: contain;   
+  height: 100%;
+  object-fit: cover; 
   display: block;
 }
 
-/* Höger textdel */
+/* Innehåll under bilden */
 .event-content {
   flex: 1;
-  padding: 25px 30px;
+  padding: 22px 22px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   text-align: left;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .event-heading {
-  font-size: 2.1em;
+  font-size: 30px;
   font-weight: 900;
   font-family: "Playfair Display";
   color: #4b3b2b;
   margin-bottom: 12px;
+  margin-left: 10px;
+  line-height: 1.1;
 }
 
 /* Datum, tid och plats */
@@ -90,8 +93,10 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 18px;
-  justify-content: center;
+  margin-bottom: 14px;
+  justify-content: flex-start;
+  width: 100%;
+  padding-bottom: 4px;
   border-bottom: #7a5c2e 1px solid;
 }
 
@@ -107,10 +112,11 @@
 /* ✅ Kort text som standard */
 .event-description {
   display: -webkit-box;
-  -webkit-line-clamp: 4;     /* antal rader när stängt */
+  -webkit-line-clamp: 4; 
   -webkit-box-orient: vertical;
   overflow: hidden;
-  margin-bottom: 1px;
+  margin-bottom: 6px;
+  width: 100%;
 }
 
 /* ✅ Full text när öppet */
@@ -123,34 +129,34 @@
 /* ✅ Mer information-knapp */
 .more-info-btn {
   margin-top: 6px;
-  padding: 10px;            
+  padding: 10px;
   background: transparent;
   border: 1px solid #7a5c2e;
   color: #7a5c2e;
-  border-radius: 999px;         /* exakt samma "rounded" känsla */
-  font-family: 'Josefin Sans', sans-serif;
+  border-radius: 999px;
+  font-family: "Josefin Sans", sans-serif;
   font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
   text-align: center;
-  width: 40%;
+  width: 100%;
   display: flex;
   justify-content: center;
 }
-
 
 .more-info-btn:hover {
   background: rgba(234, 231, 226, 0.08);
 }
 
+/* (fallback-knapp) */
 .bt-l2 {
-  margin-top: 15px;
-  padding:  5px 20px;            
+  margin-top: 14px;
+  padding: 8px 20px;
   background: #bfa567;
   border: 1px solid #7a5c2e;
   color: #f9f9f9;
-  border-radius: 999px;         
-  font-family: 'Josefin Sans', sans-serif;
+  border-radius: 999px;
+  font-family: "Josefin Sans", sans-serif;
   font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
@@ -169,6 +175,7 @@ a {
   text-decoration: none;
 }
 
+/* Inga outlines/box-shadows på knappar */
 .more-info-btn,
 .bt-l2 {
   outline: none;
@@ -185,6 +192,7 @@ a {
   box-shadow: none;
 }
 
+/* ✅ Billetto */
 .billetto-widget-wrap {
   margin-top: 14px;
   width: 100%;
@@ -192,60 +200,45 @@ a {
   justify-content: center;
 }
 
-/* Mobilanpassning */
-@media (max-width: 768px) {
-  .event-card {
-    flex-direction: column;
-  }
+.billetto-widget-wrap,
+a:has(.bt-l2) {
+  margin-top: auto;
+}
 
-    .event-image-wrap {
-    width: 100%;
-    height: 200px;          
-    background: #2e2419;     
-  }
-
-  .event-image-wrap img {
-    object-fit: contain;        
-    background: transparent;
-  }
-  .event-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+/* Responsivt: 1 kolumn på mindre skärmar */
+@media (max-width: 900px) {
+  .event-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .evenemang-title {
     font-size: 2.2rem;
   }
 
+  .event-image-wrap {
+    height: 200px;
+  }
+
   .event-heading {
-    text-align: left; 
+    font-size: 1.8rem;
     white-space: normal;
     word-break: keep-all;
-    min-width: 280px; 
   }
 
   .evenemang-intro {
-    border-bottom: 2px solid #B79C62;
-    align-items: flex-start;
+    border-bottom: 2px solid #b79c62;
+    padding-bottom: 18px;
   }
 
   .event-date {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1px;
-    border-bottom: #7a5c2e 1px solid;
-    margin-bottom: 18px;
-  }
-
-  .event-date-item {
-    display: block;
+    gap: 6px;
   }
 
   .more-info-btn {
-    align-self: center;
     width: 100%;
-    text-align: center;
   }
 
   .billetto-widget-wrap {

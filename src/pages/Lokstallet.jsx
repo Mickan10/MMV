@@ -126,7 +126,7 @@ eventList.sort((a, b) => {
               <h2>På scen hos oss</h2>
             </div>
 
-            <Link to="/evenemang-lokstallet" className="homes-btn">
+            <Link to="/evenemang-lokstallet" className="home-event-btn">
               Se fler evenemang
             </Link>
           </div>
@@ -191,14 +191,14 @@ eventList.sort((a, b) => {
       <section className="lokal-section section-fade">
         <div className="lokal-left">
           <div className="inner-deco">
-            <h3>Musik. Evenemang. Möten.</h3>
+            <h3>Lokalen</h3>
           </div>
             <p>
-            Lokstallet är en evenemangs och kulturscen i centrala Skövde, skapad av arrangörer för arrangörer. Lokalen är flexibel och fullt utrustad med kapacitet för upp till 500 stående gäster, och byggd för att fungera för konserter, möten och egna arrangemang.
+          Lokalen är utrustad med en större scen på 5 x 5 meter som kan byggas ut till 7 x 6 meter. Det finns även möjlighet att dela av lokalen och bygga en mindre scen längs långsidan. I lokalen finns bar, garderob, kök, projektorer och sittplatser samt en mindre konferensdel på bottenplan. Teknik och ytor är utformade för att fungera praktiskt både för arrangörer och publik.
             </p>
             <p>
-            Ambitionen är att skapa en plats där det är enkelt att genomföra idéer, oavsett om det handlar om en publik konsert, ett företagsevent eller ett privat arrangemang.
-            Vill du använda Lokstallet för ett eget arrangemang är du välkommen att kontakta oss.
+          Bord och sittplatser möbleras utifrån behov och arrangemangets utformning. Det går att hyra hela lokalen, bottenplanet eller köket separat beroende på upplägg.
+          Rummet kan möbleras och anpassas efter arrangemanget, från konserter och klubbar till konferenser och privata tillställningar.
             </p>
           {/*<Link to="/lokaler" className="lokal-btn">
             Utforska lokalerna

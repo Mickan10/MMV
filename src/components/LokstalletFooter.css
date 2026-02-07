@@ -24,12 +24,13 @@
   position: absolute;
   top: 0;
   left: 0;
-  padding-left: 0;      /* Mindre padding */
-  margin-left: -20px;   /* Flyttar loggan 20px utanför vänsterkanten */
+  padding-left: 0;      
+  margin-left: -20px;
+  margin-top: 30px;
 }
 
 .lokstallet-logo-fot {
-  height: 220px;
+  height: 200px;
   width: auto;
   display: block;
   filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.5));
@@ -43,8 +44,8 @@
   align-items: center;
   text-align: center;
   transition: background-color 0.3s ease;
-  margin: 0;             /* Nollställ eventuell marginal */
-  padding: 0 10px;       /* Samma padding runtom för jämnt avstånd */
+  margin: 0;           
+  padding: 0;       
   box-sizing: border-box;
 }
 

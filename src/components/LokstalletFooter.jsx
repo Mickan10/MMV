@@ -14,10 +14,9 @@ export default function LokstalletFooter() {
         <div className="lokstallet-footer-section">
           <h3>Om Lokstallet</h3>
           <p>
-            Lokstallet är en unik lokal för evenemang, fester och
-            minnesvärda stunder. Vi erbjuder en personlig och flexibel miljö
-            som passar både små och stora sällskap. Välkommen att boka och
-            skapa oförglömliga minnen hos oss.
+          Lokstallet är en evenemangs och kulturscen i centrala Skövde, skapad av arrangörer för arrangörer. Lokalen är flexibel och fullt utrustad med kapacitet för upp till 500 stående gäster, och byggd för att fungera för konserter, möten och egna arrangemang.
+          Ambitionen är att skapa en plats där det är enkelt att genomföra idéer, oavsett om det handlar om en publik konsert, ett företagsevent eller ett privat arrangemang.
+          Vill du använda Lokstallet för ett eget arrangemang är du välkommen att kontakta oss.
           </p>
         </div>
 
