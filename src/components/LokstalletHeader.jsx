@@ -2,8 +2,8 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import logga from "../assets/headerlok.png";
 import "./LokstalletHeader.css";
-import menuIcon from "../assets/menuopen.png";
-import closeIcon from "../assets/closed.png";
+import menuIcon from "../assets/menuopen.svg";
+import closeIcon from "../assets/closed.svg";
 
 const LokstalletHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -15,22 +15,25 @@ const LokstalletHeader = () => {
     <header className="lokstallet-header">
       <div className="header-inner">
         {/* Logga (visas på mobil/tablet, döljs på desktop via CSS) */}
-        <img src={logga} alt="Lokstallet logo" className="header-logo" />
+        <NavLink to="/lokstallet" onClick={closeMenu} className="logo-link">
+        <img src={logga} alt="Lokstallet – startsida" className="header-logo" />
+        </NavLink>
 
         <div className="header-right">
           {/* Hamburgarikonen (mobil/tablet) */}
-          <button
-            className="ham-icon"
-            onClick={toggleMenu}
-            aria-label={menuOpen ? "Stäng meny" : "Öppna meny"}
-            aria-expanded={menuOpen}
-          >
-            <img
-              src={menuOpen ? closeIcon : menuIcon}
-              alt=""
-              className="ham-icon-img"
-            />
-          </button>
+        <button
+          className={`ham-icon ${menuOpen ? "is-open" : ""}`}
+          onClick={toggleMenu}
+          aria-label={menuOpen ? "Stäng meny" : "Öppna meny"}
+          aria-expanded={menuOpen}
+        >
+          <img
+            src={menuOpen ? closeIcon : menuIcon}
+            alt=""
+            className="ham-icon-img"
+          />
+        </button>
+
 
           {/* Sociala medier (mobil/tablet) */}
           <ul className="social-icons">

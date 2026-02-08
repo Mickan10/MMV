@@ -6,12 +6,11 @@
   position: relative;
   z-index: 100;
   box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.3);
-
-  /* tar bort ev "ram" runt headern */
   margin: 0 !important;
   padding: 0;
   display: block;
 }
+
 
 /* Om något efter headern får margin-top: nolla det */
 .lokstallet-header + * {
@@ -25,7 +24,7 @@
   justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
-  height: 70px; /* lite högre så ikon/meny syns bra */
+  height: 70px; 
   padding: 0 20px;
   position: relative;
 }
@@ -96,7 +95,7 @@
   border: none;
   padding: 0;
   margin: 0;
-  display: none; /* visas i mobil media query */
+  display: none; 
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -113,7 +112,7 @@
 
 /* --- SOCIAL ICONS (mobil) --- */
 .social-icons {
-  display: none; /* visas i mobil media query */
+  display: none; 
   gap: 10px;
   list-style: none;
   margin: 0;
@@ -164,6 +163,20 @@
 @media (max-width: 992px) {
   .ham-icon {
     display: flex;
+    width: 44px;
+    height: 44px;
+  }
+
+    .ham-icon.is-open {
+    position: fixed;
+    top: 18px;          
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4000;
+  }
+
+  .ham-icon.is-open .ham-icon-img {
+    display: block;
   }
 
   .social-icons {
@@ -203,12 +216,20 @@
     padding: 6px 0;
     display: block;
   }
+
+    .lokstallet-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5000; 
+  }
 }
 
-/* --- EXTRA SMÅ (iPhone SE / 320px) --- */
+/* ---(iPhone SE / 320px) --- */
 @media (max-width: 400px) {
   .header-inner {
-    height: 64px;     /* var 40 – gjorde att ikoner “försvann” */
+    height: 64px;    
     padding: 0 12px;
   }
 
@@ -227,5 +248,9 @@
 
   .social-icons li a {
     font-size: 1.5rem;
+  }
+
+ main {
+    padding-top: 30px;
   }
 }

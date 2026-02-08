@@ -15,34 +15,28 @@ const Lokstallet = () => {
     const snapshot = await getDocs(collection(db, "events"));
     let eventList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-    // Sortera på datum om det finns
     const toMinutes = (t) => {
-  if (!t) return 9999; // saknar tid → sist samma dag
-  const s = String(t).trim().replace(".", ":"); // stöd "19.30"
-  const [hh, mm] = s.split(":");
-  const h = Number(hh);
-  const m = Number(mm ?? 0);
-  if (Number.isNaN(h) || Number.isNaN(m)) return 9999;
-  return h * 60 + m;
-};
+      if (!t) return 9999; // saknar tid → sist samma dag
+      const s = String(t).trim().replace(".", ":"); // stöd "19.30"
+      const [hh, mm] = s.split(":");
+      const h = Number(hh);
+      const m = Number(mm ?? 0);
+      if (Number.isNaN(h) || Number.isNaN(m)) return 9999;
+      return h * 60 + m;
+    };
 
-eventList.sort((a, b) => {
-  const da =
-    a.date?.toDate ? a.date.toDate() : new Date(a.date);
-  const db =
-    b.date?.toDate ? b.date.toDate() : new Date(b.date);
+    eventList.sort((a, b) => {
+      const da = a.date?.toDate ? a.date.toDate() : new Date(a.date);
+      const dbb = b.date?.toDate ? b.date.toDate() : new Date(b.date);
 
-  // jämför bara datum (inte tid)
-  da.setHours(0, 0, 0, 0);
-  db.setHours(0, 0, 0, 0);
+      da.setHours(0, 0, 0, 0);
+      dbb.setHours(0, 0, 0, 0);
 
-  const diff = da - db;
-  if (diff !== 0) return diff;
+      const diff = da - dbb;
+      if (diff !== 0) return diff;
 
-  // samma datum → sortera på tid
-  return toMinutes(a.time) - toMinutes(b.time);
-});
-
+      return toMinutes(a.time) - toMinutes(b.time);
+    });
 
     setEvents(eventList);
   };
@@ -73,27 +67,23 @@ eventList.sort((a, b) => {
     };
   }, []);
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-    const visibleEvents = events.filter((event) => {
-      if (event.hidden) return false;
+  const visibleEvents = events.filter((event) => {
+    if (event.hidden) return false;
 
-      const date =
-        event.date?.toDate ? event.date.toDate() : new Date(event.date);
+    const dateObj = event.date?.toDate ? event.date.toDate() : new Date(event.date);
+    return dateObj >= today;
+  });
 
-      return date >= today;
-    });
-
-    const featuredEvents = visibleEvents.slice(0, 6);
-
+  const featuredEvents = visibleEvents.slice(0, 6);
 
   return (
     <main className="lokstallet-main">
       {/* -------- HERO / WELCOME -------- */}
       <section className="welcome-section section-fade">
         <div className="welcome-left">
-          {/* Bakgrundsbild ligger i CSS, här visar vi logga/poster */}
           <img src={img9} alt="Lokstallet" className="welcome-logo" />
         </div>
 
@@ -101,19 +91,20 @@ eventList.sort((a, b) => {
           <p className="welcome-tagline">Musik. Evenemang. Möten.</p>
           <h3>Välkommen till Lokstallet</h3>
           <p>
-            Lokstallet är en evenemangs och kulturscen i centrala Skövde. Här arrangeras konserter, föreställningar, företagsevent och privata tillställningar i en lokal som byggts om för konserter, evenemang och möten.
-            Lokalen är öppen och flexibel med scen, bar, garderob, kök och modern teknik på plats. Rummet kan anpassas efter arrangemanget, från konserter och klubbar till konferenser och privata evenemang.
+            Lokstallet är en evenemangs och kulturscen i centrala Skövde. Här arrangeras konserter,
+            föreställningar, företagsevent och privata tillställningar i en lokal som byggts om för
+            konserter, evenemang och möten. Lokalen är öppen och flexibel med scen, bar, garderob,
+            kök och modern teknik på plats.
           </p>
           <p>
-            Utforska aktuella evenemang, hitta din nästa upplevelse eller upptäck möjligheterna med Lokstallet som eventlokal. Kontakta oss om du vill veta mer eller boka visning av lokalen.
+            Utforska aktuella evenemang, hitta din nästa upplevelse eller upptäck möjligheterna med
+            Lokstallet som eventlokal. Kontakta oss om du vill veta mer eller boka visning av lokalen.
           </p>
+
           <div className="welcome-actions">
             <Link to="/evenemang-lokstallet" className="hero-btn hero-btn-primary">
               Se aktuella evenemang
             </Link>
-          {/*}  <Link to="/lokaler" className="hero-btn hero-btn-ghost">
-              Läs mer om lokalerna
-            </Link>*/}
           </div>
         </div>
       </section>
@@ -134,55 +125,55 @@ eventList.sort((a, b) => {
           <div className="home-events">
             {featuredEvents.length === 0 && (
               <p className="no-events-text">
-                Just nu finns inga publicerade evenemang. Håll utkik – programmet
-                uppdateras löpande.
+                Just nu finns inga publicerade evenemang. Håll utkik – programmet uppdateras löpande.
               </p>
             )}
 
-            {featuredEvents.map((event) => (
-              <article key={event.id} className="home-event">
-                {event.image && (
-                  <img
-                    src={event.image}
-                    alt={event.title}
-                    className="home-event-img"
-                  />
-                )}
+            {featuredEvents.map((event) => {
+              const dateObj = event.date?.toDate ? event.date.toDate() : new Date(event.date);
 
-                <div className="home-event-content">
-                  <div className="home-event-date">
-                    <span className="home-event-day">
-                      {new Date(event.date).toLocaleDateString("sv-SE", {
-                        day: "2-digit",
-                      })}
-                    </span>
-                    <span className="home-event-month">
-                      {new Date(event.date)
-                        .toLocaleDateString("sv-SE", { month: "short" })
-                        .toUpperCase()}
-                    </span>
+              return (
+                <article key={event.id} className="home-event">
+                  {event.image && (
+                    <img src={event.image} alt={event.title} className="home-event-img" />
+                  )}
+
+                  <div className="home-event-content">
+                    <div className="home-event-date">
+                      <span className="home-event-day">
+                        {dateObj.toLocaleDateString("sv-SE", { day: "2-digit" })}
+                      </span>
+                      <span className="home-event-month">
+                        {dateObj
+                          .toLocaleDateString("sv-SE", { month: "short" })
+                          .toUpperCase()}
+                      </span>
+                    </div>
+
+                    <div className="home-event-info">
+                      <h3 className="home-event-title">{event.title}</h3>
+
+                      {event.description && (
+                        <p className="home-event-desc">
+                          {event.description.length > 120
+                            ? event.description.substring(0, 120) + "..."
+                            : event.description}
+                        </p>
+                      )}
+
+                      {/* ✅ Viktigt: skickar med vilket event vi klickade på */}
+                      <Link
+                        to="/evenemang-lokstallet"
+                        state={{ scrollTo: `event-${event.id}` }}
+                        className="homes-btn"
+                      >
+                        Läs mer & biljetter
+                      </Link>
+                    </div>
                   </div>
-
-                  <div className="home-event-info">
-                    <h3 className="home-event-title">{event.title}</h3>
-                    {event.description && (
-                      <p className="home-event-desc">
-                        {event.description.length > 120
-                          ? event.description.substring(0, 120) + "..."
-                          : event.description}
-                      </p>
-                    )}
-
-                    <Link
-                      to="/evenemang-lokstallet"
-                      className="homes-btn"
-                    >
-                      Läs mer & biljetter
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            ))}
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -193,16 +184,16 @@ eventList.sort((a, b) => {
           <div className="inner-deco">
             <h3>Lokalen</h3>
           </div>
-            <p>
-          Lokalen är utrustad med en större scen på 5 x 5 meter som kan byggas ut till 7 x 6 meter. Det finns även möjlighet att dela av lokalen och bygga en mindre scen längs långsidan. I lokalen finns bar, garderob, kök, projektorer och sittplatser samt en mindre konferensdel på bottenplan. Teknik och ytor är utformade för att fungera praktiskt både för arrangörer och publik.
-            </p>
-            <p>
-          Bord och sittplatser möbleras utifrån behov och arrangemangets utformning. Det går att hyra hela lokalen, bottenplanet eller köket separat beroende på upplägg.
-          Rummet kan möbleras och anpassas efter arrangemanget, från konserter och klubbar till konferenser och privata tillställningar.
-            </p>
-          {/*<Link to="/lokaler" className="lokal-btn">
-            Utforska lokalerna
-          </Link>*/}
+
+          <p>
+            Lokalen är utrustad med en större scen på 5 x 5 meter som kan byggas ut till 7 x 6 meter.
+            I lokalen finns bar, garderob, kök, projektorer och sittplatser samt en mindre
+            konferensdel på bottenplan.
+          </p>
+          <p>
+            Bord och sittplatser möbleras utifrån behov och arrangemangets utformning. Det går att
+            hyra hela lokalen, bottenplanet eller köket separat beroende på upplägg.
+          </p>
         </div>
 
         <div className="lokal-center">

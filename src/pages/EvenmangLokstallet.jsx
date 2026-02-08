@@ -1,17 +1,17 @@
 import "./EvenmangLokstallet.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { db } from "../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 
 const EvenemangLokstallet = () => {
+  const location = useLocation();
+
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // ✅ Håll koll på att Billetto-scriptet verkligen är laddat
   const [billettoReady, setBillettoReady] = useState(false);
-
-  // ✅ Håll koll på vilka event-kort som är öppna
   const [openIds, setOpenIds] = useState(() => new Set());
 
   const toggleOpen = (id) => {
@@ -22,6 +22,7 @@ const EvenemangLokstallet = () => {
     });
   };
 
+  // Ladda Billetto-scriptet
   useEffect(() => {
     const src = "https://billetto.se/widget.js";
     const existing = document.querySelector(`script[src="${src}"]`);
@@ -59,29 +60,27 @@ const EvenemangLokstallet = () => {
       });
 
       const toMinutes = (t) => {
-  if (!t) return 9999; // om tid saknas hamnar den sist
-  const s = String(t).trim().replace(".", ":"); // stöd "19.30" -> "19:30"
-  const [hh, mm] = s.split(":");
-  const h = Number(hh);
-  const m = Number(mm ?? 0);
-  if (Number.isNaN(h) || Number.isNaN(m)) return 9999;
-  return h * 60 + m;
-};
+        if (!t) return 9999;
+        const s = String(t).trim().replace(".", ":");
+        const [hh, mm] = s.split(":");
+        const h = Number(hh);
+        const m = Number(mm ?? 0);
+        if (Number.isNaN(h) || Number.isNaN(m)) return 9999;
+        return h * 60 + m;
+      };
 
-eventList.sort((a, b) => {
-  // sortera på datum först
-  const da = a.date instanceof Date ? a.date : new Date(a.date);
-  const db = b.date instanceof Date ? b.date : new Date(b.date);
+      eventList.sort((a, b) => {
+        const da = a.date instanceof Date ? a.date : new Date(a.date);
+        const dbb = b.date instanceof Date ? b.date : new Date(b.date);
 
-  da.setHours(0, 0, 0, 0);
-  db.setHours(0, 0, 0, 0);
+        da.setHours(0, 0, 0, 0);
+        dbb.setHours(0, 0, 0, 0);
 
-  const diff = da - db;
-  if (diff !== 0) return diff;
+        const diff = da - dbb;
+        if (diff !== 0) return diff;
 
-  // samma datum -> sortera på tid
-  return toMinutes(a.time) - toMinutes(b.time);
-});
+        return toMinutes(a.time) - toMinutes(b.time);
+      });
 
       setEvents(eventList);
       setLoading(false);
@@ -96,12 +95,47 @@ eventList.sort((a, b) => {
     fetchEvents();
   }, []);
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = useMemo(() => {
+    const t = new Date();
+    t.setHours(0, 0, 0, 0);
+    return t;
+  }, []);
 
-  const visibleEvents = events.filter(
-    (event) => !event.hidden && event.date >= today
-  );
+  const visibleEvents = useMemo(() => {
+    return events.filter((event) => !event.hidden && event.date >= today);
+  }, [events, today]);
+
+  // ✅ Scrolla till rätt event när vi kommer från startsidan
+  useEffect(() => {
+    const targetId = location.state?.scrollTo;
+    if (!targetId) return;
+
+    // Kör först när listan som faktiskt renderas finns
+    if (visibleEvents.length === 0) return;
+
+    let tries = 0;
+    const maxTries = 120; // mer tåligt om bilder/widgets tar tid
+
+    const scrollToTarget = () => {
+      const el = document.getElementById(targetId);
+
+      if (el) {
+        const headerOffset = window.innerWidth <= 400 ? 64 : 70;
+        const y =
+          el.getBoundingClientRect().top + window.pageYOffset - headerOffset - 12;
+
+        window.scrollTo({ top: y, behavior: "smooth" });
+        return;
+      }
+
+      tries += 1;
+      if (tries < maxTries) {
+        requestAnimationFrame(scrollToTarget);
+      }
+    };
+
+    requestAnimationFrame(scrollToTarget);
+  }, [location.key, visibleEvents.length]);
 
   if (loading) return <p>Laddar evenemang...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -122,12 +156,17 @@ eventList.sort((a, b) => {
             const isOpen = openIds.has(event.id);
 
             return (
-              <article key={event.id} className={`event-card ${isOpen ? "open" : ""}`}>
-              {event.image && (
-                <div className="event-image-wrap">
-                  <img src={event.image} alt={event.title} />
-                </div>
-              )}
+              <article
+                id={`event-${event.id}`}
+                key={event.id}
+                className={`event-card ${isOpen ? "open" : ""}`}
+              >
+                {event.image && (
+                  <div className="event-image-wrap">
+                    <img src={event.image} alt={event.title} />
+                  </div>
+                )}
+
                 <div className="event-content">
                   <h3 className="event-heading">{event.title}</h3>
 
@@ -147,14 +186,12 @@ eventList.sort((a, b) => {
                     )}
                   </p>
 
-                  {/* ✅ Beskrivning som kan expandera */}
                   {event.description && (
                     <p className={`event-description ${isOpen ? "is-open" : ""}`}>
                       {event.description}
                     </p>
                   )}
 
-                  {/* ✅ Mer information-knapp */}
                   {event.description && event.description.length > 160 && (
                     <button
                       type="button"
@@ -166,7 +203,6 @@ eventList.sort((a, b) => {
                     </button>
                   )}
 
-                  {/* ✅ Billetto-knapp */}
                   {billettoId && billettoReady && (
                     <div className="billetto-widget-wrap">
                       <billetto-widget
@@ -183,7 +219,6 @@ eventList.sort((a, b) => {
                     </div>
                   )}
 
-                  {/* ✅ Fallback om billettoId saknas: visa din gamla knapp om link finns */}
                   {!billettoId && event.link && (
                     <a href={event.link} target="_blank" rel="noopener noreferrer">
                       <button className="bt-l2">Skaffa biljetter</button>

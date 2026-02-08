@@ -131,11 +131,9 @@
   margin-top: 6px;
   padding: 10px;
   background: transparent;
-  border: 1px solid #7a5c2e;
   color: #7a5c2e;
-  border-radius: 999px;
   font-family: "Josefin Sans", sans-serif;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   text-align: center;
@@ -145,7 +143,7 @@
 }
 
 .more-info-btn:hover {
-  background: rgba(234, 231, 226, 0.08);
+  background: rgba(234, 231, 226, 0.059);
 }
 
 /* (fallback-knapp) */
@@ -153,7 +151,6 @@
   margin-top: 14px;
   padding: 8px 20px;
   background: #bfa567;
-  border: 1px solid #7a5c2e;
   color: #f9f9f9;
   border-radius: 999px;
   font-family: "Josefin Sans", sans-serif;
@@ -161,14 +158,12 @@
   font-size: 1rem;
   cursor: pointer;
   text-align: center;
-  width: 100%;
   display: flex;
   justify-content: center;
 }
 
 .bt-l2:hover {
   background: #bfa567;
-  border: 1px solid #a08750;
 }
 
 a {
@@ -194,10 +189,10 @@ a {
 
 /* ✅ Billetto */
 .billetto-widget-wrap {
-  margin-top: 14px;
+  margin-top: 25px;
   width: 100%;
   display: flex;
-  justify-content: center;
+  
 }
 
 .billetto-widget-wrap,
@@ -214,6 +209,7 @@ a:has(.bt-l2) {
 
   .evenemang-title {
     font-size: 2.2rem;
+    margin-top: 20px;
   }
 
   .event-image-wrap {
@@ -242,7 +238,6 @@ a:has(.bt-l2) {
   }
 
   .billetto-widget-wrap {
-    justify-content: center;
     width: 100%;
   }
 }

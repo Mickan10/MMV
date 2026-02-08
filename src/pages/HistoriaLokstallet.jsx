@@ -1,5 +1,4 @@
 import styles from "./HistoriaLokstallet.module.css";
-import historia1 from "../assets/historia.jpg";
 
 export default function HistoriaLokstallet() {
   return (
@@ -22,7 +21,7 @@ export default function HistoriaLokstallet() {
 
           {/* Bild höger */}
           <div className={styles["historia-center"]}>
-            <img src={historia1} alt="Lokstallet historisk bild" />
+            <img src="/src/assets/historia.jpg" alt="Lokstallet historisk bild" />
           </div>
         </div>
       </div>

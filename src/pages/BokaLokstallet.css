@@ -123,14 +123,12 @@ button {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.15s ease;
   margin-top: 25px;
-  box-shadow: 0 3px 10px rgba(122, 92, 46, 0.4);
   text-align: center;
 }
 
 button:hover {
   background-color: #5a431f;
   transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(90, 67, 31, 0.6);
 }
 
 button:disabled {
