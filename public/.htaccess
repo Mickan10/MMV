@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Om filen/mappen finns: kör normalt
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Annars: skicka allt till React (index.html)
+RewriteRule ^ index.html [L]
