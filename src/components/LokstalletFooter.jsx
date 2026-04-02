@@ -1,5 +1,4 @@
-import "./LokstalletFooter.css"; // Skapa separat CSS för Lokstallets footer
-import { NavLink } from 'react-router-dom';
+import "./LokstalletFooter.css";
 import logo from '../assets/lokstalletheader.png';
 
 
@@ -37,27 +36,17 @@ export default function LokstalletFooter() {
           <h3>Följ oss</h3>
           <ul className="lokstallet-social-icons">
             <li>
-              <a href="https://www.facebook.com/lokstallet.skovde" title="Facebook">
-                <i className="fab fa-facebook"></i>
+              <a href="https://www.facebook.com/lokstallet.skovde" aria-label="Besök oss på Facebook (öppnas i nytt fönster)" target="_blank" rel="noreferrer">
+                <i className="fab fa-facebook" aria-hidden="true"></i>
               </a>
             </li>
             <li>
-              <a
-                href="https://www.instagram.com/lokstallet.skovde/"
-                title="Instagram"
-              >
-                <i className="fab fa-instagram"></i>
+              <a href="https://www.instagram.com/lokstallet.skovde/" aria-label="Besök oss på Instagram (öppnas i nytt fönster)" target="_blank" rel="noreferrer">
+                <i className="fab fa-instagram" aria-hidden="true"></i>
               </a>
             </li>
           </ul>
         </div>
-
-        {/*<div className="lokstallet-form-button-container">
-        <h3>Boka Lokstallet</h3>
-        <NavLink to="/boka-lokstallet" className="lokstallet-form-button">
-          Boka nu!
-        </NavLink>
-        </div> */}
 
       </div>
       <p>&copy; 2025 Lokstallet. Musik • Evenemang • Möten</p>

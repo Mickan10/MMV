@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Lokstallet.css";
 import { db } from "../firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocsFromServer } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import img3 from "../assets/loklokal.jpg";
 import img9 from "../assets/lokstalletheader.png";
@@ -10,14 +10,13 @@ const Lokstallet = () => {
   const [events, setEvents] = useState([]);
   const lineRef = useRef(null);
 
-  // Hämta events från Firestore
   const fetchEvents = async () => {
-    const snapshot = await getDocs(collection(db, "events"));
+    const snapshot = await getDocsFromServer(collection(db, "events"));
     let eventList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
     const toMinutes = (t) => {
-      if (!t) return 9999; // saknar tid → sist samma dag
-      const s = String(t).trim().replace(".", ":"); // stöd "19.30"
+      if (!t) return 9999;
+      const s = String(t).trim().replace(".", ":");
       const [hh, mm] = s.split(":");
       const h = Number(hh);
       const m = Number(mm ?? 0);
@@ -45,7 +44,6 @@ const Lokstallet = () => {
     fetchEvents();
   }, []);
 
-  // Scroll-animation för sektioner och rubrikblock
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries, observerInstance) => {
@@ -81,7 +79,6 @@ const Lokstallet = () => {
 
   return (
     <main className="lokstallet-main">
-      {/* -------- HERO / WELCOME -------- */}
       <section className="welcome-section section-fade">
         <div className="welcome-left">
           <img src={img9} alt="Lokstallet" className="welcome-logo" />
@@ -89,7 +86,7 @@ const Lokstallet = () => {
 
         <div className="welcome-right">
           <p className="welcome-tagline">Musik. Evenemang. Möten.</p>
-          <h3>Välkommen till Lokstallet</h3>
+          <h2>Välkommen till Lokstallet</h2>
           <p>
             Lokstallet är en evenemangs och kulturscen i centrala Skövde. Här arrangeras konserter,
             föreställningar, företagsevent och privata tillställningar i en lokal som byggts om för
@@ -109,7 +106,6 @@ const Lokstallet = () => {
         </div>
       </section>
 
-      {/* -------- EVENT-TEASER -------- */}
       <section id="home-events" className="section-fade">
         <div className="home-events-container">
           <div className="home-events-header">
@@ -161,7 +157,6 @@ const Lokstallet = () => {
                         </p>
                       )}
 
-                      {/* ✅ Viktigt: skickar med vilket event vi klickade på */}
                       <Link
                         to="/evenemang-lokstallet"
                         state={{ scrollTo: `event-${event.id}` }}
@@ -178,15 +173,14 @@ const Lokstallet = () => {
         </div>
       </section>
 
-      {/* -------- LOKALER -------- */}
       <section className="lokal-section section-fade">
         <div className="lokal-left">
           <div className="inner-deco">
             <h3>Lokalen</h3>
           </div>
-
+          <h3 className="lokal-heading">Din scen i Skövde</h3>
           <p>
-            Lokalen är utrustad med en större scen på 5 x 5 meter som kan byggas ut till 7 x 6 meter.
+            Lokalen är utrustad med en större scen på 5 × 5 meter som kan byggas ut till 7 × 6 meter.
             I lokalen finns bar, garderob, kök, projektorer och sittplatser samt en mindre
             konferensdel på bottenplan.
           </p>

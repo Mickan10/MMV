@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './KontaktLokstallet.css';
 
 const KontaktLokstallet = () => {
@@ -8,7 +8,7 @@ const KontaktLokstallet = () => {
     meddelande: '',
   });
 
-  const [status, setStatus] = useState(null); // null, 'sending', 'success', 'error'
+  const [status, setStatus] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
@@ -22,7 +22,7 @@ const KontaktLokstallet = () => {
     setErrorMessage('');
 
     try {
-      const response = await fetch('https://www.lokstallett.se/kontakt.php', { // byt ut till din One.com-url
+      const response = await fetch('https://www.lokstallett.se/kontakt.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -59,44 +59,45 @@ const KontaktLokstallet = () => {
       </div>
 
       <form className="kontakt-form" onSubmit={handleSubmit}>
-        <label>
-          Namn:
-          <input
-            type="text"
-            name="namn"
-            value={formData.namn}
-            onChange={handleChange}
-            required
-            disabled={status === 'sending'}
-          />
-        </label>
-        <label>
-          E-post:
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            disabled={status === 'sending'}
-          />
-        </label>
-        <label>
-          Meddelande:
-          <textarea
-            name="meddelande"
-            value={formData.meddelande}
-            onChange={handleChange}
-            required
-            disabled={status === 'sending'}
-          ></textarea>
-        </label>
+        <label htmlFor="kontakt-namn">Namn:</label>
+        <input
+          id="kontakt-namn"
+          type="text"
+          name="namn"
+          value={formData.namn}
+          onChange={handleChange}
+          required
+          disabled={status === 'sending'}
+          autoComplete="name"
+        />
+
+        <label htmlFor="kontakt-email">E-post:</label>
+        <input
+          id="kontakt-email"
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          disabled={status === 'sending'}
+          autoComplete="email"
+        />
+
+        <label htmlFor="kontakt-meddelande">Meddelande:</label>
+        <textarea
+          id="kontakt-meddelande"
+          name="meddelande"
+          value={formData.meddelande}
+          onChange={handleChange}
+          required
+          disabled={status === 'sending'}
+        />
 
         {status === 'success' && (
-          <p className="success-message">Tack för ditt meddelande!</p>
+          <p className="success-message" role="status" aria-live="polite">Tack för ditt meddelande!</p>
         )}
         {status === 'error' && (
-          <p className="error-message">Fel: {errorMessage}</p>
+          <p className="error-message" role="alert" aria-live="assertive">Fel: {errorMessage}</p>
         )}
 
         <button type="submit" disabled={status === 'sending'}>

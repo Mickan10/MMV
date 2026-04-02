@@ -55,7 +55,7 @@ img {
 
 .section-fade {
   opacity: 0;
-  transform: translateY(12px); /* var 35px: kändes som glapp */
+  transform: translateY(12px);
   transition: opacity 0.6s ease, transform 0.6s ease;
   will-change: opacity, transform;
 }
@@ -63,6 +63,15 @@ img {
 .section-fade.animate {
   opacity: 1;
   transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-fade,
+  .section-fade.animate {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
 }
 
 /* =====================================
@@ -127,12 +136,14 @@ img {
   color: #e9ddce;
 }
 
-.welcome-right h3 {
+.welcome-right h2 {
   font-size: 2.6rem;
   font-weight: 900;
   text-transform: uppercase;
   color: #e9ddce;
   margin-bottom: 16px;
+  text-align: left;
+  font-family: "Playfair Display", serif;
 }
 
 .welcome-right p {
@@ -173,6 +184,11 @@ img {
   transform: translateY(-1px);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
   background: #c8a96b;
+}
+
+.hero-btn:focus-visible {
+  outline: 2px solid #e0d2b4;
+  outline-offset: 3px;
 }
 
 .hero-btn-ghost {
@@ -237,6 +253,11 @@ img {
 .home-event-btn:hover {
   background: #c8a96b;
   transform: translateY(-2px);
+}
+.home-event-btn:focus-visible,
+.homes-btn:focus-visible {
+  outline: 2px solid #38220c;
+  outline-offset: 3px;
 }
 
 /* Eventlistan */
@@ -370,54 +391,63 @@ img {
 }
 
 /* =====================================
-   LOKAL-SECTION 
+   LOKAL-SECTION
    ===================================== */
 
 .lokal-section {
-  background: var(--lok-secondary);
-  padding: 0; 
+  background: var(--lok-primary);
+  padding: 0;
   display: grid;
   grid-template-columns: 1fr 1.7fr;
   gap: 0;
-  align-items: center;
+  align-items: start;
 }
 
 /* --- VÄNSTER TEXT --- */
 
 .lokal-left {
-  padding: 40px;
+  padding: 60px 50px 60px 60px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  max-width: 490px;
+  justify-content: center;
+  gap: 0;
 }
 
 .inner-deco {
-    background: radial-gradient(
-      circle at top left,
-      rgba(183, 156, 98, 0.16),
-      transparent 55%
-    ),
-    var(--lok-primary);
-  padding: 8px 18px;
-  border-radius: 0 24px 24px 0;
-  border-left: 4px solid var(--lok-accent);
-  align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 24px;
 }
 
 .inner-deco h3 {
-  color: #f7efe4;
-  font-size: 1.3rem;
-  margin: 2px;
-  font-weight: 800;
+  font-family: "Playfair Display", serif;
+  color: var(--lok-accent);
+  font-size: 0.85rem;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin: 0 0 10px;
+}
+
+.lokal-left h3.lokal-heading {
+  font-family: "Playfair Display", serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #f5ede2;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin: 0 0 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(183, 156, 98, 0.35);
 }
 
 .lokal-left p {
-  font-size: 1.02rem;
-  line-height: 1.6;
-  color: var(--lok-text-main);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #d6c8b0;
+  margin: 0 0 14px;
+}
+
+.lokal-left p:last-of-type {
+  margin-bottom: 0;
 }
 
 /* --- KNAPP --- */
@@ -441,23 +471,23 @@ img {
 
 .lokal-center {
   width: 100%;
-  height: auto;
 }
 
 .lokal-image-wrap {
   width: 100%;
-  height: 480px;
+  height: 480px; 
   overflow: hidden;
-  border-radius: 14px 0 0 14px;
+  border-radius: 0;
   position: relative;
   line-height: 0;
 }
 
 .lokal-image-wrap img {
   width: 100%;
-  height: 100%;
+  height: 100%; 
   object-fit: cover;
-  display: block; 
+  object-position: center;
+  display: block;
 }
 
 /* =====================================
@@ -469,27 +499,29 @@ img {
     grid-template-columns: 1fr;
   }
 
-  .home-events-container,
+  .home-events-container {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
   .lokal-section {
     grid-template-columns: 1fr;
-    gap: 18px; /* var 40: gav mycket luft */
   }
 }
 
 @media (max-width: 900px) {
   .lokal-section {
     grid-template-columns: 1fr;
-    padding: 20px 20px 20px; /* var 20 20 40 */
-  }
-
-  .lokal-image-wrap {
-    height: 300px;
   }
 
   .lokal-left {
+    padding: 40px 24px 36px;
     max-width: 100%;
-    padding: 0;
-    text-align: left;
+  }
+
+  .lokal-image-wrap {
+    min-height: 300px;
+    height: 300px;
   }
 }
 
@@ -511,7 +543,7 @@ img {
     margin-right: 110px;
   }
 
-  .welcome-right h3 {
+  .welcome-right h2 {
     font-size: 2.2rem;
   }
 }
@@ -525,12 +557,13 @@ img {
     flex: 0 0 230px;
   }
 
-  .lokal-section {
-    padding: 20px 16px 20px;
+  .lokal-left {
+    padding: 30px 18px;
   }
 
   .lokal-image-wrap {
-    height: 240px;
+    min-height: 240px;
+    height: 60px;
   }
 
   .inner-deco {

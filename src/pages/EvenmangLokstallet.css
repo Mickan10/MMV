@@ -33,29 +33,35 @@
   text-align: center;
 }
 
-/* GRID: 2 och 2 på rad */
+/* GRID */
 .event-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
+  gap: 28px;
 }
 
-/* Stående kort */
+/* KORT */
 .event-card {
   display: flex;
   flex-direction: column;
   background: #fffaf0;
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
   border: 1px solid #d6c7a3;
   position: relative;
   height: 100%;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* Bild överst */
+.event-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(32, 17, 8, 0.18);
+}
+
+/* BILD */
 .event-image-wrap {
   width: 100%;
-  height: 310px; 
+  height: 300px;
   overflow: hidden;
   background: #2e2419;
 }
@@ -63,144 +69,178 @@
 .event-image-wrap img {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
+  object-fit: cover;
   display: block;
+  transition: transform 0.4s ease;
 }
 
-/* Innehåll under bilden */
+.event-card:hover .event-image-wrap img {
+  transform: scale(1.03);
+}
+
+/* INNEHÅLL */
 .event-content {
   flex: 1;
-  padding: 22px 22px;
+  padding: 22px 24px 24px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  text-align: left;
   align-items: flex-start;
+  text-align: left;
 }
 
+/* GENRE TAG */
+.event-genre-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #5a2080;
+  background: #ede0f8;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+/* TITEL */
 .event-heading {
-  font-size: 30px;
+  font-size: 1.75rem;
   font-weight: 900;
   font-family: "Playfair Display";
-  color: #4b3b2b;
-  margin-bottom: 12px;
-  margin-left: 10px;
-  line-height: 1.1;
+  color: #38220c;
+  margin: 0 0 6px;
+  line-height: 1.15;
 }
 
-/* Datum, tid och plats */
-.event-date {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 14px;
-  justify-content: flex-start;
-  width: 100%;
-  padding-bottom: 4px;
-  border-bottom: #7a5c2e 1px solid;
-}
-
-.event-date-item {
-  color: #7a5c2e;
-  padding: 6px 12px;
-  border-radius: 14px;
-  font-weight: 600;
+/* UNDERTITEL */
+.event-subtitle {
   font-size: 1rem;
-  display: inline-block;
+  color: #7a5c2e;
+  font-style: italic;
+  margin: 0 0 6px;
 }
 
-/* ✅ Kort text som standard */
+/* ARTIST */
+.event-artist {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #5a4c3e;
+  margin: 0 0 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* META (datum, tid, plats, pris) */
+.event-meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #d6c7a3;
+}
+
+.event-meta-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.92rem;
+  color: #5a4c3e;
+  font-weight: 600;
+}
+
+.event-price {
+  color: #2a6b3f;
+  font-weight: 700;
+}
+
+/* BESKRIVNING */
 .event-description {
-  display: -webkit-box;
-  -webkit-line-clamp: 4; 
-  -webkit-box-orient: vertical;
+  max-height: 6.4em;
   overflow: hidden;
+  font-size: 0.97rem;
+  line-height: 1.6;
+  color: #4b3b2b;
   margin-bottom: 6px;
   width: 100%;
 }
 
-/* ✅ Full text när öppet */
+.event-description p {
+  margin: 0 0 10px;
+}
+
+.event-description p:last-child {
+  margin-bottom: 0;
+}
+
 .event-description.is-open {
-  -webkit-line-clamp: unset;
-  display: block;
+  max-height: none;
   overflow: visible;
 }
 
-/* ✅ Mer information-knapp */
+/* MER INFO-KNAPP */
 .more-info-btn {
   margin-top: 6px;
-  padding: 10px;
+  padding: 8px 0;
   background: transparent;
-  color: #7a5c2e;
+  color: #b78c50;
   font-family: "Josefin Sans", sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 700;
+  font-size: 0.9rem;
   cursor: pointer;
-  text-align: center;
+  border: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.more-info-btn:hover { color: #8c6530; }
+
+.more-info-btn:focus-visible {
+  outline: 2px solid #8c6530;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* BILLETTO & LÄNK-KNAPP */
+.billetto-widget-wrap {
+  margin-top: auto;
+  padding-top: 18px;
   width: 100%;
   display: flex;
-  justify-content: center;
 }
 
-.more-info-btn:hover {
-  background: rgba(234, 231, 226, 0.059);
-}
-
-/* (fallback-knapp) */
 .bt-l2 {
-  margin-top: 14px;
-  padding: 8px 20px;
-  background: #bfa567;
-  color: #f9f9f9;
+  margin-top: auto;
+  padding: 11px 24px;
+  background: #b78c50;
+  color: #fff;
   border-radius: 999px;
   font-family: "Josefin Sans", sans-serif;
-  font-weight: 500;
-  font-size: 1rem;
+  font-weight: 700;
+  font-size: 0.95rem;
   cursor: pointer;
-  text-align: center;
-  display: flex;
-  justify-content: center;
+  border: none;
+  transition: background 0.2s, transform 0.15s;
+}
+.bt-l2:hover { background: #9a7038; transform: translateY(-1px); }
+
+.bt-l2:focus-visible {
+  outline: 2px solid #38220c;
+  outline-offset: 3px;
 }
 
-.bt-l2:hover {
-  background: #bfa567;
-}
-
-a {
+a:has(.bt-l2) {
+  margin-top: auto;
+  padding-top: 18px;
   text-decoration: none;
 }
 
-/* Inga outlines/box-shadows på knappar */
 .more-info-btn,
 .bt-l2 {
-  outline: none;
   box-shadow: none;
 }
 
-.more-info-btn:hover,
-.more-info-btn:focus,
-.more-info-btn:focus-visible,
-.bt-l2:hover,
-.bt-l2:focus,
-.bt-l2:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
-/* ✅ Billetto */
-.billetto-widget-wrap {
-  margin-top: 25px;
-  width: 100%;
-  display: flex;
-  
-}
-
-.billetto-widget-wrap,
-a:has(.bt-l2) {
-  margin-top: auto;
-}
-
-/* Responsivt: 1 kolumn på mindre skärmar */
+/* RESPONSIVT */
 @media (max-width: 900px) {
   .event-grid {
     grid-template-columns: 1fr;
@@ -213,28 +253,16 @@ a:has(.bt-l2) {
   }
 
   .event-image-wrap {
-    height: 200px;
+    height: 220px;
   }
 
   .event-heading {
-    font-size: 1.8rem;
-    white-space: normal;
-    word-break: keep-all;
+    font-size: 1.5rem;
   }
 
   .evenemang-intro {
     border-bottom: 2px solid #b79c62;
     padding-bottom: 18px;
-  }
-
-  .event-date {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-
-  .more-info-btn {
-    width: 100%;
   }
 
   .billetto-widget-wrap {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./BokaLokstallet.css";
 
 export default function BokaLokstallet() {
@@ -11,7 +11,7 @@ export default function BokaLokstallet() {
   const [catering, setCatering] = useState("nej");
 
   const [price, setPrice] = useState(0);
-  const [step, setStep] = useState(1); // <-- ny state för att styra steg
+  const [step, setStep] = useState(1);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -24,7 +24,6 @@ export default function BokaLokstallet() {
 
   const showOtherEvent = eventType === "annat";
 
-  // --- spara direkt när namn + epost fylls i ---
   function saveLead() {
     if (name && email) {
       fetch("/sendmail.php", {
@@ -85,7 +84,7 @@ export default function BokaLokstallet() {
       !name ||
       !email ||
       !customerType ||
-      (customerType === "företag" && !orgNumber) || // endast företag måste ha org.nr
+      (customerType === "företag" && !orgNumber) ||
       !phone
     ) {
       setSubmitError("Vänligen fyll i alla obligatoriska fält innan du skickar din förfrågan.");
@@ -148,12 +147,13 @@ export default function BokaLokstallet() {
       <div className="forme-container">
         <h1>Boka Lokstallet.</h1>
 
-        {/* Steg 1: Namn + epost */}
+        <p className="boka-step-indicator" aria-live="polite">Steg {step} av 2</p>
+
         {step === 1 && (
           <section id="step1">
             <h2>Kontaktuppgifter</h2>
 
-            {submitError && <p className="error">{submitError}</p>}
+            {submitError && <p className="error" role="alert" aria-live="assertive">{submitError}</p>}
 
             <label htmlFor="name">Namn:</label>
             <input
@@ -177,7 +177,6 @@ export default function BokaLokstallet() {
           </section>
         )}
 
-        {/* Steg 2: Bokningsdetaljer */}
         {step === 2 && (
           <>
             <section id="step2">
@@ -279,13 +278,11 @@ export default function BokaLokstallet() {
               <p id="priceOutput">Totalpris: {price.toLocaleString()} SEK</p>
             </section>
 
-            {/* Kontaktuppgifter steg 2 */}
               <section id="contactForm" style={{ marginTop: "2em" }}>
           <h2>Fyll i mer kontaktinfo</h2>
 
-          {submitError && <p className="error">{submitError}</p>}
+          {submitError && <p className="error" role="alert" aria-live="assertive">{submitError}</p>}
 
-          {/* Välj kundtyp */}
           <label htmlFor="customerType">Välj typ:</label>
           <select
             id="customerType"
@@ -298,7 +295,6 @@ export default function BokaLokstallet() {
             <option value="arrangör">Arrangör</option>
           </select>
 
-          {/* Visa fält baserat på typ */}
           {customerType === "privatperson" && (
             <>
               <label htmlFor="phone">Telefonnummer:</label>
@@ -368,7 +364,7 @@ export default function BokaLokstallet() {
             !name ||
             !email ||
             !customerType ||
-            (customerType === "företag" && !orgNumber) || // endast företag måste fylla i
+            (customerType === "företag" && !orgNumber) ||
             !phone
           }
             style={{ marginTop: "1.5em" }}

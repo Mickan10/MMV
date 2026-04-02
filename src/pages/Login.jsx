@@ -16,17 +16,15 @@ export default function Login() {
     setError("");
 
     try {
-      // Logga in med Firebase Auth
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Kolla om användaren är admin i Firestore
       const adminDoc = await getDoc(doc(db, "admins", user.uid));
       if (adminDoc.exists()) {
-        navigate("/admin"); // Till adminpanelen
+        navigate("/admin");
       } else {
         setError("Du har inte adminbehörighet.");
-        await signOut(auth); // logga ut direkt
+        await signOut(auth);
       }
     } catch (err) {
       console.error("Login error:", err.code, err.message);
@@ -38,7 +36,9 @@ export default function Login() {
     <div className="login-container">
       <h2>Admin Login</h2>
       <form onSubmit={handleLogin}>
+        <label htmlFor="login-email" className="sr-only">E-post</label>
         <input
+          id="login-email"
           type="email"
           placeholder="E-post"
           value={email}
@@ -46,7 +46,9 @@ export default function Login() {
           required
           autoComplete="username"
         />
+        <label htmlFor="login-password" className="sr-only">Lösenord</label>
         <input
+          id="login-password"
           type="password"
           placeholder="Lösenord"
           value={password}
@@ -54,7 +56,7 @@ export default function Login() {
           required
           autoComplete="current-password"
         />
-        {error && <p className="error">{error}</p>}
+        {error && <p className="error" role="alert" aria-live="assertive">{error}</p>}
         <button type="submit">Logga in</button>
       </form>
     </div>

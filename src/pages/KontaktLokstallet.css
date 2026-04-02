@@ -78,10 +78,16 @@
   max-width: 100%;
 }
 
+.kontakt-form input:focus,
+.kontakt-form textarea:focus {
+  outline: 2px solid #5a3e1b;
+  outline-offset: 2px;
+}
+
 .kontakt-form button {
   padding: 16px;
-  background-color: #b79c62;
-  color: white;
+  background-color: #7a5c2e;
+  color: #fff;
   font-weight: bold;
   font-size: 1.2rem;
   border: none;
@@ -94,7 +100,12 @@
 }
 
 .kontakt-form button:hover {
-  background-color: #a18452;
+  background-color: #5a431f;
+}
+
+.kontakt-form button:focus-visible {
+  outline: 2px solid #38220c;
+  outline-offset: 3px;
 }
 
 .kontakt-map {

@@ -86,6 +86,13 @@
   text-decoration: underline;
 }
 
+.lokstallet-footer-section a:focus-visible,
+.lokstallet-social-icons li a:focus-visible {
+  outline: 2px solid #e0d2b4;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
 .lokstallet-social-icons {
   list-style: none;
   padding: 0;

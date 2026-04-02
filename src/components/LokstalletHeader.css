@@ -1,3 +1,25 @@
+/* --- SKIP LINK --- */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  background: #301e12;
+  color: #e0d2b4;
+  padding: 10px 18px;
+  border-radius: 0 0 8px 8px;
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  z-index: 9999;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid #e0d2b4;
+  outline-offset: 2px;
+}
+
 /* --- HEADER --- */
 .lokstallet-header {
   width: 100%;
@@ -72,6 +94,12 @@
   transition: color 0.3s ease, transform 0.2s ease;
 }
 
+.links li a:focus-visible {
+  outline: 2px solid #e0d2b4;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
 .links li a::after {
   content: "";
   position: absolute;
@@ -95,12 +123,18 @@
   border: none;
   padding: 0;
   margin: 0;
-  display: none; 
+  display: none;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   position: relative;
   z-index: 3000;
+}
+
+.ham-icon:focus-visible {
+  outline: 2px solid #e0d2b4;
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
 .ham-icon-img {

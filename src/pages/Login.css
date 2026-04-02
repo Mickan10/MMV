@@ -94,6 +94,11 @@ body {
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
 }
 
+.login-container button:focus-visible {
+  outline: 2px solid #38220c;
+  outline-offset: 3px;
+}
+
 /* Mobil */
 @media (max-width: 480px) {
   .login-container {

@@ -13,14 +13,13 @@ const LokstalletHeader = () => {
 
   return (
     <header className="lokstallet-header">
+      <a href="#main-content" className="skip-link">Hoppa till innehållet</a>
       <div className="header-inner">
-        {/* Logga (visas på mobil/tablet, döljs på desktop via CSS) */}
         <NavLink to="/lokstallet" onClick={closeMenu} className="logo-link">
         <img src={logga} alt="Lokstallet – startsida" className="header-logo" />
         </NavLink>
 
         <div className="header-right">
-          {/* Hamburgarikonen (mobil/tablet) */}
         <button
           className={`ham-icon ${menuOpen ? "is-open" : ""}`}
           onClick={toggleMenu}
@@ -35,32 +34,30 @@ const LokstalletHeader = () => {
         </button>
 
 
-          {/* Sociala medier (mobil/tablet) */}
           <ul className="social-icons">
             <li>
               <a
                 href="https://www.facebook.com/lokstallet.skovde"
-                title="Facebook"
+                aria-label="Besök oss på Facebook (öppnas i nytt fönster)"
                 target="_blank"
                 rel="noreferrer"
               >
-                <i className="fab fa-facebook"></i>
+                <i className="fab fa-facebook" aria-hidden="true"></i>
               </a>
             </li>
             <li>
               <a
                 href="https://www.instagram.com/lokstallet.skovde/"
-                title="Instagram"
+                aria-label="Besök oss på Instagram (öppnas i nytt fönster)"
                 target="_blank"
                 rel="noreferrer"
               >
-                <i className="fab fa-instagram"></i>
+                <i className="fab fa-instagram" aria-hidden="true"></i>
               </a>
             </li>
           </ul>
         </div>
 
-        {/* Menyn */}
         <nav className={`hero-nav ${menuOpen ? "open" : ""}`}>
           <ul className="links">
             <li>
@@ -93,6 +90,17 @@ const LokstalletHeader = () => {
                 className={({ isActive }) => (isActive ? "active" : "")}
               >
                 Kontakt
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
+                to="/bra-att-veta"
+                end
+                onClick={closeMenu}
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                Bra att veta
               </NavLink>
             </li>
           </ul>
