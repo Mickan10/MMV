@@ -82,6 +82,19 @@ const LokstalletHeader = () => {
               </NavLink>
             </li>
 
+            {/* Boka-länk – dölj tills lansering
+            <li>
+              <NavLink
+                to="/boka-lokstallet"
+                end
+                onClick={closeMenu}
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                Boka
+              </NavLink>
+            </li>
+            */}
+
             <li>
               <NavLink
                 to="/kontakt-lokstallet"

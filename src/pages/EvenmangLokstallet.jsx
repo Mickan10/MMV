@@ -13,6 +13,7 @@ const EvenemangLokstallet = () => {
 
   const [billettoReady, setBillettoReady] = useState(false);
   const [openIds, setOpenIds] = useState(() => new Set());
+  const [selectedGenre, setSelectedGenre] = useState("Alla");
 
   const toggleOpen = (id) => {
     setOpenIds((prev) => {
@@ -47,14 +48,29 @@ const EvenemangLokstallet = () => {
     try {
       const snapshot = await getDocsFromServer(collection(db, "events"));
 
+      // Parsa datum som lokal tid (inte UTC) för att undvika att svenska evenemang
+      // hamnar en dag bakåt pga tidszonsförskjutning
+      const parseLocalDate = (val) => {
+        if (!val) return null;
+        if (val?.toDate) return val.toDate(); // Firestore Timestamp
+        const str = String(val).trim();
+        // "YYYY-MM-DD" → parsa som lokal tid
+        const isoDate = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (isoDate) {
+          return new Date(Number(isoDate[1]), Number(isoDate[2]) - 1, Number(isoDate[3]));
+        }
+        return new Date(str);
+      };
+
       const eventList = snapshot.docs.map((doc) => {
         const data = doc.data();
+        const parsed = parseLocalDate(data.date);
         return {
           id: doc.id,
           ...data,
-          date: data.date?.toDate ? data.date.toDate() : new Date(data.date),
+          date: parsed instanceof Date && !isNaN(parsed) ? parsed : null,
         };
-      });
+      }).filter((e) => e.date !== null); // kasta bort event utan giltigt datum
 
       const toMinutes = (t) => {
         if (!t) return 9999;
@@ -67,10 +83,8 @@ const EvenemangLokstallet = () => {
       };
 
       eventList.sort((a, b) => {
-        const da = a.date instanceof Date ? a.date : new Date(a.date);
-        const dbb = b.date instanceof Date ? b.date : new Date(b.date);
-        da.setHours(0, 0, 0, 0);
-        dbb.setHours(0, 0, 0, 0);
+        const da = new Date(a.date); da.setHours(0, 0, 0, 0);
+        const dbb = new Date(b.date); dbb.setHours(0, 0, 0, 0);
         const diff = da - dbb;
         if (diff !== 0) return diff;
         return toMinutes(a.time) - toMinutes(b.time);
@@ -96,8 +110,24 @@ const EvenemangLokstallet = () => {
   }, []);
 
   const visibleEvents = useMemo(() => {
-    return events.filter((event) => !event.hidden && event.date >= today);
+    return events.filter((event) => {
+      if (event.hidden === true) return false;
+      const d = new Date(event.date);
+      d.setHours(0, 0, 0, 0);
+      return d >= today;
+    });
   }, [events, today]);
+
+  const genres = useMemo(() => {
+    const set = new Set();
+    visibleEvents.forEach((e) => { if (e.genre) set.add(e.genre); });
+    return ["Alla", ...Array.from(set).sort()];
+  }, [visibleEvents]);
+
+  const filteredEvents = useMemo(() => {
+    if (selectedGenre === "Alla") return visibleEvents;
+    return visibleEvents.filter((e) => e.genre === selectedGenre);
+  }, [visibleEvents, selectedGenre]);
 
   useEffect(() => {
     const targetId = location.state?.scrollTo;
@@ -131,11 +161,34 @@ const EvenemangLokstallet = () => {
         <h2 className="evenemang-title">Vad händer på Lokstallet?</h2>
         <p className="evenemang-intro">Här hittar du aktuella evenemang och föreställningar.</p>
 
-        <div className="event-grid">
-          {visibleEvents.length === 0 && <p>Inga aktuella evenemang att visa.</p>}
+        {genres.length > 1 && (
+          <div className="genre-filter-bar">
+            {genres.map((g) => (
+              <button
+                key={g}
+                type="button"
+                className={`genre-filter-btn ${selectedGenre === g ? "active" : ""}`}
+                onClick={() => setSelectedGenre(g)}
+              >
+                {g}
+              </button>
+            ))}
+          </div>
+        )}
 
-          {visibleEvents.map((event) => {
-            const billettoId = event.billettoEventId ?? event.billettoId ?? null;
+        <div className="event-grid">
+          {filteredEvents.length === 0 && (
+            <p className="no-events-msg">Inga evenemang inom vald genre.</p>
+          )}
+
+          {filteredEvents.map((event) => {
+            const billettoId = (() => {
+              if (event.billettoEventId) return String(event.billettoEventId);
+              if (event.billettoId) return String(event.billettoId);
+              // Extrahera numeriskt ID ur Billetto-URL, t.ex. billetto.se/e/namn-pa-event-1872281
+              const match = event.link?.match(/billetto\.se(?:\/[a-z]{2})?\/e\/[^/?#]*?-?(\d+)(?:[/?#]|$)/i);
+              return match ? match[1] : null;
+            })();
             const isOpen = openIds.has(event.id);
 
             return (
@@ -144,29 +197,27 @@ const EvenemangLokstallet = () => {
                 key={event.id}
                 className={`event-card ${isOpen ? "open" : ""}`}
               >
-                {event.image && (
-                  <div className="event-image-wrap">
-                    <img src={event.image} alt={event.title} />
-                  </div>
-                )}
-
-                <div className="event-content">
+                {/* BILD med genre-tagg överst */}
+                <div className="event-image-wrap">
+                  {event.image
+                    ? <img src={event.image} alt={event.title} />
+                    : <div className="event-image-placeholder" />
+                  }
                   {event.genre && (
                     <span className="event-genre-tag">{event.genre}</span>
                   )}
+                </div>
 
+                {/* INFO UNDER BILDEN */}
+                <div className="event-content">
                   <h3 className="event-heading">{event.title}</h3>
 
                   {event.subtitle && (
                     <p className="event-subtitle">{event.subtitle}</p>
                   )}
 
-                  {event.artist && (
-                    <p className="event-artist">{event.artist}</p>
-                  )}
-
                   <div className="event-meta-row">
-                    <span className="event-meta-item">
+                    <span className="event-meta-item event-meta-date">
                       {event.date.toLocaleDateString("sv-SE", { weekday: "long", day: "numeric", month: "long" })}
                     </span>
                     {event.time && (
@@ -180,46 +231,48 @@ const EvenemangLokstallet = () => {
                     )}
                   </div>
 
-                  {(event.description || event.description2 || event.description3) && (
+                  {event.description && (
                     <div className={`event-description ${isOpen ? "is-open" : ""}`}>
-                      {event.description && <p>{event.description}</p>}
-                      {event.description2 && <p>{event.description2}</p>}
-                      {event.description3 && <p>{event.description3}</p>}
+                      <p>{event.description}</p>
+                      {isOpen && event.description2 && <p>{event.description2}</p>}
+                      {isOpen && event.description3 && <p>{event.description3}</p>}
                     </div>
                   )}
 
-                  {[event.description, event.description2, event.description3].join("").length > 160 && (
-                    <button
-                      type="button"
-                      className="more-info-btn"
-                      onClick={() => toggleOpen(event.id)}
-                      aria-expanded={isOpen}
-                    >
-                      {isOpen ? "Visa mindre" : "Mer information"}
-                    </button>
-                  )}
-
-                  {billettoId && billettoReady && (
-                    <div className="billetto-widget-wrap">
-                      <billetto-widget
+                  <div className="event-actions">
+                    {[event.description, event.description2, event.description3].join("").length > 120 && (
+                      <button
                         type="button"
-                        event={String(billettoId)}
-                        organization="billetto.se"
-                        lang="sv"
-                        theme="dark"
-                        color="#bfa567"
-                        button-style="rounded"
-                        font-family="Roboto"
-                        whitelabel
-                      />
-                    </div>
-                  )}
+                        className="more-info-btn"
+                        onClick={() => toggleOpen(event.id)}
+                        aria-expanded={isOpen}
+                      >
+                        {isOpen ? "Visa mindre" : "Mer information"}
+                      </button>
+                    )}
 
-                  {!billettoId && event.link && (
-                    <a href={event.link} target="_blank" rel="noopener noreferrer" aria-label={`Skaffa biljetter till ${event.title} (öppnas i nytt fönster)`}>
-                      <button className="bt-l2">Skaffa biljetter</button>
-                    </a>
-                  )}
+                    {billettoId && billettoReady && (
+                      <div className="billetto-widget-wrap">
+                        <billetto-widget
+                          type="button"
+                          event={String(billettoId)}
+                          organization="billetto.se"
+                          lang="sv"
+                          theme="dark"
+                          color="#bfa567"
+                          button-style="rounded"
+                          font-family="Roboto"
+                          whitelabel
+                        />
+                      </div>
+                    )}
+
+                    {!billettoId && event.link && (
+                      <a href={event.link} target="_blank" rel="noopener noreferrer" aria-label={`Skaffa biljetter till ${event.title} (öppnas i nytt fönster)`}>
+                        <button className="bt-l2">Skaffa biljetter</button>
+                      </a>
+                    )}
+                  </div>
                 </div>
               </article>
             );

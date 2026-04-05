@@ -574,6 +574,12 @@ img {
     font-size: 1.2rem;
     font-weight: 500;
   }
+
+  .lokal-left h3.lokal-heading {
+    font-size: 1.8rem;
+    padding-bottom: 12px;
+    border-bottom-width: 1px;
+  }
 }
 
 /* DÖDAR global section-card-stil */

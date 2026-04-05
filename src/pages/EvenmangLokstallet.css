@@ -45,11 +45,9 @@
   display: flex;
   flex-direction: column;
   background: #fffaf0;
-  border-radius: 18px;
+  border-radius: 16px;
   overflow: hidden;
   border: 1px solid #d6c7a3;
-  position: relative;
-  height: 100%;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -61,9 +59,11 @@
 /* BILD */
 .event-image-wrap {
   width: 100%;
-  height: 300px;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #2e2419;
+  position: relative;
+  flex-shrink: 0;
 }
 
 .event-image-wrap img {
@@ -74,79 +74,82 @@
   transition: transform 0.4s ease;
 }
 
+.event-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #3a2a18;
+}
+
 .event-card:hover .event-image-wrap img {
   transform: scale(1.03);
 }
 
-/* INNEHÅLL */
-.event-content {
-  flex: 1;
-  padding: 22px 24px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-}
-
-/* GENRE TAG */
+/* GENRE TAG – flytande över bilden */
 .event-genre-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-family: "Josefin Sans", sans-serif;
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: #5a2080;
-  background: #ede0f8;
+  color: #fff;
+  background: #b78c50;
   padding: 4px 12px;
   border-radius: 20px;
-  margin-bottom: 12px;
+  z-index: 1;
+}
+
+/* INNEHÅLL */
+.event-content {
+  padding: 18px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  text-align: left;
 }
 
 /* TITEL */
 .event-heading {
-  font-size: 1.75rem;
+  font-size: 1.6rem;
   font-weight: 900;
   font-family: "Playfair Display";
   color: #38220c;
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   line-height: 1.15;
 }
 
 /* UNDERTITEL */
 .event-subtitle {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: #7a5c2e;
   font-style: italic;
-  margin: 0 0 6px;
-}
-
-/* ARTIST */
-.event-artist {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #5a4c3e;
-  margin: 0 0 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  margin: 0 0 10px;
 }
 
 /* META (datum, tid, plats, pris) */
 .event-meta-row {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 100%;
-  margin-bottom: 16px;
-  padding-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
   border-bottom: 1px solid #d6c7a3;
 }
 
 .event-meta-item {
-  display: flex;
-  align-items: center;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: #5a4c3e;
   font-weight: 600;
+}
+
+.event-meta-date {
+  width: 100%;
+  font-size: 0.92rem;
+  color: #38220c;
+  text-transform: capitalize;
 }
 
 .event-price {
@@ -154,15 +157,23 @@
   font-weight: 700;
 }
 
-/* BESKRIVNING */
+/* BESKRIVNING – bara första stycket, avklippt */
 .event-description {
-  max-height: 6.4em;
-  overflow: hidden;
-  font-size: 0.97rem;
+  font-size: 0.95rem;
   line-height: 1.6;
   color: #4b3b2b;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.event-description.is-open {
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
 }
 
 .event-description p {
@@ -173,27 +184,35 @@
   margin-bottom: 0;
 }
 
-.event-description.is-open {
-  max-height: none;
-  overflow: visible;
+/* KNAPPAR RAD */
+.event-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 16px;
+  flex-wrap: wrap;
 }
 
 /* MER INFO-KNAPP */
-.more-info-btn {
-  margin-top: 6px;
-  padding: 8px 0;
-  background: transparent;
+.more-info-btn,
+.more-info-btn:hover,
+.more-info-btn:focus,
+.more-info-btn:active {
+  all: unset;
+  cursor: pointer;
   color: #b78c50;
   font-family: "Josefin Sans", sans-serif;
   font-weight: 700;
-  font-size: 0.9rem;
-  cursor: pointer;
-  border: none;
+  font-size: 0.88rem;
   text-decoration: underline;
+  text-decoration-color: #b78c50;
   text-underline-offset: 3px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
-
-.more-info-btn:hover { color: #8c6530; }
 
 .more-info-btn:focus-visible {
   outline: 2px solid #8c6530;
@@ -201,27 +220,27 @@
   border-radius: 2px;
 }
 
-/* BILLETTO & LÄNK-KNAPP */
+/* BILLETTO & BILJETTKNAPP */
 .billetto-widget-wrap {
-  margin-top: auto;
-  padding-top: 18px;
-  width: 100%;
   display: flex;
 }
 
 .bt-l2 {
-  margin-top: auto;
-  padding: 11px 24px;
+  padding: 10px 22px;
   background: #b78c50;
   color: #fff;
   border-radius: 999px;
   font-family: "Josefin Sans", sans-serif;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   cursor: pointer;
   border: none;
   transition: background 0.2s, transform 0.15s;
+  margin: 0;
+  box-shadow: none;
+  white-space: nowrap;
 }
+
 .bt-l2:hover { background: #9a7038; transform: translateY(-1px); }
 
 .bt-l2:focus-visible {
@@ -230,14 +249,60 @@
 }
 
 a:has(.bt-l2) {
-  margin-top: auto;
-  padding-top: 18px;
   text-decoration: none;
+  display: flex;
 }
 
-.more-info-btn,
-.bt-l2 {
+/* GENRE-FILTERBAR */
+.genre-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.genre-filter-btn {
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: 2px solid #b79c62;
+  background: transparent;
+  color: #5a4c3e;
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  margin: 0;
   box-shadow: none;
+}
+
+.genre-filter-btn:hover {
+  background: #e8dfce;
+  border-color: #7a5c2e;
+  color: #382615;
+  transform: none;
+}
+
+.genre-filter-btn.active {
+  background: #7a5c2e;
+  border-color: #7a5c2e;
+  color: #fff;
+}
+
+.genre-filter-btn:focus-visible {
+  outline: 2px solid #38220c;
+  outline-offset: 3px;
+}
+
+.no-events-msg {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #7a6248;
+  font-style: italic;
+  padding: 30px 0;
 }
 
 /* RESPONSIVT */
@@ -252,20 +317,58 @@ a:has(.bt-l2) {
     margin-top: 20px;
   }
 
-  .event-image-wrap {
-    height: 220px;
-  }
-
-  .event-heading {
-    font-size: 1.5rem;
-  }
-
   .evenemang-intro {
     border-bottom: 2px solid #b79c62;
     padding-bottom: 18px;
   }
+}
 
-  .billetto-widget-wrap {
+@media (max-width: 600px) {
+  .evenemang-lokstallet {
+    padding: 24px 12px;
+  }
+
+  .evenemang-title {
+    font-size: 1.8rem;
+  }
+
+  .evenemang-intro {
+    font-size: 1rem;
+    margin-bottom: 24px;
+  }
+
+  .genre-filter-bar {
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+
+  .genre-filter-btn {
+    padding: 7px 14px;
+    font-size: 0.78rem;
+    width: auto;
+  }
+
+  .event-content {
+    padding: 14px 14px 18px;
+  }
+
+  .event-heading {
+    font-size: 1.3rem;
+  }
+
+  .event-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .bt-l2 {
+    width: 100%;
+    text-align: center;
+    padding: 13px 20px;
+  }
+
+  a:has(.bt-l2) {
     width: 100%;
   }
 }

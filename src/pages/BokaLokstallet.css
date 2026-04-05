@@ -1,143 +1,143 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background-color: #c1b6a8;
-  font-family: 'Josefin Sans', sans-serif;
-  color: #382615;
-  line-height: 1.6;
-}
-
-/* Felmeddelanden */
-.error {
-  color: #b00020;
-  font-weight: 700;
-  margin-top: 10px;
-  margin-bottom: 0;
-  user-select: none;
-}
-
-/* Wrapper */
+/* ─── Base ──────────────────────────────────────────────── */
 .bokamain {
   min-height: 100vh;
-  background-color: #c1b6a8;   
+  background-color: #c1b6a8;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Form-container */
 .forme-container {
-  max-width: 1000px;
-  margin: 60px auto;
-  padding: 40px 30px;
-  background-color: #c1b6a8;
-  border-radius: 16px;
-  transition: box-shadow 0.3s ease;
-  border: 1px solid #b79c62;
+  max-width: 860px;
+  margin: 50px auto;
+  padding: 40px 36px;
+  box-sizing: border-box;
 }
 
-/* Rubriker */
-h1, h2 {
+/* ─── Headings ──────────────────────────────────────────── */
+.forme-container h1 {
+  font-family: "Playfair Display", serif;
+  font-weight: 900;
+  font-size: 2.6rem;
+  text-transform: uppercase;
   text-align: center;
   color: #382615;
-  margin-bottom: 20px;
-  font-family: "Playfair Display", serif;
-  font-weight: 900;         
-  text-transform: uppercase; 
-}
-
-h1 {
-  font-size: 2.5rem;
   border-bottom: 2px solid #b79c62;
+  padding-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .boka-step-indicator {
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #5a4826;
   font-weight: 600;
-  margin: -10px 0 20px;
+  margin: 0 0 30px;
 }
 
-h2 { font-size: 1.8rem; margin-top: 0; }
-
-h3 {
-  font-family: 'Josefin Sans', sans-serif;
-  font-weight: 600;
-  font-size: 1.3rem;
-  margin: 40px 0 10px;
-  color: #5a4826;
-}
-
-/* Sektioner */
-section {
+/* ─── Sections ──────────────────────────────────────────── */
+.boka-section {
   background: #fdfaf4;
-  border-radius: 12px;
-  margin-bottom: 35px;
-  transition: background-color 0.3s ease;
+  border-radius: 14px;
+  padding: 28px 30px;
+  margin-bottom: 28px;
+  border: 1px solid #e0d5c0;
 }
 
-/* Etiketter */
-label {
+.boka-section h2 {
+  font-family: "Playfair Display", serif;
+  font-weight: 900;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  color: #382615;
+  margin: 0 0 22px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd0b8;
+}
+
+.boka-section h3 {
+  font-family: "Playfair Display", serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  color: #382615;
+  margin: 0 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd0b8;
+}
+
+.boka-section--summary {
+  background: #f0ebe0;
+}
+
+/* ─── Fields ────────────────────────────────────────────── */
+.boka-field {
+  margin-bottom: 18px;
+}
+
+.boka-field label {
   display: block;
   font-weight: 600;
-  font-size: 1.1rem;
-  margin: 15px 0 6px;
+  font-size: 1rem;
   color: #4d3a0f;
+  margin-bottom: 6px;
+  font-family: "Josefin Sans", sans-serif;
 }
 
-/* Inputs, selects, textarea */
-input, select, textarea {
+.boka-field input,
+.boka-field select,
+.boka-field textarea {
   width: 100%;
-  padding: 12px 14px;
+  padding: 11px 14px;
   border: 2px solid #b79c62;
-  border-radius: 4px;
-  font-size: 1.1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: "Josefin Sans", sans-serif;
   background-color: #fdfaf4;
   color: #382615;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-textarea { min-height: 130px; resize: vertical; }
+.boka-field textarea {
+  min-height: 110px;
+  resize: vertical;
+}
 
-input:focus, select:focus, textarea:focus {
+.boka-field input:focus,
+.boka-field select:focus,
+.boka-field textarea:focus {
   border-color: #7a5c2e;
-  box-shadow: 0 0 0 3px rgba(122, 92, 46, 0.35);
-  outline: 2px solid #7a5c2e;
-  outline-offset: 1px;
+  box-shadow: 0 0 0 3px rgba(122, 92, 46, 0.2);
+  outline: none;
 }
 
-/* Number input fix */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-input[type="number"]::-webkit-inner-spin-button, 
-input[type="number"]::-webkit-outer-spin-button { 
-  -webkit-appearance: none;
-  margin: 0;
+/* ─── 2-col grid ────────────────────────────────────────── */
+.boka-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 22px;
 }
 
-/* Knappar */
+/* ─── Buttons ───────────────────────────────────────────── */
 button {
   display: inline-block;
-  padding: 14px 28px;
+  padding: 13px 28px;
   background-color: #7a5c2e;
   color: #fff;
+  font-family: "Josefin Sans", sans-serif;
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.15s ease;
-  margin-top: 25px;
-  text-align: center;
+  transition: background-color 0.25s, transform 0.15s;
+  margin-top: 18px;
 }
 
 button:hover {
   background-color: #5a431f;
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 button:focus-visible {
@@ -146,93 +146,341 @@ button:focus-visible {
 }
 
 button:disabled {
-  background-color: #bcb8a4;
-  color: #5a5040;
+  background-color: #c8bfad;
+  color: #6b5e48;
   cursor: not-allowed;
-  box-shadow: none;
   transform: none;
 }
 
-/* Pris-text */
-#priceOutput {
-  font-size: 1.3rem;
+.boka-btn-secondary {
+  background-color: #a08050;
+}
+
+.boka-btn-secondary:hover:not(:disabled) {
+  background-color: #7a5c2e;
+}
+
+.boka-btn-submit {
+  width: 100%;
+  padding: 16px;
+  font-size: 1.15rem;
+  margin-top: 24px;
+}
+
+/* ─── Price output ──────────────────────────────────────── */
+.boka-price-output {
+  font-size: 1.2rem;
   font-weight: 700;
   text-align: center;
-  margin-top: 20px;
   color: #5a4826;
-  user-select: none;
+  margin-top: 16px;
 }
 
-/* Sammanfattning */
-#summarySection {
-  background-color: #edeae6;
-  border-radius: 4px;
-  padding: 30px 25px;
-  max-width: 600px;
-  margin: 1.5em auto;
-  box-shadow: 0 6px 25px rgba(183, 156, 98, 0.35);
-  transition: box-shadow 0.3s ease;
+/* ─── Error ─────────────────────────────────────────────── */
+.error {
+  color: #b00020;
+  font-weight: 700;
+  margin-top: 10px;
+  font-family: "Josefin Sans", sans-serif;
 }
 
-#summarySection h3 {
-  margin-bottom: 20px;
-  color: #382615;
-  font-size: 1.9rem;
-  font-family: "Playfair Display", serif;
-  font-weight: 900;         
-  text-transform: uppercase;
-  border-bottom: 2px solid #7a5c2e; 
-  padding-bottom: 8px;
+/* ─── Calendar ──────────────────────────────────────────── */
+.boka-cal-instruction {
+  font-size: 0.95rem;
+  color: #5a4826;
+  margin: 10px 0 16px;
+  font-family: "Josefin Sans", sans-serif;
 }
 
-#summaryContent p {
-  margin: 10px 0;
-  font-size: 1.15rem;
-  color: #382615;
-  line-height: 1.6;
+.boka-cal-hint {
+  color: #8a7a62;
+  font-style: italic;
+}
+
+.boka-calendar {
+  background: #fdfaf4;
+  border: 2px solid #b79c62;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 420px;
+  margin: 0 auto 10px;
+  box-shadow: 0 4px 16px rgba(183, 156, 98, 0.18);
+}
+
+.boka-cal-header {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
-#summaryContent p strong {
-  color: #7a5c2e; 
-  font-weight: 600;
-  flex: 0 0 200px;
-  margin-right: 10px;
+.boka-cal-title {
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #382615;
+  text-transform: capitalize;
 }
 
-/* Mobilanpassning */
-@media (max-width: 600px) {
+.boka-cal-nav {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #7a5c2e;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin: 0;
+  transition: background-color 0.2s;
+  line-height: 1;
+}
+
+.boka-cal-nav:hover:not(:disabled) {
+  background-color: #e8dfce;
+  transform: none;
+}
+
+.boka-cal-nav:disabled {
+  color: #c0b49a;
+  cursor: not-allowed;
+  background: none;
+}
+
+.boka-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.boka-cal-dayname {
+  text-align: center;
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: #7a5c2e;
+  padding: 4px 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.boka-cal-day {
+  text-align: center;
+  padding: 8px 2px;
+  border-radius: 6px;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 0.9rem;
+  color: #382615;
+  cursor: default;
+  user-select: none;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boka-cal-empty {
+  background: transparent;
+}
+
+.boka-cal-past {
+  color: #c0b49a;
+  cursor: not-allowed;
+}
+
+.boka-cal-booked {
+  background-color: #f3e0e0;
+  color: #c0392b;
+  text-decoration: line-through;
+  cursor: not-allowed;
+  border: 1px solid #e8c0c0;
+}
+
+.boka-cal-available {
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.boka-cal-available:hover {
+  background-color: #e8dfce;
+  border-color: #b79c62;
+}
+
+.boka-cal-selected {
+  background-color: #7a5c2e !important;
+  color: #fff !important;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.boka-cal-today {
+  font-weight: 700;
+  outline: 2px solid #b79c62;
+  outline-offset: -2px;
+}
+
+.boka-cal-loading {
+  text-align: center;
+  color: #7a5c2e;
+  font-style: italic;
+  padding: 30px 0;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+/* Legend */
+.boka-cal-legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #e0d5c0;
+}
+
+.boka-cal-leg-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 0.8rem;
+  color: #5a4826;
+}
+
+.boka-cal-leg-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.leg-available {
+  background-color: #fdfaf4;
+  border: 1px solid #b79c62;
+}
+
+.leg-booked {
+  background-color: #f3e0e0;
+  border: 1px solid #e8c0c0;
+}
+
+.leg-selected {
+  background-color: #7a5c2e;
+}
+
+/* ─── Summary ───────────────────────────────────────────── */
+.boka-summary-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 16px;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 1rem;
+  color: #382615;
+  margin-bottom: 4px;
+}
+
+.boka-sum-label {
+  font-weight: 700;
+  color: #7a5c2e;
+  white-space: nowrap;
+}
+
+.boka-sum-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.boka-disclaimer {
+  font-size: 0.85rem;
+  color: #7a6248;
+  text-align: center;
+  margin-top: 14px;
+  font-style: italic;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+/* ─── Success screen ────────────────────────────────────── */
+.boka-success {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.boka-success-icon {
+  width: 70px;
+  height: 70px;
+  background-color: #7a5c2e;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 900;
+  margin: 0 auto 24px;
+}
+
+.boka-success h1 {
+  margin-bottom: 16px;
+}
+
+.boka-success p {
+  font-size: 1.1rem;
+  color: #382615;
+  margin-bottom: 12px;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+/* ─── Number input spin removal ─────────────────────────── */
+input[type="number"] { -moz-appearance: textfield; }
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* ─── Mobile ────────────────────────────────────────────── */
+@media (max-width: 640px) {
   .forme-container {
-    margin: 30px 15px;
-    padding: 30px 20px;
+    margin: 20px 12px;
+    padding: 24px 16px;
   }
 
-  .forme-container h1 { 
-    font-size: 2rem; 
-     white-space: nowrap;
+  .forme-container h1 {
+    font-size: 2rem;
   }
 
-  #step2 h2 { font-size: 1.5rem; }
+  .boka-section {
+    padding: 20px 16px;
+  }
 
-  #summarySection h3 { font-size: 1.6rem !important; }
+  .boka-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .boka-calendar {
+    max-width: 100%;
+    padding: 14px;
+  }
+
+  .boka-cal-day {
+    padding: 6px 1px;
+    font-size: 0.82rem;
+    min-height: 32px;
+  }
+
+  .boka-cal-legend {
+    gap: 12px;
+  }
 
   button {
     width: 100%;
-    padding: 16px;
   }
 
-   #summaryContent {
-    display: flex;
-    flex-direction: column; /* staplar innehållet */
-    gap: 2px;               /* mellanrum mellan rader */
+  .boka-summary-grid {
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
 
-  #summaryContent p {
-    flex-direction: column;
-  }
-
-  #summaryContent p strong {
-    flex: none;
-    margin-bottom: 0px;
+  .boka-sum-label {
+    margin-top: 8px;
   }
 }

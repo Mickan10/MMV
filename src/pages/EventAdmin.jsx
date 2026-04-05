@@ -159,15 +159,15 @@ const EventAdmin = () => {
           <div className="admin-grid-2">
             <div className="admin-field">
               <label className="admin-label">Titel *</label>
-              <input className="admin-input" type="text" placeholder="T.ex. Johan Glans" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required />
+              <input className="admin-input" type="text" placeholder="T.ex. Roger Pontare på turne" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required />
             </div>
             <div className="admin-field">
               <label className="admin-label">Undertitel / tagline</label>
-              <input className="admin-input" type="text" placeholder="T.ex. En kväll med humor" value={form.subtitle} onChange={(e) => setForm({ ...form, subtitle: e.target.value })} />
+              <input className="admin-input" type="text" placeholder="T.ex. En kväll med vargar" value={form.subtitle} onChange={(e) => setForm({ ...form, subtitle: e.target.value })} />
             </div>
             <div className="admin-field">
               <label className="admin-label">Artist / akt</label>
-              <input className="admin-input" type="text" placeholder="T.ex. Johan Glans" value={form.artist} onChange={(e) => setForm({ ...form, artist: e.target.value })} />
+              <input className="admin-input" type="text" placeholder="T.ex. Roger Pontare" value={form.artist} onChange={(e) => setForm({ ...form, artist: e.target.value })} />
             </div>
             <div className="admin-field">
               <label className="admin-label">Genre / kategori</label>
@@ -189,7 +189,7 @@ const EventAdmin = () => {
             </div>
             <div className="admin-field">
               <label className="admin-label">Plats *</label>
-              <input className="admin-input" type="text" placeholder="T.ex. Stora scenen" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} required />
+              <input className="admin-input" type="text" placeholder="Lokstallet" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} required />
             </div>
           </div>
         </div>
@@ -198,7 +198,7 @@ const EventAdmin = () => {
           <h3 className="admin-section-title">Beskrivning</h3>
           <div className="admin-field">
             <label className="admin-label">Stycke 1 *</label>
-            <textarea className="admin-textarea" placeholder="Inledning – vad är evenemanget? Sätt tonen direkt." value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required />
+            <textarea className="admin-textarea" placeholder="Inledning – vad är evenemanget?" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required />
           </div>
           <div className="admin-field" style={{ marginTop: "12px" }}>
             <label className="admin-label">Stycke 2</label>
@@ -241,7 +241,7 @@ const EventAdmin = () => {
 
       <ul className="admin-event-list">
         {events.map((event) => (
-          <li key={event.id} className={`admin-event-item ${event.hidden ? "is-hidden" : ""}`}>
+          <li key={event.id} className={`admin-event-item ${event.hidden ? "is-hidden" : ""} ${new Date(event.date) < new Date(new Date().toDateString()) ? "is-past" : ""}`}>
             {editingId === event.id ? (
               <div className="admin-edit-form">
                 <div className="admin-form-section">
@@ -332,7 +332,12 @@ const EventAdmin = () => {
               <>
                 {event.image && <img src={event.image} alt={event.title} className="admin-event-image" />}
                 <div className="admin-event-info">
-                  <p className="admin-event-name">{event.title}</p>
+                  <p className="admin-event-name">
+                    {event.title}
+                    {new Date(event.date) < new Date(new Date().toDateString()) && (
+                      <span className="admin-past-badge">Passerat</span>
+                    )}
+                  </p>
                   {event.subtitle && <p className="admin-event-subtitle">{event.subtitle}</p>}
                   <div className="admin-event-meta">
                     <span>{event.date}</span>
