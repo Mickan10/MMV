@@ -164,6 +164,11 @@
   transform: scale(1.1);
 }
 
+/* --- DESKTOP SOCIAL IKONER I NAV --- */
+.header-social-desktop {
+  display: none;
+}
+
 /* --- STORA SKÄRMAR --- */
 @media (min-width: 993px) {
   /* Dölj logga + burger + sociala medier */
@@ -173,11 +178,29 @@
     display: none !important;
   }
 
+  .header-social-desktop {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  .header-social-desktop a {
+    color: #ae9366;
+    font-size: 1.4rem;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .header-social-desktop a:hover {
+    color: #d6c8a8;
+  }
+
   /* Menyn centrerad på desktop */
   .hero-nav {
     display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 3rem;
     position: static;
     max-height: none;
     opacity: 1;
@@ -185,11 +208,14 @@
     box-shadow: none;
     transition: none;
     margin: 0 auto;
+    width: 100%;
   }
 
   .links {
     flex-direction: row;
     gap: 3rem;
+    flex: 1;
+    justify-content: center;
   }
 }
 

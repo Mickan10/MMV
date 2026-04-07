@@ -82,7 +82,6 @@ const LokstalletHeader = () => {
               </NavLink>
             </li>
 
-            {/* Boka-länk – dölj tills lansering
             <li>
               <NavLink
                 to="/boka-lokstallet"
@@ -93,7 +92,6 @@ const LokstalletHeader = () => {
                 Boka
               </NavLink>
             </li>
-            */}
 
             <li>
               <NavLink
@@ -117,6 +115,15 @@ const LokstalletHeader = () => {
               </NavLink>
             </li>
           </ul>
+
+          <div className="header-social-desktop">
+            <a href="https://www.facebook.com/lokstallet.skovde" aria-label="Besök oss på Facebook (öppnas i nytt fönster)" target="_blank" rel="noreferrer">
+              <i className="fab fa-facebook" aria-hidden="true"></i>
+            </a>
+            <a href="https://www.instagram.com/lokstallet.skovde/" aria-label="Besök oss på Instagram (öppnas i nytt fönster)" target="_blank" rel="noreferrer">
+              <i className="fab fa-instagram" aria-hidden="true"></i>
+            </a>
+          </div>
         </nav>
       </div>
     </header>

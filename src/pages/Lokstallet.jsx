@@ -178,7 +178,6 @@ const Lokstallet = () => {
           <div className="inner-deco">
             <h3>Lokalen</h3>
           </div>
-          <h3 className="lokal-heading">Din scen i Skövde</h3>
           <p>
             Lokalen är utrustad med en större scen på 5 × 5 meter som kan byggas ut till 7 × 6 meter.
             I lokalen finns bar, garderob, kök, projektorer och sittplatser samt en mindre

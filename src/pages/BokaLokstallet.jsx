@@ -10,12 +10,10 @@ const MONTH_NAMES = [
 const DAY_NAMES = ["Mån","Tis","Ons","Tor","Fre","Lör","Sön"];
 
 const LOCAL_LABELS = {
+  helaLokalen: "Hela lokalen",
   köket: "Köket",
   lillaScenen: "Lilla Scenen",
   storaScenen: "Stora Scenen",
-  konferensrum: "Konferensrum",
-  helaLokalen: "Hela lokalen",
-  dagskontor: "Dagskontor",
 };
 
 function formatDate(dateStr) {
@@ -164,6 +162,9 @@ function BookingCalendar({ bookedDates, selectedDate, onSelectDate, loading }) {
 
 const EMPTY_FORM = {
   local: "",
+  inkluderaKok: true,
+  inkluderaLillaScen: true,
+  inkluderaStoraScen: true,
   antalPersoner: "",
   mobling: "",
   eventType: "",
@@ -180,12 +181,10 @@ const EMPTY_FORM = {
 };
 
 const LOCAL_PRICES = {
+  helaLokalen: 7000,
   köket: 1000,
   lillaScenen: 2000,
   storaScenen: 5000,
-  konferensrum: 1500,
-  helaLokalen: 7000,
-  dagskontor: 800,
 };
 
 export default function BokaLokstallet() {
@@ -201,7 +200,7 @@ export default function BokaLokstallet() {
 
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
-  // Fetch booked dates whenever the local (venue) changes
+  // Fetch booked dates från både bokningar och events
   useEffect(() => {
     if (!form.local) {
       setBookedDates(new Set());
@@ -212,9 +211,15 @@ export default function BokaLokstallet() {
     const fetch_ = async () => {
       setLoadingDates(true);
       try {
-        const snapshot = await getDocs(collection(db, "bookings"));
+        const [bookingsSnap, eventsSnap] = await Promise.all([
+          getDocs(collection(db, "bookings")),
+          getDocs(collection(db, "events")),
+        ]);
+
         const booked = new Set();
-        snapshot.docs.forEach((doc) => {
+
+        // Bokningsförfrågningar – blockera per lokal
+        bookingsSnap.docs.forEach((doc) => {
           const b = doc.data();
           if (
             b.local === form.local ||
@@ -224,6 +229,21 @@ export default function BokaLokstallet() {
             booked.add(b.date);
           }
         });
+
+        // Events – blockera alla datum (hela stället är upptaget vid event)
+        eventsSnap.docs.forEach((doc) => {
+          const e = doc.data();
+          if (e.hidden === true) return;
+          if (!e.date) return;
+          // Datum sparas som sträng "YYYY-MM-DD" från adminpanelen
+          let dateStr = typeof e.date === "string" ? e.date : null;
+          if (!dateStr && e.date?.toDate) {
+            const d = e.date.toDate();
+            dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+          }
+          if (dateStr) booked.add(dateStr);
+        });
+
         if (!cancelled) setBookedDates(booked);
       } catch (err) {
         console.error("Fetch booked dates error:", err);
@@ -248,7 +268,7 @@ export default function BokaLokstallet() {
   function calculatePrice() {
     setPriceError("");
     if (!form.local) {
-      setPriceError("Välj en lokal innan du beräknar pris.");
+      setPriceError("Välj ett alternativ innan du beräknar pris.");
       return;
     }
     let total = LOCAL_PRICES[form.local] || 0;
@@ -334,6 +354,7 @@ export default function BokaLokstallet() {
         local: form.local,
         antalPersoner: parseInt(form.antalPersoner, 10) || 0,
         mobling: form.mobling,
+        utrymmen: form.local === "helaLokalen" ? [form.inkluderaKok && "Köket", form.inkluderaLillaScen && "Lilla scenen", form.inkluderaStoraScen && "Stora scenen"].filter(Boolean) : [LOCAL_LABELS[form.local]],
         eventType: form.eventType,
         otherEventDescription: form.otherEventDescription,
         audioTech: form.audioTech,
@@ -400,6 +421,14 @@ export default function BokaLokstallet() {
       <span>{form.antalPersoner || "–"}</span>
       <span className="boka-sum-label">Möblering</span>
       <span>{form.mobling || "–"}</span>
+      {form.local === "helaLokalen" && (
+        <>
+          <span className="boka-sum-label">Utrymmen</span>
+          <span>
+            {[form.inkluderaKok && "Köket", form.inkluderaLillaScen && "Lilla scenen", form.inkluderaStoraScen && "Stora scenen"].filter(Boolean).join(", ") || "Inga valda"}
+          </span>
+        </>
+      )}
       <span className="boka-sum-label">Evenemangstyp</span>
       <span>{form.eventType || "–"}</span>
       {form.eventType === "annat" && (
@@ -470,21 +499,35 @@ export default function BokaLokstallet() {
               <h2>Välj lokal & datum</h2>
 
               <div className="boka-field">
-                <label htmlFor="local">Lokal *</label>
-                <select
-                  id="local"
-                  value={form.local}
-                  onChange={set("local")}
-                >
-                  <option value="">Välj lokal…</option>
-                  <option value="köket">Köket</option>
-                  <option value="lillaScenen">Lilla Scenen</option>
-                  <option value="storaScenen">Stora Scenen</option>
-                  <option value="konferensrum">Konferensrum</option>
+                <label htmlFor="local">Vad vill du boka? *</label>
+                <select id="local" value={form.local} onChange={(e) => setForm((f) => ({ ...f, local: e.target.value, inkluderaKok: true, inkluderaLillaScen: true, inkluderaStoraScen: true }))}>
+                  <option value="">Välj…</option>
                   <option value="helaLokalen">Hela lokalen</option>
-                  <option value="dagskontor">Dagskontor</option>
+                  <option value="köket">Endast köket</option>
+                  <option value="lillaScenen">Endast lilla scenen</option>
+                  <option value="storaScenen">Endast stora scenen</option>
                 </select>
               </div>
+
+              {form.local === "helaLokalen" && (
+                <div className="boka-field">
+                  <label>Vad vill du använda? (avmarkera det du inte behöver)</label>
+                  <div className="boka-checkbox-group">
+                    <label className="boka-checkbox-label">
+                      <input type="checkbox" checked={form.inkluderaKok} onChange={(e) => setForm((f) => ({ ...f, inkluderaKok: e.target.checked }))} />
+                      Köket
+                    </label>
+                    <label className="boka-checkbox-label">
+                      <input type="checkbox" checked={form.inkluderaLillaScen} onChange={(e) => setForm((f) => ({ ...f, inkluderaLillaScen: e.target.checked }))} />
+                      Lilla scenen
+                    </label>
+                    <label className="boka-checkbox-label">
+                      <input type="checkbox" checked={form.inkluderaStoraScen} onChange={(e) => setForm((f) => ({ ...f, inkluderaStoraScen: e.target.checked }))} />
+                      Stora scenen
+                    </label>
+                  </div>
+                </div>
+              )}
 
               <div className="boka-grid-2">
                 <div className="boka-field">

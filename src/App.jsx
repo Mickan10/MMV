@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import CookieBanner from "./components/CookieBanner.jsx";
 
 import Lokstallet from "./pages/Lokstallet.jsx";
 import BokaLokstallet from "./pages/BokaLokstallet.jsx";
@@ -23,6 +24,7 @@ function LokstalletLayout({ children }) {
 export default function App() {
   return (
     <Router>
+      <CookieBanner />
       <Routes>
         <Route path="/" element={<LokstalletLayout><Lokstallet /></LokstalletLayout>} />
         <Route path="/lokstallet" element={<LokstalletLayout><Lokstallet /></LokstalletLayout>} />

@@ -4,6 +4,10 @@ html, body, #root {
   padding: 0;
 }
 
+#main-content {
+  background-color: #c1b6a8;
+}
+
 /* Visually hidden – tillgänglig för skärmläsare */
 .sr-only {
   position: absolute;
