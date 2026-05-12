@@ -90,28 +90,30 @@ img {
 .welcome-left {
   position: relative;
   overflow: hidden;
-  background-image: url("../assets/testlokis.jpg");
-  background-size: cover;
-  background-position: center center;
+  background-color: #1a0f07;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Lokalbild som subtil textur i bakgrunden */
 .welcome-left::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(32, 17, 8, 0.8),
-    rgba(32, 17, 8, 0.3)
-  );
+  background-image: url("../assets/testlokis.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.15;
 }
 
 .welcome-logo {
   position: relative;
   z-index: 2;
-  width: 70%;
-  max-width: 380px;
+  width: 78%;
+  max-width: 400px;
   margin: 40px auto;
+  filter: drop-shadow(0 0 30px rgba(183, 156, 98, 0.55)) drop-shadow(0 0 10px rgba(183, 156, 98, 0.3));
 }
 
 /* Textsida */
@@ -227,7 +229,7 @@ img {
 
 /* Rubrikbox – kompaktare */
 .inner-line {
-  padding: 10px 0px; 
+  padding: 10px 0px 10px 14px;
   border-left: 4px solid var(--lok-accent);
   margin-bottom: 6px;
 }
@@ -420,13 +422,14 @@ img {
 
 .inner-deco h3 {
   font-family: "Playfair Display", serif;
-  color: var(--lok-accent);
+  color: #2f1e11;
   font-size: 2rem;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   margin: 0 0 10px;
-  border-bottom: 1px solid rgba(183, 156, 98, 0.35);
+  padding-bottom: 14px;
+  border-bottom: 1px solid #2f1e11;
 }
 
 .lokal-left p {
@@ -507,6 +510,10 @@ img {
   .lokal-left {
     padding: 40px 24px 36px;
     max-width: 100%;
+  }
+
+  .inner-deco h3 {
+    font-size: 2.6rem;
   }
 
   .lokal-image-wrap {

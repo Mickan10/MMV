@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./Lokstallet.css";
+import { usePageMeta } from "../hooks/usePageMeta";
 import { db } from "../firebaseConfig";
 import { collection, getDocsFromServer } from "firebase/firestore";
 import { Link } from "react-router-dom";
@@ -7,6 +8,7 @@ import img3 from "../assets/loklokal.jpg";
 import img9 from "../assets/lokstalletheader.png";
 
 const Lokstallet = () => {
+  usePageMeta("Din scen i Skövde", "Lokstallet – en unik kulturlokal i Skövde för konserter, teater, föreläsningar och privata evenemang.");
   const [events, setEvents] = useState([]);
   const lineRef = useRef(null);
 

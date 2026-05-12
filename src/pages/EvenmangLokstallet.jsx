@@ -1,29 +1,79 @@
 import "./EvenmangLokstallet.css";
-import { useState, useEffect, useMemo, useCallback } from "react";
-import { useLocation } from "react-router-dom";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import { usePageMeta } from "../hooks/usePageMeta";
 import { db } from "../firebaseConfig";
 import { collection, getDocsFromServer } from "firebase/firestore";
 
 const EvenemangLokstallet = () => {
+  usePageMeta("Evenemang & Biljetter", "Kommande konserter, teater och evenemang på Lokstallet i Skövde. Köp biljetter direkt här.");
   const location = useLocation();
 
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [billettoReady, setBillettoReady] = useState(false);
-  const [selectedGenre, setSelectedGenre] = useState("Alla");
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedMonth, setSelectedMonth] = useState(null);
   const [modalEvent, setModalEvent] = useState(null);
+  const navigate = useNavigate();
+  const modalCloseRef = useRef(null);
+  const triggerRef = useRef(null);
 
-  const openModal  = useCallback((event) => setModalEvent(event), []);
-  const closeModal = useCallback(() => setModalEvent(null), []);
+  const openModal = useCallback((event, triggerEl) => {
+    triggerRef.current = triggerEl ?? null;
+    setModalEvent(event);
+    navigate(`?event=${event.id}`, { replace: true });
+  }, [navigate]);
 
-  // Stäng modal med Escape
+  const closeModal = useCallback(() => {
+    setModalEvent(null);
+    navigate("", { replace: true });
+    triggerRef.current?.focus();
+  }, [navigate]);
+
+  // Öppna modal automatiskt om ?event=ID finns i URL
+  useEffect(() => {
+    if (events.length === 0) return;
+    const params = new URLSearchParams(window.location.search);
+    const eventId = params.get("event");
+    if (eventId) {
+      const found = events.find((e) => e.id === eventId);
+      if (found) setModalEvent(found);
+    }
+  }, [events]);
+
+  // Fokus + fokusfälla + Escape när modal öppnas
   useEffect(() => {
     if (!modalEvent) return;
-    const onKey = (e) => { if (e.key === "Escape") closeModal(); };
-    window.addEventListener("keydown", onKey);
+
+    // Flytta fokus till stäng-knappen
+    const frame = requestAnimationFrame(() => modalCloseRef.current?.focus());
+
+    const onKey = (e) => {
+      if (e.key === "Escape") { closeModal(); return; }
+      if (e.key !== "Tab") return;
+
+      const modal = modalCloseRef.current?.closest(".event-modal");
+      if (!modal) return;
+      const focusable = Array.from(
+        modal.querySelectorAll('a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])')
+      ).filter((el) => !el.closest("iframe"));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      }
+    };
+
     document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
     return () => {
+      cancelAnimationFrame(frame);
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
@@ -103,16 +153,42 @@ const EvenemangLokstallet = () => {
     });
   }, [events, today]);
 
+  const getGenres = (genre) => {
+    if (!genre) return [];
+    if (Array.isArray(genre)) return genre;
+    return [genre];
+  };
+
   const genres = useMemo(() => {
     const set = new Set();
-    visibleEvents.forEach((e) => { if (e.genre) set.add(e.genre); });
-    return ["Alla", ...Array.from(set).sort()];
+    visibleEvents.forEach((e) => getGenres(e.genre).forEach((g) => set.add(g)));
+    return Array.from(set).sort();
+  }, [visibleEvents]);
+
+  const toggleGenre = useCallback((g) => {
+    setSelectedGenres((prev) =>
+      prev.includes(g) ? prev.filter((x) => x !== g) : [...prev, g]
+    );
+  }, []);
+
+  // Månader som finns bland kommande events, som "YYYY-MM"-strängar
+  const months = useMemo(() => {
+    const seen = new Set();
+    visibleEvents.forEach((e) => {
+      const key = `${e.date.getFullYear()}-${String(e.date.getMonth() + 1).padStart(2, "0")}`;
+      seen.add(key);
+    });
+    return Array.from(seen).sort();
   }, [visibleEvents]);
 
   const filteredEvents = useMemo(() => {
-    if (selectedGenre === "Alla") return visibleEvents;
-    return visibleEvents.filter((e) => e.genre === selectedGenre);
-  }, [visibleEvents, selectedGenre]);
+    return visibleEvents.filter((e) => {
+      const genreMatch = selectedGenres.length === 0 || getGenres(e.genre).some((g) => selectedGenres.includes(g));
+      const monthKey = `${e.date.getFullYear()}-${String(e.date.getMonth() + 1).padStart(2, "0")}`;
+      const monthMatch = selectedMonth === null || monthKey === selectedMonth;
+      return genreMatch && monthMatch;
+    });
+  }, [visibleEvents, selectedGenres, selectedMonth]);
 
   useEffect(() => {
     const targetId = location.state?.scrollTo;
@@ -130,6 +206,13 @@ const EvenemangLokstallet = () => {
     requestAnimationFrame(scrollToTarget);
   }, [location.key, visibleEvents.length]);
 
+  const getSpotifyEmbed = (url) => {
+    if (!url) return null;
+    const match = url.match(/open\.spotify\.com\/(track|artist|album|playlist)\/([a-zA-Z0-9]+)/);
+    if (!match) return null;
+    return `https://open.spotify.com/embed/${match[1]}/${match[2]}`;
+  };
+
   const getBillettoId = (event) => {
     if (event.billettoEventId) return String(event.billettoEventId);
     if (event.billettoId) return String(event.billettoId);
@@ -140,33 +223,71 @@ const EvenemangLokstallet = () => {
   const formatDate = (date) =>
     date.toLocaleDateString("sv-SE", { weekday: "long", day: "numeric", month: "long" });
 
-  if (loading) return <p role="status" aria-live="polite">Laddar evenemang...</p>;
-  if (error) return <p role="alert">{error}</p>;
+  if (loading) return <main><p role="status" aria-live="polite">Laddar evenemang...</p></main>;
+  if (error) return <main><p role="alert">{error}</p></main>;
 
   return (
+    <main id="main-content">
     <section id="events" className="evenemang-lokstallet">
       <div className="evenemang-container">
         <h2 className="evenemang-title">Vad händer på Lokstallet?</h2>
         <p className="evenemang-intro">Här hittar du aktuella evenemang och föreställningar.</p>
 
-        {genres.length > 1 && (
-          <div className="genre-filter-bar">
-            {genres.map((g) => (
-              <button
-                key={g}
-                type="button"
-                className={`genre-filter-btn ${selectedGenre === g ? "active" : ""}`}
-                onClick={() => setSelectedGenre(g)}
-              >
-                {g}
-              </button>
-            ))}
+        {(genres.length > 1 || months.length > 1) && (
+          <div className="filter-section">
+            {months.length > 1 && (
+              <div className="month-filter-wrap">
+                <label htmlFor="month-filter" className="sr-only">Filtrera på månad</label>
+                <select
+                  id="month-filter"
+                  className="month-filter-select"
+                  value={selectedMonth ?? ""}
+                  onChange={(e) => setSelectedMonth(e.target.value || null)}
+                >
+                  <option value="">Sortera på månad</option>
+                  {months.map((m) => {
+                    const [year, month] = m.split("-");
+                    const label = new Date(Number(year), Number(month) - 1, 1)
+                      .toLocaleDateString("sv-SE", { month: "long", year: "numeric" });
+                    return (
+                      <option key={m} value={m}>
+                        {label.charAt(0).toUpperCase() + label.slice(1)}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            )}
+
+            {genres.length > 1 && (
+              <div className="genre-filter-bar" role="group" aria-label="Filtrera på genre">
+                <button
+                  type="button"
+                  className={`genre-filter-btn ${selectedGenres.length === 0 ? "active" : ""}`}
+                  aria-pressed={selectedGenres.length === 0}
+                  onClick={() => setSelectedGenres([])}
+                >
+                  Alla
+                </button>
+                {genres.map((g) => (
+                  <button
+                    key={g}
+                    type="button"
+                    className={`genre-filter-btn ${selectedGenres.includes(g) ? "active" : ""}`}
+                    aria-pressed={selectedGenres.includes(g)}
+                    onClick={() => toggleGenre(g)}
+                  >
+                    {g}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
-        <div className="event-grid">
+        <div className="event-grid" aria-live="polite" aria-atomic="false">
           {filteredEvents.length === 0 && (
-            <p className="no-events-msg">Inga evenemang inom vald genre.</p>
+            <p className="no-events-msg">Inga evenemang matchar det valda filtret.</p>
           )}
 
           {filteredEvents.map((event) => {
@@ -185,7 +306,9 @@ const EvenemangLokstallet = () => {
 
                 {/* INFO */}
                 <div className="event-content">
-                  {event.genre && <span className="event-genre-tag">{event.genre}</span>}
+                  <div className="event-genre-tags">
+                    {getGenres(event.genre).map((g) => <span key={g} className="event-genre-tag">{g}</span>)}
+                  </div>
 
                   <h3 className="event-heading">{event.title}</h3>
 
@@ -209,7 +332,8 @@ const EvenemangLokstallet = () => {
                       <button
                         type="button"
                         className="more-info-btn"
-                        onClick={() => openModal(event)}
+                        aria-haspopup="dialog"
+                        onClick={(e) => openModal(event, e.currentTarget)}
                       >
                         Mer information
                       </button>
@@ -232,8 +356,14 @@ const EvenemangLokstallet = () => {
                     )}
 
                     {!billettoId && event.link && (
-                      <a href={event.link} target="_blank" rel="noopener noreferrer" aria-label={`Skaffa biljetter till ${event.title} (öppnas i nytt fönster)`}>
-                        <button className="bt-l2">Skaffa biljetter</button>
+                      <a
+                        href={event.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Skaffa biljetter till ${event.title} (öppnas i nytt fönster)`}
+                        className="bt-l2"
+                      >
+                        Skaffa biljetter
                       </a>
                     )}
                   </div>
@@ -242,21 +372,29 @@ const EvenemangLokstallet = () => {
             );
           })}
         </div>
+
+        <div className="arkiv-link-wrap">
+          <Link to="/evenemang-lokstallet/arkiv" className="arkiv-link">
+            Se tidigare evenemang →
+          </Link>
+        </div>
       </div>
 
-      {/* ── MODAL ── */}
-      {modalEvent && (() => {
+      {/* ── MODAL via Portal (renderas direkt på body) ── */}
+      {modalEvent && createPortal((() => {
         const billettoId = getBillettoId(modalEvent);
         return (
           <div className="event-modal-backdrop" onClick={closeModal} role="dialog" aria-modal="true" aria-label={modalEvent.title}>
             <div className="event-modal" onClick={(e) => e.stopPropagation()}>
               <div className="event-modal-image">
                 {modalEvent.image && <img src={modalEvent.image} alt={modalEvent.title} />}
-                <button className="event-modal-close" onClick={closeModal} aria-label="Stäng">✕</button>
+                <button ref={modalCloseRef} className="event-modal-close" onClick={closeModal} aria-label="Stäng dialog">✕</button>
               </div>
 
               <div className="event-modal-body">
-                {modalEvent.genre && <span className="event-genre-tag">{modalEvent.genre}</span>}
+                <div className="event-genre-tags">
+                  {getGenres(modalEvent.genre).map((g) => <span key={g} className="event-genre-tag">{g}</span>)}
+                </div>
 
                 <h2 className="event-modal-title">{modalEvent.title}</h2>
                 {modalEvent.subtitle && <p className="event-subtitle">{modalEvent.subtitle}</p>}
@@ -267,6 +405,33 @@ const EvenemangLokstallet = () => {
                   {modalEvent.location && <span className="event-meta-item">{modalEvent.location}</span>}
                   {modalEvent.price    && <span className="event-meta-item event-price">{modalEvent.price}</span>}
                 </div>
+
+                {/* Spotify – under priset */}
+                {(() => {
+                  const links = Array.isArray(modalEvent.spotify)
+                    ? modalEvent.spotify
+                    : modalEvent.spotify ? [modalEvent.spotify] : [];
+                  return links.length > 0 && (
+                    <div className="event-spotify-list">
+                      {links.map((url, i) => {
+                        const embedUrl = getSpotifyEmbed(url);
+                        return embedUrl ? (
+                          <div key={i} className="event-spotify-wrap">
+                            <iframe
+                              src={`${embedUrl}?theme=0`}
+                              width="100%"
+                              height="152"
+                              style={{ border: "none" }}
+                              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                              loading="lazy"
+                              title={`Lyssna på Spotify ${i + 1}`}
+                            />
+                          </div>
+                        ) : null;
+                      })}
+                    </div>
+                  );
+                })()}
 
                 <div className="event-modal-text">
                   {modalEvent.description  && <p>{modalEvent.description}</p>}
@@ -291,16 +456,23 @@ const EvenemangLokstallet = () => {
                 )}
 
                 {!billettoId && modalEvent.link && (
-                  <a href={modalEvent.link} target="_blank" rel="noopener noreferrer">
-                    <button className="bt-l2">Skaffa biljetter</button>
+                  <a
+                    href={modalEvent.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Skaffa biljetter till ${modalEvent.title} (öppnas i nytt fönster)`}
+                    className="bt-l2"
+                  >
+                    Skaffa biljetter
                   </a>
                 )}
               </div>
             </div>
           </div>
         );
-      })()}
+      })(), document.body)}
     </section>
+    </main>
   );
 };
 

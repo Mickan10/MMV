@@ -27,7 +27,6 @@ export default function Login() {
         await signOut(auth);
       }
     } catch (err) {
-      console.error("Login error:", err.code, err.message);
       setError("Felaktig e-post eller lösenord. Försök igen.");
     }
   };

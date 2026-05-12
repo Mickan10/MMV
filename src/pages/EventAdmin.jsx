@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { db, auth } from "../firebaseConfig";
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc } from "firebase/firestore";
 import { signOut, onAuthStateChanged } from "firebase/auth";
@@ -14,7 +14,7 @@ const EMPTY_FORM = {
   title: "",
   subtitle: "",
   artist: "",
-  genre: "",
+  genre: [],
   date: "",
   time: "",
   location: "",
@@ -23,8 +23,191 @@ const EMPTY_FORM = {
   description3: "",
   price: "",
   link: "",
+  spotify: [],
   image: "",
 };
+
+function GenreTagInput({ tags, onChange }) {
+  const [input, setInput] = useState("");
+
+  const addTag = () => {
+    const val = input.trim();
+    if (val && !tags.includes(val)) onChange([...tags, val]);
+    setInput("");
+  };
+
+  const removeTag = (tag) => onChange(tags.filter((t) => t !== tag));
+
+  const handleKey = (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      addTag();
+    } else if (e.key === "Backspace" && !input && tags.length) {
+      removeTag(tags[tags.length - 1]);
+    }
+  };
+
+  return (
+    <div className="genre-tag-input">
+      <div className="genre-tag-list">
+        {tags.map((t) => (
+          <span key={t} className="genre-tag-chip">
+            {t}
+            <button type="button" onClick={() => removeTag(t)} aria-label={`Ta bort ${t}`}>×</button>
+          </span>
+        ))}
+        <input
+          type="text"
+          className="genre-tag-text"
+          placeholder={tags.length === 0 ? "T.ex. Rock, Komedi…" : "Lägg till…"}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKey}
+          onBlur={addTag}
+        />
+      </div>
+      <p className="genre-tag-hint">Tryck Enter eller komma för att lägga till</p>
+    </div>
+  );
+}
+
+
+function SpotifyTagInput({ links, onChange }) {
+  const [input, setInput] = useState("");
+
+  const addLink = () => {
+    const val = input.trim();
+    if (val && !links.includes(val)) onChange([...links, val]);
+    setInput("");
+  };
+
+  const removeLink = (link) => onChange(links.filter((l) => l !== link));
+
+  const handleKey = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addLink();
+    } else if (e.key === "Backspace" && !input && links.length) {
+      removeLink(links[links.length - 1]);
+    }
+  };
+
+  return (
+    <div className="genre-tag-input">
+      <div className="genre-tag-list">
+        {links.map((l, i) => (
+          <span key={i} className="genre-tag-chip spotify-chip">
+            🎵 {l.replace("https://open.spotify.com/", "").split("/").slice(0, 2).join("/")}
+            <button type="button" onClick={() => removeLink(l)} aria-label="Ta bort länk">×</button>
+          </span>
+        ))}
+        <input
+          type="text"
+          className="genre-tag-text"
+          placeholder={links.length === 0 ? "https://open.spotify.com/artist/..." : "Lägg till länk…"}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKey}
+          onBlur={addLink}
+        />
+      </div>
+      <p className="genre-tag-hint">Tryck Enter för att lägga till. Stöder artist, låt, album eller spellista.</p>
+    </div>
+  );
+}
+
+const UPLOAD_TOKEN = "lokstallet-upload-2024";
+
+function ImageInput({ value, onChange }) {
+  const fileRef = useRef();
+  const [progress, setProgress] = useState(false);
+  const [error, setError] = useState("");
+  const [mode, setMode] = useState("upload");
+
+  const switchMode = (m) => {
+    setMode(m);
+    onChange("");
+    setError("");
+  };
+
+  const handleFile = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { setError("Välj en bildfil."); return; }
+    if (file.size > 5 * 1024 * 1024) { setError("Max 5 MB."); return; }
+    setError("");
+    setProgress(true);
+
+    const data = new FormData();
+    data.append("image", file);
+
+    try {
+      const res = await fetch("/upload.php", {
+        method: "POST",
+        headers: { "X-Upload-Token": UPLOAD_TOKEN },
+        body: data,
+      });
+      const json = await res.json();
+      if (json.url) {
+        onChange(json.url);
+      } else {
+        setError(json.error || "Uppladdning misslyckades.");
+      }
+    } catch {
+      setError("Kunde inte nå servern.");
+    } finally {
+      setProgress(false);
+    }
+  };
+
+  const handleRemove = () => {
+    onChange("");
+    if (fileRef.current) fileRef.current.value = "";
+  };
+
+  return (
+    <div className="image-input-wrap">
+      <div className="image-input-tabs">
+        <button type="button" className={`image-tab ${mode === "upload" ? "active" : ""}`} onClick={() => switchMode("upload")}>
+          Ladda upp bild
+        </button>
+        <button type="button" className={`image-tab ${mode === "url" ? "active" : ""}`} onClick={() => switchMode("url")}>
+          Bildadress (URL)
+        </button>
+      </div>
+
+      {mode === "upload" ? (
+        <div className="image-upload-area">
+          {value ? (
+            <div className="image-preview">
+              <img src={value} alt="Förhandsgranskning" />
+              <button type="button" className="image-remove-btn" onClick={handleRemove}>× Ta bort bild</button>
+            </div>
+          ) : (
+            <>
+              <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="image-file-input" id="image-upload" />
+              <label htmlFor="image-upload" className="image-upload-label">
+                {progress ? "Laddar upp…" : "Välj bild från datorn"}
+              </label>
+            </>
+          )}
+          {error && <p className="image-error">{error}</p>}
+        </div>
+      ) : (
+        <div className="image-url-area">
+          <input
+            className="admin-input"
+            type="text"
+            placeholder="https://..."
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+          />
+          {value && <img src={value} alt="Förhandsgranskning" className="image-url-preview" onError={(e) => e.target.style.display = "none"} />}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const EventAdmin = () => {
   const [events, setEvents] = useState([]);
@@ -171,7 +354,10 @@ const EventAdmin = () => {
             </div>
             <div className="admin-field">
               <label className="admin-label">Genre / kategori</label>
-              <input className="admin-input" type="text" placeholder="T.ex. Komedi, Rock, Jazz" value={form.genre} onChange={(e) => setForm({ ...form, genre: e.target.value })} />
+              <GenreTagInput
+                tags={Array.isArray(form.genre) ? form.genre : (form.genre ? [form.genre] : [])}
+                onChange={(tags) => setForm({ ...form, genre: tags })}
+              />
             </div>
           </div>
         </div>
@@ -222,8 +408,15 @@ const EventAdmin = () => {
               <input className="admin-input" type="text" placeholder="https://..." value={form.link} onChange={(e) => setForm({ ...form, link: e.target.value })} />
             </div>
             <div className="admin-field admin-field--full">
-              <label className="admin-label">Bild-URL</label>
-              <input className="admin-input" type="text" placeholder="https://..." value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} />
+              <label className="admin-label">Spotify-länk(ar)</label>
+              <SpotifyTagInput
+                links={Array.isArray(form.spotify) ? form.spotify : (form.spotify ? [form.spotify] : [])}
+                onChange={(links) => setForm({ ...form, spotify: links })}
+              />
+            </div>
+            <div className="admin-field admin-field--full">
+              <label className="admin-label">Bild</label>
+              <ImageInput value={form.image} onChange={(url) => setForm({ ...form, image: url })} />
             </div>
           </div>
         </div>
@@ -261,7 +454,10 @@ const EventAdmin = () => {
                     </div>
                     <div className="admin-field">
                       <label className="admin-label">Genre</label>
-                      <input className="admin-input" type="text" value={editForm.genre || ""} onChange={(e) => setEditForm({ ...editForm, genre: e.target.value })} />
+                      <GenreTagInput
+                        tags={Array.isArray(editForm.genre) ? editForm.genre : (editForm.genre ? [editForm.genre] : [])}
+                        onChange={(tags) => setEditForm({ ...editForm, genre: tags })}
+                      />
                     </div>
                   </div>
                 </div>
@@ -312,8 +508,15 @@ const EventAdmin = () => {
                       <input className="admin-input" type="text" value={editForm.link} onChange={(e) => setEditForm({ ...editForm, link: e.target.value })} />
                     </div>
                     <div className="admin-field admin-field--full">
-                      <label className="admin-label">Bild-URL</label>
-                      <input className="admin-input" type="text" value={editForm.image} onChange={(e) => setEditForm({ ...editForm, image: e.target.value })} />
+                      <label className="admin-label">Spotify-länk(ar)</label>
+                      <SpotifyTagInput
+                        links={Array.isArray(editForm.spotify) ? editForm.spotify : (editForm.spotify ? [editForm.spotify] : [])}
+                        onChange={(links) => setEditForm({ ...editForm, spotify: links })}
+                      />
+                    </div>
+                    <div className="admin-field admin-field--full">
+                      <label className="admin-label">Bild</label>
+                      <ImageInput value={editForm.image} onChange={(url) => setEditForm({ ...editForm, image: url })} />
                     </div>
                   </div>
                 </div>
@@ -343,7 +546,9 @@ const EventAdmin = () => {
                     <span>{event.date}</span>
                     {event.time && <span>{event.time}</span>}
                     {event.location && <span>{event.location}</span>}
-                    {event.genre && <span className="admin-genre-tag">{event.genre}</span>}
+                    {(Array.isArray(event.genre) ? event.genre : (event.genre ? [event.genre] : [])).map((g) => (
+                      <span key={g} className="admin-genre-tag">{g}</span>
+                    ))}
                     {event.price && <span className="admin-price-tag">{event.price}</span>}
                   </div>
                   {event.description && (

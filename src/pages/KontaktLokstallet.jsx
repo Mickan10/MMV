@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import './KontaktLokstallet.css';
+import { usePageMeta } from "../hooks/usePageMeta";
 
 const KontaktLokstallet = () => {
+  usePageMeta("Kontakt", "Kontakta Lokstallet i Skövde – hör av dig för frågor om evenemang, bokning eller samarbete.");
   const [formData, setFormData] = useState({
     namn: '',
     email: '',

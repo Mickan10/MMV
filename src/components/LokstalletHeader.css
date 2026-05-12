@@ -144,13 +144,23 @@
   object-fit: contain;
 }
 
-/* --- SOCIAL ICONS (mobil) --- */
+/* --- SOCIAL ICONS (mobil header-bar) --- */
 .social-icons {
-  display: none; 
+  display: none;
   gap: 10px;
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+/* --- SOCIAL ICONS i fullscreen-menyn --- */
+.nav-social-mobile {
+  display: none;
+  gap: 24px;
+  list-style: none;
+  margin: 32px 0 0;
+  padding: 0;
+  justify-content: center;
 }
 
 .social-icons li a {
@@ -229,14 +239,10 @@
 
     .ham-icon.is-open {
     position: fixed;
-    top: 18px;          
+    top: 16px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 4000;
-  }
-
-  .ham-icon.is-open .ham-icon-img {
-    display: block;
+    z-index: 6000;
   }
 
   .social-icons {
@@ -246,35 +252,83 @@
   /* Fullscreen-menyn */
   .hero-nav {
     position: fixed;
-    top: -100%;
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #2f1e11;
+    background: linear-gradient(160deg, #2f1e11 60%, #1a0f07);
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: top 0.5s ease, opacity 0.5s ease;
+    gap: 0;
     opacity: 0;
+    pointer-events: none;
     z-index: 2000;
+    transition: opacity 0.35s ease;
   }
 
   .hero-nav.open {
-    top: 0;
     opacity: 1;
+    pointer-events: all;
+  }
+
+  /* Dölj sociala ikoner i nav-raden på mobil */
+  .header-social-desktop {
+    display: none !important;
   }
 
   .links {
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 0;
     text-align: center;
     align-items: center;
+    padding: 0;
+  }
+
+  .links li {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgba(183, 156, 98, 0.12);
+  }
+
+  .links li:first-child {
+    border-top: 1px solid rgba(183, 156, 98, 0.12);
   }
 
   .links li a {
-    font-size: 1.8rem;
-    padding: 6px 0;
+    font-size: 1.4rem;
+    padding: 18px 40px;
     display: block;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #d6c4a0;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .links li a:hover,
+  .links li a.active {
+    color: #b79c62;
+    background: rgba(183, 156, 98, 0.08);
+  }
+
+  .links li a::after {
+    display: none;
+  }
+
+  /* Social ikoner i fullscreen-menyn */
+  .nav-social-mobile {
+    display: flex;
+  }
+
+  .nav-social-mobile li a {
+    color: #d7c7a8;
+    font-size: 1.8rem;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-social-mobile li a:hover {
+    color: #b79c62;
   }
 
   .lokstallet-header {

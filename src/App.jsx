@@ -6,6 +6,7 @@ import BokaLokstallet from "./pages/BokaLokstallet.jsx";
 import EvenmangLokstallet from "./pages/EvenmangLokstallet.jsx";
 import KontaktLokstallet from "./pages/KontaktLokstallet.jsx";
 import BraAttVeta from "./pages/BraAttVeta.jsx";
+import EvenemangArkiv from "./pages/EvenemangArkiv.jsx";
 import Login from "./pages/Login.jsx";
 import EventAdmin from "./pages/EventAdmin.jsx";
 import LokstalletHeader from "./components/LokstalletHeader.jsx";
@@ -32,7 +33,8 @@ export default function App() {
         <Route path="/evenemang-lokstallet" element={<LokstalletLayout><EvenmangLokstallet /></LokstalletLayout>} />
         <Route path="/kontakt-lokstallet" element={<LokstalletLayout><KontaktLokstallet /></LokstalletLayout>} />
         <Route path="/bra-att-veta" element={<LokstalletLayout><BraAttVeta /></LokstalletLayout>} />
-        <Route path="/admin-panel" element={<Login />} />
+        <Route path="/evenemang-lokstallet/arkiv" element={<LokstalletLayout><EvenemangArkiv /></LokstalletLayout>} />
+<Route path="/admin-panel" element={<Login />} />
         <Route path="/admin" element={<EventAdmin />} />
       </Routes>
     </Router>

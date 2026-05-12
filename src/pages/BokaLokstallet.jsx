@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { db } from "../firebaseConfig";
+import { usePageMeta } from "../hooks/usePageMeta";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import "./BokaLokstallet.css";
 
@@ -188,6 +189,7 @@ const LOCAL_PRICES = {
 };
 
 export default function BokaLokstallet() {
+  usePageMeta("Boka Lokstallet", "Boka Lokstallet i Skövde för ditt evenemang – konserter, konferenser, bröllop och mer.");
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(EMPTY_FORM);
   const [selectedDate, setSelectedDate] = useState("");

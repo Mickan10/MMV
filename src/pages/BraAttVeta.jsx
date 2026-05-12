@@ -1,4 +1,5 @@
 import "./BraAttVeta.css";
+import { usePageMeta } from "../hooks/usePageMeta";
 
 const sections = [
   {
@@ -67,12 +68,19 @@ const sections = [
 ];
 
 const BraAttVeta = () => {
+  usePageMeta("Bra att veta", "Villkor och praktisk information för evenemang på Lokstallet i Skövde.");
   return (
     <main className="brav-main">
       <div className="brav-hero">
         <h1 className="brav-title">Bra att veta</h1>
         <p className="brav-lead">
           Mellan biljettköpare och arrangör gäller följande villkor. Villkoren är framtagna enligt Svensk Live. Genom bokning eller köp accepterar du dessa villkor.
+        </p>
+      </div>
+
+      <div className="brav-intro-box">
+        <p>
+          På Lokstallet är det olika arrangörer som skapar evenemangen, så det enklaste sättet att hitta rätt information är att läsa evenemangsbeskrivningen i Facebookeventet. Där framgår även vem som är arrangör för det specifika eventet.
         </p>
       </div>
 

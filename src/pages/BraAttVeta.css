@@ -29,6 +29,23 @@
   color: #5a4c3e;
 }
 
+/* Intro-ruta under hero */
+.brav-intro-box {
+  max-width: 860px;
+  margin: 0 auto 32px;
+  padding: 20px 32px;
+  background: rgba(75, 59, 43, 0.07);
+  border-left: 3px solid #b78c50;
+  border-radius: 4px;
+}
+
+.brav-intro-box p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #4b3b2b;
+}
+
 /* LAYOUT */
 .brav-container {
   max-width: 1100px;
