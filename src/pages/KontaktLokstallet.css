@@ -242,3 +242,15 @@
     min-height: 320px;
   }
 }
+
+.kontakt-gdpr-notice {
+  font-size: 0.82rem;
+  color: #7a6a5a;
+  margin: 4px 0 12px;
+  line-height: 1.5;
+}
+
+.kontakt-gdpr-notice a {
+  color: #7a5c2e;
+  text-decoration: underline;
+}

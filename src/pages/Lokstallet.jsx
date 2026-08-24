@@ -1,19 +1,106 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import "./Lokstallet.css";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { db } from "../firebaseConfig";
-import { collection, getDocsFromServer } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import img3 from "../assets/loklokal.jpg";
 import img9 from "../assets/lokstalletheader.png";
+import imgTestlokis from "../assets/testlokis.jpg";
+
+function ReviewsSection({ reviews }) {
+  if (reviews.length === 0) return null;
+
+  return (
+    <section className="reviews-section section-fade">
+      <div className="reviews-container">
+        <div className="inner-deco reviews-heading">
+          <h3>Vad våra gäster säger</h3>
+        </div>
+
+        <div className="reviews-grid">
+          {reviews.map((review) => (
+            <article key={review.id} className="review-card">
+              <div className="review-stars" aria-label={`${review.rating} av 5 stjärnor`}>
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <span key={i} className={`review-star ${i < review.rating ? "filled" : ""}`}>★</span>
+                ))}
+              </div>
+              <p className="review-text">&ldquo;{review.text}&rdquo;</p>
+              <p className="review-author">{review.name}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Lägg till fler bilder här ──
+const CAROUSEL_IMAGES = [
+  { src: img3,        alt: "Lokstallets lokaler" },
+  { src: imgTestlokis, alt: "Lokstallet – interiör" },
+  { src: img9,        alt: "Lokstallet" },
+];
+
+function ImageCarousel() {
+  const [offset, setOffset] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const count = CAROUSEL_IMAGES.length;
+
+  const prev = useCallback(() => setOffset((o) => (o - 1 + count) % count), [count]);
+  const next = useCallback(() => setOffset((o) => (o + 1) % count), [count]);
+
+  useEffect(() => {
+    if (paused) return;
+    const t = setInterval(next, 4000);
+    return () => clearInterval(t);
+  }, [paused, next]);
+
+  // Bygg upp en loop med 5 synliga positioner (vänster-2, vänster-1, center, höger-1, höger-2)
+  const getImg = (delta) => CAROUSEL_IMAGES[(offset + delta + count) % count];
+
+  return (
+    <section className="carousel-section" aria-label="Bildgalleri">
+      <div
+        className="carousel-stage"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+        {[-1, 0, 1].map((delta) => {
+          const img = getImg(delta);
+          const pos = delta === 0 ? "center" : delta === -1 ? "left" : "right";
+          return (
+            <div key={offset + delta} className={`carousel-item carousel-item--${pos}`}>
+              <img src={img.src} alt={img.alt} />
+            </div>
+          );
+        })}
+
+        <button className="carousel-btn carousel-btn--prev" onClick={prev} aria-label="Föregående bild">‹</button>
+        <button className="carousel-btn carousel-btn--next" onClick={next} aria-label="Nästa bild">›</button>
+      </div>
+    </section>
+  );
+}
 
 const Lokstallet = () => {
   usePageMeta("Din scen i Skövde", "Lokstallet – en unik kulturlokal i Skövde för konserter, teater, föreläsningar och privata evenemang.");
   const [events, setEvents] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const lineRef = useRef(null);
 
+  const fetchReviews = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, "reviews"));
+      setReviews(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+    } catch (err) {
+      console.error("Fetch reviews error:", err);
+    }
+  };
+
   const fetchEvents = async () => {
-    const snapshot = await getDocsFromServer(collection(db, "events"));
+    const snapshot = await getDocs(collection(db, "events"));
     let eventList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
     const toMinutes = (t) => {
@@ -44,6 +131,7 @@ const Lokstallet = () => {
 
   useEffect(() => {
     fetchEvents();
+    fetchReviews();
   }, []);
 
   useEffect(() => {
@@ -174,6 +262,10 @@ const Lokstallet = () => {
           </div>
         </div>
       </section>
+
+      {/* <ImageCarousel /> */}
+
+      <ReviewsSection reviews={reviews} />
 
       <section className="lokal-section section-fade">
         <div className="lokal-left">

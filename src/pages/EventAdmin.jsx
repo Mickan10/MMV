@@ -1,13 +1,51 @@
 import { useState, useEffect, useRef } from "react";
-import { db, auth } from "../firebaseConfig";
+import { db } from "../firebaseConfig";
+import { auth } from "../firebaseAuth";
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc } from "firebase/firestore";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import "./EventAdmin.css";
 
+function FormattedTextarea({ className, placeholder, value, onChange, required }) {
+  const ref = useRef();
+
+  const wrap = (marker) => {
+    const el = ref.current;
+    if (!el) return;
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const selected = value.slice(start, end);
+    const newVal = value.slice(0, start) + marker + selected + marker + value.slice(end);
+    onChange(newVal);
+    requestAnimationFrame(() => {
+      el.selectionStart = start + marker.length;
+      el.selectionEnd = end + marker.length;
+      el.focus();
+    });
+  };
+
+  return (
+    <div className="formatted-textarea-wrap">
+      <div className="format-toolbar">
+        <button type="button" className="format-btn format-btn-bold" onMouseDown={(e) => e.preventDefault()} onClick={() => wrap("**")} title="Fet text">B</button>
+        <button type="button" className="format-btn format-btn-italic" onMouseDown={(e) => e.preventDefault()} onClick={() => wrap("*")} title="Kursiv text">I</button>
+      </div>
+      <textarea ref={ref} className={className} placeholder={placeholder} value={value} required={required} onChange={(e) => onChange(e.target.value)} />
+    </div>
+  );
+}
+
 const normalizeBillettoLink = (url = "") => {
   const s = url.trim();
   return s.replace(/(https?:\/\/(?:www\.)?billetto\.se)\/[a-z]{2}\/e\//i, "$1/e/");
+};
+
+const MAX_REVIEWS = 3;
+
+const EMPTY_REVIEW = {
+  name: "",
+  rating: 5,
+  text: "",
 };
 
 const EMPTY_FORM = {
@@ -25,6 +63,8 @@ const EMPTY_FORM = {
   link: "",
   spotify: [],
   image: "",
+  organizer: "",
+  organizerEmail: "",
 };
 
 function GenreTagInput({ tags, onChange }) {
@@ -118,6 +158,36 @@ function SpotifyTagInput({ links, onChange }) {
 
 const UPLOAD_TOKEN = "lokstallet-upload-2024";
 
+// Skalar ner + komprimerar bilden i webbläsaren innan uppladdning, så att t.ex.
+// en 4000x3000 mobilbild (flera MB) inte skickas i fullstorlek till en liten eventkortsbild.
+const MAX_DIMENSION = 1600;
+const JPEG_QUALITY = 0.82;
+
+function downscaleImage(file) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      const scale = Math.min(1, MAX_DIMENSION / Math.max(img.width, img.height));
+      const width = Math.round(img.width * scale);
+      const height = Math.round(img.height * scale);
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob) => resolve(blob ? new File([blob], file.name, { type: "image/jpeg" }) : file),
+        "image/jpeg",
+        JPEG_QUALITY
+      );
+    };
+    img.onerror = () => { URL.revokeObjectURL(objectUrl); resolve(file); };
+    img.src = objectUrl;
+  });
+}
+
 function ImageInput({ value, onChange }) {
   const fileRef = useRef();
   const [progress, setProgress] = useState(false);
@@ -138,8 +208,10 @@ function ImageInput({ value, onChange }) {
     setError("");
     setProgress(true);
 
+    const uploadFile = file.type === "image/gif" ? file : await downscaleImage(file);
+
     const data = new FormData();
-    data.append("image", file);
+    data.append("image", uploadFile);
 
     try {
       const res = await fetch("/upload.php", {
@@ -218,6 +290,11 @@ const EventAdmin = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [saveMsg, setSaveMsg] = useState("");
 
+  const [reviews, setReviews] = useState([]);
+  const [reviewForm, setReviewForm] = useState(EMPTY_REVIEW);
+  const [editingReviewId, setEditingReviewId] = useState(null);
+  const [editReviewForm, setEditReviewForm] = useState(EMPTY_REVIEW);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -248,7 +325,13 @@ const EventAdmin = () => {
     try {
       const snapshot = await getDocs(collection(db, "events"));
       const eventList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      eventList.sort((a, b) => new Date(a.date) - new Date(b.date));
+      const today = new Date(new Date().toDateString());
+      const isPast = (e) => new Date(e.date) < today;
+      eventList.sort((a, b) => {
+        const aPast = isPast(a), bPast = isPast(b);
+        if (aPast !== bPast) return aPast ? 1 : -1;
+        return new Date(a.date) - new Date(b.date);
+      });
       setEvents(eventList);
     } catch (err) {
       console.error("Fetch events error:", err);
@@ -257,7 +340,17 @@ const EventAdmin = () => {
 
   useEffect(() => {
     fetchEvents();
+    fetchReviews();
   }, []);
+
+  const fetchReviews = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, "reviews"));
+      setReviews(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+    } catch (err) {
+      console.error("Fetch reviews error:", err);
+    }
+  };
 
   const handleAddEvent = async (e) => {
     e.preventDefault();
@@ -317,6 +410,50 @@ const EventAdmin = () => {
       fetchEvents();
     } catch (err) {
       console.error("Toggle hidden error:", err);
+    }
+  };
+
+  const handleAddReview = async (e) => {
+    e.preventDefault();
+    if (!isAdmin || reviews.length >= MAX_REVIEWS) return;
+    try {
+      await addDoc(collection(db, "reviews"), reviewForm);
+      setReviewForm(EMPTY_REVIEW);
+      fetchReviews();
+      setSaveMsg("Recension tillagd!");
+      setTimeout(() => setSaveMsg(""), 3000);
+    } catch (err) {
+      console.error("Add review error:", err);
+    }
+  };
+
+  const handleEditReviewClick = (review) => {
+    setEditingReviewId(review.id);
+    setEditReviewForm({ ...EMPTY_REVIEW, ...review });
+  };
+
+  const handleSaveReviewEdit = async (id) => {
+    if (!isAdmin) return;
+    try {
+      await updateDoc(doc(db, "reviews", id), editReviewForm);
+      setEditingReviewId(null);
+      fetchReviews();
+      setSaveMsg("Ändringarna sparades!");
+      setTimeout(() => setSaveMsg(""), 3000);
+    } catch (err) {
+      console.error("Update review error:", err);
+    }
+  };
+
+  const handleCancelReviewEdit = () => setEditingReviewId(null);
+
+  const handleDeleteReview = async (id) => {
+    if (!isAdmin) return;
+    try {
+      await deleteDoc(doc(db, "reviews", id));
+      fetchReviews();
+    } catch (err) {
+      console.error("Delete review error:", err);
     }
   };
 
@@ -384,15 +521,15 @@ const EventAdmin = () => {
           <h3 className="admin-section-title">Beskrivning</h3>
           <div className="admin-field">
             <label className="admin-label">Stycke 1 *</label>
-            <textarea className="admin-textarea" placeholder="Inledning – vad är evenemanget?" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required />
+            <FormattedTextarea className="admin-textarea" placeholder="Inledning – vad är evenemanget?" value={form.description} onChange={(v) => setForm({ ...form, description: v })} required />
           </div>
           <div className="admin-field" style={{ marginTop: "12px" }}>
             <label className="admin-label">Stycke 2</label>
-            <textarea className="admin-textarea" placeholder="Mer info – artist, program eller vad som ingår." value={form.description2} onChange={(e) => setForm({ ...form, description2: e.target.value })} />
+            <FormattedTextarea className="admin-textarea" placeholder="Mer info – artist, program eller vad som ingår." value={form.description2} onChange={(v) => setForm({ ...form, description2: v })} />
           </div>
           <div className="admin-field" style={{ marginTop: "12px" }}>
             <label className="admin-label">Stycke 3</label>
-            <textarea className="admin-textarea" placeholder="Praktiskt – ålder, inträde, garderob eller annat att tänka på." value={form.description3} onChange={(e) => setForm({ ...form, description3: e.target.value })} />
+            <FormattedTextarea className="admin-textarea" placeholder="Praktiskt – ålder, inträde, garderob eller annat att tänka på." value={form.description3} onChange={(v) => setForm({ ...form, description3: v })} />
           </div>
         </div>
 
@@ -417,6 +554,20 @@ const EventAdmin = () => {
             <div className="admin-field admin-field--full">
               <label className="admin-label">Bild</label>
               <ImageInput value={form.image} onChange={(url) => setForm({ ...form, image: url })} />
+            </div>
+          </div>
+        </div>
+
+        <div className="admin-form-section">
+          <h3 className="admin-section-title">Arrangör</h3>
+          <div className="admin-grid-2">
+            <div className="admin-field">
+              <label className="admin-label">Arrangörens namn</label>
+              <input className="admin-input" type="text" placeholder="T.ex. Lokstallet" value={form.organizer} onChange={(e) => setForm({ ...form, organizer: e.target.value })} />
+            </div>
+            <div className="admin-field">
+              <label className="admin-label">Arrangörens e-post</label>
+              <input className="admin-input" type="email" placeholder="T.ex. info@lokstallet.se" value={form.organizerEmail} onChange={(e) => setForm({ ...form, organizerEmail: e.target.value })} />
             </div>
           </div>
         </div>
@@ -484,15 +635,15 @@ const EventAdmin = () => {
                   <h3 className="admin-section-title">Beskrivning</h3>
                   <div className="admin-field">
                     <label className="admin-label">Stycke 1</label>
-                    <textarea className="admin-textarea" placeholder="Inledning – vad är evenemanget? Sätt tonen direkt." value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} />
+                    <FormattedTextarea className="admin-textarea" placeholder="Inledning – vad är evenemanget? Sätt tonen direkt." value={editForm.description} onChange={(v) => setEditForm({ ...editForm, description: v })} />
                   </div>
                   <div className="admin-field" style={{ marginTop: "12px" }}>
                     <label className="admin-label">Stycke 2</label>
-                    <textarea className="admin-textarea" placeholder="Mer info – artist, program eller vad som ingår." value={editForm.description2 || ""} onChange={(e) => setEditForm({ ...editForm, description2: e.target.value })} />
+                    <FormattedTextarea className="admin-textarea" placeholder="Mer info – artist, program eller vad som ingår." value={editForm.description2 || ""} onChange={(v) => setEditForm({ ...editForm, description2: v })} />
                   </div>
                   <div className="admin-field" style={{ marginTop: "12px" }}>
                     <label className="admin-label">Stycke 3</label>
-                    <textarea className="admin-textarea" placeholder="Praktiskt – ålder, inträde, garderob eller annat att tänka på." value={editForm.description3 || ""} onChange={(e) => setEditForm({ ...editForm, description3: e.target.value })} />
+                    <FormattedTextarea className="admin-textarea" placeholder="Praktiskt – ålder, inträde, garderob eller annat att tänka på." value={editForm.description3 || ""} onChange={(v) => setEditForm({ ...editForm, description3: v })} />
                   </div>
                 </div>
 
@@ -517,6 +668,20 @@ const EventAdmin = () => {
                     <div className="admin-field admin-field--full">
                       <label className="admin-label">Bild</label>
                       <ImageInput value={editForm.image} onChange={(url) => setEditForm({ ...editForm, image: url })} />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="admin-form-section">
+                  <h3 className="admin-section-title">Arrangör</h3>
+                  <div className="admin-grid-2">
+                    <div className="admin-field">
+                      <label className="admin-label">Arrangörens namn</label>
+                      <input className="admin-input" type="text" value={editForm.organizer || ""} onChange={(e) => setEditForm({ ...editForm, organizer: e.target.value })} />
+                    </div>
+                    <div className="admin-field">
+                      <label className="admin-label">Arrangörens e-post</label>
+                      <input className="admin-input" type="email" value={editForm.organizerEmail || ""} onChange={(e) => setEditForm({ ...editForm, organizerEmail: e.target.value })} />
                     </div>
                   </div>
                 </div>
@@ -564,6 +729,85 @@ const EventAdmin = () => {
                   <button className="btn-toggle" onClick={() => handleToggleHidden(event.id, event.hidden)}>
                     {event.hidden ? "Visa" : "Dölj"}
                   </button>
+                </div>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <div className="admin-list-header" style={{ marginTop: "60px" }}>
+        <h2 className="admin-title" style={{ marginBottom: "6px" }}>Hantera Recensioner</h2>
+        <p style={{ textAlign: "center", marginTop: 0 }}>
+          {reviews.length} av {MAX_REVIEWS} recensioner används på startsidan.
+        </p>
+      </div>
+
+      {reviews.length < MAX_REVIEWS ? (
+        <form onSubmit={handleAddReview} className="admin-form">
+          <div className="admin-form-section">
+            <div className="admin-grid-2">
+              <div className="admin-field">
+                <label className="admin-label">Namn *</label>
+                <input className="admin-input" type="text" placeholder="T.ex. Anna Svensson" value={reviewForm.name} onChange={(e) => setReviewForm({ ...reviewForm, name: e.target.value })} required />
+              </div>
+              <div className="admin-field">
+                <label className="admin-label">Betyg *</label>
+                <select className="admin-input" value={reviewForm.rating} onChange={(e) => setReviewForm({ ...reviewForm, rating: Number(e.target.value) })}>
+                  {[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>{n} av 5</option>)}
+                </select>
+              </div>
+              <div className="admin-field admin-field--full">
+                <label className="admin-label">Recensionstext *</label>
+                <textarea className="admin-textarea" placeholder="Vad tyckte gästen?" value={reviewForm.text} onChange={(e) => setReviewForm({ ...reviewForm, text: e.target.value })} required />
+              </div>
+            </div>
+          </div>
+          <button type="submit" className="admin-button admin-submit-btn">Lägg till recension</button>
+        </form>
+      ) : (
+        <p style={{ textAlign: "center" }}>Max antal recensioner uppnått — ta bort en för att lägga till en ny.</p>
+      )}
+
+      <ul className="admin-event-list">
+        {reviews.map((review) => (
+          <li key={review.id} className="admin-event-item">
+            {editingReviewId === review.id ? (
+              <div className="admin-edit-form">
+                <div className="admin-form-section">
+                  <div className="admin-grid-2">
+                    <div className="admin-field">
+                      <label className="admin-label">Namn</label>
+                      <input className="admin-input" type="text" value={editReviewForm.name} onChange={(e) => setEditReviewForm({ ...editReviewForm, name: e.target.value })} />
+                    </div>
+                    <div className="admin-field">
+                      <label className="admin-label">Betyg</label>
+                      <select className="admin-input" value={editReviewForm.rating} onChange={(e) => setEditReviewForm({ ...editReviewForm, rating: Number(e.target.value) })}>
+                        {[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>{n} av 5</option>)}
+                      </select>
+                    </div>
+                    <div className="admin-field admin-field--full">
+                      <label className="admin-label">Recensionstext</label>
+                      <textarea className="admin-textarea" value={editReviewForm.text} onChange={(e) => setEditReviewForm({ ...editReviewForm, text: e.target.value })} />
+                    </div>
+                  </div>
+                </div>
+                <div className="admin-edit-actions">
+                  <button className="admin-button" onClick={() => handleSaveReviewEdit(review.id)}>Spara</button>
+                  <button className="admin-button admin-button--cancel" onClick={handleCancelReviewEdit}>Avbryt</button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="admin-event-info">
+                  <p className="admin-event-name">
+                    {review.name} <span className="admin-price-tag">{review.rating} av 5</span>
+                  </p>
+                  <p className="admin-event-desc">{review.text}</p>
+                </div>
+                <div className="admin-event-buttons">
+                  <button className="btn-edit" onClick={() => handleEditReviewClick(review)}>Redigera</button>
+                  <button className="btn-delete" onClick={() => handleDeleteReview(review.id)}>Ta bort</button>
                 </div>
               </>
             )}

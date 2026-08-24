@@ -4,6 +4,7 @@ import logga from "../assets/headerlok.png";
 import "./LokstalletHeader.css";
 import menuIcon from "../assets/menuopen.svg";
 import closeIcon from "../assets/closed.svg";
+import { FacebookIcon, InstagramIcon } from "./SocialIcons.jsx";
 
 const LokstalletHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -42,7 +43,7 @@ const LokstalletHeader = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <i className="fab fa-facebook" aria-hidden="true"></i>
+                <FacebookIcon />
               </a>
             </li>
             <li>
@@ -52,7 +53,7 @@ const LokstalletHeader = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <i className="fab fa-instagram" aria-hidden="true"></i>
+                <InstagramIcon />
               </a>
             </li>
           </ul>
@@ -126,7 +127,7 @@ const LokstalletHeader = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <i className="fab fa-facebook" aria-hidden="true"></i>
+                <FacebookIcon />
               </a>
             </li>
             <li>
@@ -136,17 +137,17 @@ const LokstalletHeader = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <i className="fab fa-instagram" aria-hidden="true"></i>
+                <InstagramIcon />
               </a>
             </li>
           </ul>
 
           <div className="header-social-desktop">
             <a href="https://www.facebook.com/lokstallet.skovde" aria-label="Besök oss på Facebook (öppnas i nytt fönster)" target="_blank" rel="noreferrer">
-              <i className="fab fa-facebook" aria-hidden="true"></i>
+              <FacebookIcon />
             </a>
             <a href="https://www.instagram.com/lokstallet.skovde/" aria-label="Besök oss på Instagram (öppnas i nytt fönster)" target="_blank" rel="noreferrer">
-              <i className="fab fa-instagram" aria-hidden="true"></i>
+              <InstagramIcon />
             </a>
           </div>
         </nav>

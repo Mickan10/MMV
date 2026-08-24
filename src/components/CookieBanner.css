@@ -37,6 +37,11 @@
   margin: 0 0 12px;
 }
 
+.cookie-policy-link {
+  color: #c8a96b;
+  text-decoration: underline;
+}
+
 .cookie-details-toggle {
   background: none;
   border: none;

@@ -394,6 +394,211 @@ img {
 }
 
 /* =====================================
+   KARUSELL
+   ===================================== */
+
+.carousel-section {
+  background: var(--lok-primary);
+  border-bottom: 2px solid var(--lok-accent);
+  overflow: hidden;
+  padding: 40px 0;
+}
+
+.carousel-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 0 60px;
+  height: 380px;
+}
+
+.carousel-item {
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: all 0.5s ease;
+}
+
+.carousel-item--center {
+  width: 50%;
+  height: 100%;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  z-index: 2;
+}
+
+.carousel-item--left,
+.carousel-item--right {
+  width: 22%;
+  height: 80%;
+  opacity: 0.55;
+  z-index: 1;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(20, 12, 5, 0.6);
+  backdrop-filter: blur(4px);
+  color: #f5ede2;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.6rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  z-index: 3;
+}
+
+.carousel-btn:hover { background: rgba(20, 12, 5, 0.9); }
+.carousel-btn:focus-visible { outline: 2px solid var(--lok-accent); outline-offset: 3px; }
+.carousel-btn--prev { left: 12px; }
+.carousel-btn--next { right: 12px; }
+
+@media (max-width: 768px) {
+  .carousel-stage {
+    height: 240px;
+    padding: 0 48px;
+    gap: 10px;
+  }
+
+  .carousel-item--center { width: 60%; }
+  .carousel-item--left,
+  .carousel-item--right { width: 18%; }
+}
+
+/* =====================================
+   RECENSIONER
+   ===================================== */
+
+.reviews-section {
+  background: var(--lok-secondary);
+  padding: 70px 20px 80px;
+  border-bottom: 2px solid var(--lok-accent);
+}
+
+.reviews-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.reviews-heading {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.reviews-heading h3 {
+  display: inline-block;
+  font-family: "Playfair Display", serif;
+  color: #2f1e11;
+  font-size: 2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin: 0;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #2f1e11;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.review-card {
+  background: #fffaf2;
+  border-radius: 16px;
+  padding: 30px 26px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  border-top: 3px solid var(--lok-accent);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.review-stars {
+  display: flex;
+  gap: 3px;
+}
+
+.review-star {
+  font-size: 1.1rem;
+  line-height: 1;
+  color: #d8cdbc;
+}
+
+.review-star.filled {
+  color: var(--lok-accent);
+}
+
+.review-text {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--lok-text-main);
+  font-style: italic;
+  flex-grow: 1;
+  margin: 0;
+}
+
+.review-author {
+  font-weight: 700;
+  color: var(--lok-text-muted);
+  margin: 0;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 1024px) {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reviews-section {
+    padding: 50px 18px 60px;
+  }
+
+  .reviews-heading h3 {
+    font-size: 1.5rem;
+  }
+
+  .review-card {
+    padding: 20px 18px;
+    border-radius: 12px;
+    gap: 10px;
+  }
+
+  .review-star {
+    font-size: 0.95rem;
+  }
+
+  .review-text {
+    font-size: 0.88rem;
+  }
+
+  .review-author {
+    font-size: 0.82rem;
+  }
+}
+
+/* =====================================
    LOKAL-SECTION
    ===================================== */
 

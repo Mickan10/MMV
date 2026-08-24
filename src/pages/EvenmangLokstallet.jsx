@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { db } from "../firebaseConfig";
-import { collection, getDocsFromServer } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 const EvenemangLokstallet = () => {
   usePageMeta("Evenemang & Biljetter", "Kommande konserter, teater och evenemang på Lokstallet i Skövde. Köp biljetter direkt här.");
@@ -97,7 +97,7 @@ const EvenemangLokstallet = () => {
 
   const fetchEvents = async () => {
     try {
-      const snapshot = await getDocsFromServer(collection(db, "events"));
+      const snapshot = await getDocs(collection(db, "events"));
 
       const parseLocalDate = (val) => {
         if (!val) return null;
@@ -206,6 +206,14 @@ const EvenemangLokstallet = () => {
     requestAnimationFrame(scrollToTarget);
   }, [location.key, visibleEvents.length]);
 
+  const renderMarkdown = (text) => {
+    if (!text) return "";
+    const escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return escaped
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.*?)\*/g, "<em>$1</em>");
+  };
+
   const getSpotifyEmbed = (url) => {
     if (!url) return null;
     const match = url.match(/open\.spotify\.com\/(track|artist|album|playlist)\/([a-zA-Z0-9]+)/);
@@ -299,7 +307,7 @@ const EvenemangLokstallet = () => {
                 {/* BILD */}
                 <div className="event-image-wrap">
                   {event.image
-                    ? <img src={event.image} alt={event.title} />
+                    ? <img src={event.image} alt={event.title} loading="lazy" decoding="async" />
                     : <div className="event-image-placeholder" />
                   }
                 </div>
@@ -318,12 +326,43 @@ const EvenemangLokstallet = () => {
                     <span className="event-meta-item event-meta-date">{formatDate(event.date)}</span>
                     {event.time     && <span className="event-meta-item">{event.time}</span>}
                     {event.location && <span className="event-meta-item">{event.location}</span>}
-                    {event.price    && <span className="event-meta-item event-price">{event.price}</span>}
+                    {(event.price || event.organizer) && (
+                      <div className="event-price-organizer-row">
+                        <span className="event-meta-item event-price">{event.price || ""}</span>
+                        {event.organizer && (
+                          <span className="event-organizer">
+                            Arrangör:{" "}
+                            {event.organizerEmail
+                              ? <a href={`mailto:${event.organizerEmail}`} className="event-organizer-link">{event.organizer}</a>
+                              : event.organizer}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
+
+                  {(() => {
+                    const links = Array.isArray(event.spotify)
+                      ? event.spotify
+                      : event.spotify ? [event.spotify] : [];
+                    const first = links.map(getSpotifyEmbed).find(Boolean);
+                    return first ? (
+                      <div className="event-card-spotify">
+                        <iframe
+                          src={`${first}?theme=0`}
+                          width="100%"
+                          height="80"
+                          style={{ border: "none", borderRadius: "8px", display: "block" }}
+                          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share"
+                          title={`Lyssna på ${event.title} på Spotify`}
+                        />
+                      </div>
+                    ) : null;
+                  })()}
 
                   {event.description && (
                     <div className="event-description">
-                      <p>{event.description}</p>
+                      <p dangerouslySetInnerHTML={{ __html: renderMarkdown(event.description) }} />
                     </div>
                   )}
 
@@ -387,7 +426,7 @@ const EvenemangLokstallet = () => {
           <div className="event-modal-backdrop" onClick={closeModal} role="dialog" aria-modal="true" aria-label={modalEvent.title}>
             <div className="event-modal" onClick={(e) => e.stopPropagation()}>
               <div className="event-modal-image">
-                {modalEvent.image && <img src={modalEvent.image} alt={modalEvent.title} />}
+                {modalEvent.image && <img src={modalEvent.image} alt={modalEvent.title} decoding="async" />}
                 <button ref={modalCloseRef} className="event-modal-close" onClick={closeModal} aria-label="Stäng dialog">✕</button>
               </div>
 
@@ -403,7 +442,19 @@ const EvenemangLokstallet = () => {
                   <span className="event-meta-item event-meta-date">{formatDate(modalEvent.date)}</span>
                   {modalEvent.time     && <span className="event-meta-item">{modalEvent.time}</span>}
                   {modalEvent.location && <span className="event-meta-item">{modalEvent.location}</span>}
-                  {modalEvent.price    && <span className="event-meta-item event-price">{modalEvent.price}</span>}
+                  {(modalEvent.price || modalEvent.organizer) && (
+                    <div className="event-price-organizer-row">
+                      <span className="event-meta-item event-price">{modalEvent.price || ""}</span>
+                      {modalEvent.organizer && (
+                        <span className="event-organizer">
+                          Arrangör:{" "}
+                          {modalEvent.organizerEmail
+                            ? <a href={`mailto:${modalEvent.organizerEmail}`} className="event-organizer-link">{modalEvent.organizer}</a>
+                            : modalEvent.organizer}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Spotify – under priset */}
@@ -422,8 +473,7 @@ const EvenemangLokstallet = () => {
                               width="100%"
                               height="152"
                               style={{ border: "none" }}
-                              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                              loading="lazy"
+                              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share"
                               title={`Lyssna på Spotify ${i + 1}`}
                             />
                           </div>
@@ -434,10 +484,11 @@ const EvenemangLokstallet = () => {
                 })()}
 
                 <div className="event-modal-text">
-                  {modalEvent.description  && <p>{modalEvent.description}</p>}
-                  {modalEvent.description2 && <p>{modalEvent.description2}</p>}
-                  {modalEvent.description3 && <p>{modalEvent.description3}</p>}
+                  {modalEvent.description  && <p dangerouslySetInnerHTML={{ __html: renderMarkdown(modalEvent.description) }} />}
+                  {modalEvent.description2 && <p dangerouslySetInnerHTML={{ __html: renderMarkdown(modalEvent.description2) }} />}
+                  {modalEvent.description3 && <p dangerouslySetInnerHTML={{ __html: renderMarkdown(modalEvent.description3) }} />}
                 </div>
+
 
                 {billettoId && billettoReady && (
                   <div className="billetto-widget-wrap" style={{ paddingTop: 0 }}>

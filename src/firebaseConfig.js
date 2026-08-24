@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDqaO972MvPl1Hjxwi7SMVnwe7yUKKUJ-g",
@@ -12,8 +11,12 @@ const firebaseConfig = {
   measurementId: "G-ZFDGFC2884"
 };
 
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 
-export const db = getFirestore(app);
-export const auth = getAuth(app);
+// Persistent local cache: repeat visits paint instantly from IndexedDB
+// while data refreshes in the background, and it's far more resilient
+// on flaky mobile connections than an uncached one-shot fetch.
+export const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
+});
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./CookieBanner.css";
 
 export default function CookieBanner() {
@@ -43,7 +44,8 @@ export default function CookieBanner() {
         <div className="cookie-top">
           <p className="cookie-title">Vi använder cookies</p>
           <p className="cookie-text">
-            Vi använder nödvändiga cookies för att sidan ska fungera, samt marknadsföringscookies (Meta Pixel) för att förstå hur besökare hittar oss.
+            Vi använder nödvändiga cookies för att sidan ska fungera, samt marknadsföringscookies (Meta Pixel) för att förstå hur besökare hittar oss. Läs mer i vår{" "}
+            <Link to="/integritetspolicy" className="cookie-policy-link">integritetspolicy</Link>.
           </p>
 
           <button

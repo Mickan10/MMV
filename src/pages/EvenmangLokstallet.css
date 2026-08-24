@@ -144,8 +144,8 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
-  margin-bottom: 14px;
-  padding-bottom: 14px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
   border-bottom: 1px solid #d6c7a3;
 }
 
@@ -187,10 +187,47 @@
 
 .event-description p {
   margin: 0 0 10px;
+  white-space: pre-wrap;
 }
 
 .event-description p:last-child {
   margin-bottom: 0;
+}
+
+.event-price-organizer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.event-organizer {
+  font-size: 0.88rem;
+  color: #5a4c3e;
+  font-weight: 600;
+  margin: 0;
+}
+
+
+.event-organizer-link {
+  color: #5a4c3e;
+  text-decoration: none;
+}
+
+.event-organizer-link:hover {
+  text-decoration: underline;
+}
+
+/* SPOTIFY PÅ KORTET */
+.event-card-spotify {
+  margin: 6px 0 10px;
+  touch-action: auto;
+  pointer-events: auto;
+}
+
+.event-card-spotify iframe {
+  touch-action: auto;
+  pointer-events: auto;
 }
 
 /* KNAPPAR RAD */
@@ -235,31 +272,31 @@
 }
 
 .bt-l2 {
-  padding: 10px 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
   background: #bfa567;
   color: #fff;
   border-radius: 999px;
-  font-family: "Josefin Sans", sans-serif;
-  font-weight: 400;
+  font-family: "Roboto", "Josefin Sans", sans-serif;
+  font-weight: 600;
   font-size: 0.82rem;
+  letter-spacing: 0.03em;
   cursor: pointer;
   border: none;
-  transition: background 0.2s, transform 0.15s;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
   margin: 0;
   box-shadow: none;
   white-space: nowrap;
 }
 
-.bt-l2:hover { background: #a8894f; transform: translateY(-1px); }
+.bt-l2:hover { background: #a8894f; }
 
 .bt-l2:focus-visible {
-  outline: 2px solid #38220c;
+  outline: 2px solid #bfa567;
   outline-offset: 3px;
-}
-
-a:has(.bt-l2) {
-  text-decoration: none;
-  display: flex;
 }
 
 /* ── MODAL ─────────────────────────────────────────────── */
@@ -273,17 +310,21 @@ a:has(.bt-l2) {
   justify-content: center;
   padding: 20px;
   backdrop-filter: blur(3px);
+  overflow: hidden;
+  touch-action: none;
 }
 
 .event-modal {
   background: #fffaf0;
   border-radius: 18px 0 0 18px;
   max-width: 780px;
-  width: calc(100% - 32px);
+  width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
   box-shadow: 0 24px 60px rgba(20, 12, 5, 0.45);
+  overscroll-behavior: contain;
 }
 
 .event-modal::-webkit-scrollbar {
@@ -397,20 +438,27 @@ a:has(.bt-l2) {
 
 .event-modal-text p {
   margin: 0;
+  white-space: pre-wrap;
 }
 
 @media (max-width: 600px) {
+  .event-modal-backdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+
   .event-modal {
-    border-radius: 14px;
-    max-height: 95vh;
+    border-radius: 18px 18px 0 0;
+    max-height: 92vh;
+    width: 100%;
   }
 
   .event-modal-image {
-    border-radius: 14px 14px 0 0;
+    border-radius: 18px 18px 0 0;
   }
 
   .event-modal-body {
-    padding: 16px 18px 24px;
+    padding: 16px 18px 32px;
   }
 
   .event-modal-title {
@@ -598,18 +646,14 @@ a:has(.bt-l2) {
   }
 
   .event-actions {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
   }
 
   .bt-l2 {
-    width: 100%;
-    text-align: center;
-    padding: 13px 20px;
-  }
-
-  a:has(.bt-l2) {
-    width: 100%;
+    width: auto;
+    padding: 10px 22px;
   }
 }

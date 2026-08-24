@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './KontaktLokstallet.css';
 import { usePageMeta } from "../hooks/usePageMeta";
+import { FacebookIcon, InstagramIcon } from "../components/SocialIcons.jsx";
 
 const KontaktLokstallet = () => {
   usePageMeta("Kontakt", "Kontakta Lokstallet i Skövde – hör av dig för frågor om evenemang, bokning eller samarbete.");
@@ -76,10 +78,10 @@ const KontaktLokstallet = () => {
             <p className="kontakt-info-label">Sociala medier</p>
             <div className="kontakt-social-icons">
               <a href="https://www.facebook.com/lokstallet.skovde" target="_blank" rel="noreferrer" aria-label="Facebook">
-                <i className="fab fa-facebook" aria-hidden="true"></i>
+                <FacebookIcon />
               </a>
               <a href="https://www.instagram.com/lokstallet.skovde/" target="_blank" rel="noreferrer" aria-label="Instagram">
-                <i className="fab fa-instagram" aria-hidden="true"></i>
+                <InstagramIcon />
               </a>
             </div>
           </div>
@@ -101,6 +103,10 @@ const KontaktLokstallet = () => {
               <label htmlFor="kontakt-meddelande">Meddelande</label>
               <textarea id="kontakt-meddelande" name="meddelande" value={formData.meddelande} onChange={handleChange} required disabled={status === 'sending'} placeholder="Skriv ditt meddelande här…" />
             </div>
+
+            <p className="kontakt-gdpr-notice">
+              Dina uppgifter (namn och e-post) används enbart för att besvara din förfrågan och raderas efter 12 månader. Läs mer i vår <Link to="/integritetspolicy">integritetspolicy</Link>.
+            </p>
 
             {status === 'success' && <p className="success-message" role="status" aria-live="polite">Tack! Vi återkommer så snart vi kan.</p>}
             {status === 'error' && <p className="error-message" role="alert" aria-live="assertive">Fel: {errorMessage}</p>}

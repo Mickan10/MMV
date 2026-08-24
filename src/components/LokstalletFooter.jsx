@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
 import "./LokstalletFooter.css";
 import logo from '../assets/lokstalletheader.png';
+import { FacebookIcon, InstagramIcon } from "./SocialIcons.jsx";
 
 
 export default function LokstalletFooter() {
@@ -10,7 +12,7 @@ export default function LokstalletFooter() {
         <img src={logo} alt="Lokstallet Logo" className="lokstallet-logo-fot" />
       </div>
 
-        <div className="lokstallet-footer-section">
+        <div className="lokstallet-footer-section lokstallet-footer-about">
           <h3>Om Lokstallet</h3>
           <p>
           Lokstallet är en evenemangs och kulturscen i centrala Skövde, skapad av arrangörer för arrangörer. Lokalen är flexibel och fullt utrustad med kapacitet för upp till 500 stående gäster, och byggd för att fungera för konserter, möten och egna arrangemang.
@@ -37,19 +39,25 @@ export default function LokstalletFooter() {
           <ul className="lokstallet-social-icons">
             <li>
               <a href="https://www.facebook.com/lokstallet.skovde" aria-label="Besök oss på Facebook (öppnas i nytt fönster)" target="_blank" rel="noreferrer">
-                <i className="fab fa-facebook" aria-hidden="true"></i>
+                <FacebookIcon />
               </a>
             </li>
             <li>
               <a href="https://www.instagram.com/lokstallet.skovde/" aria-label="Besök oss på Instagram (öppnas i nytt fönster)" target="_blank" rel="noreferrer">
-                <i className="fab fa-instagram" aria-hidden="true"></i>
+                <InstagramIcon />
               </a>
             </li>
           </ul>
         </div>
 
       </div>
-      <p>&copy; 2025 Lokstallet. Musik • Evenemang • Möten</p>
+      <div className="lokstallet-footer-legal">
+        <p>&copy; 2025 Lokstallet. Org.nr: <strong>556897-9149</strong></p>
+        <div className="lokstallet-footer-links">
+          <Link to="/integritetspolicy">Integritetspolicy</Link>
+          <Link to="/bra-att-veta">Köpvillkor</Link>
+        </div>
+      </div>
     </footer>
   );
 }

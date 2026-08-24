@@ -44,9 +44,16 @@
   align-items: center;
   text-align: center;
   transition: background-color 0.3s ease;
-  margin: 0;           
-  padding: 0;       
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+}
+
+/* Bredare kolumn åt "Om Lokstallet" så brödtexten radbryts mindre
+   och footern inte blir lika hög på desktop. */
+.lokstallet-footer-about {
+  flex: 1.8 1 260px;
+  max-width: 420px;
 }
 
 .lokstallet-footer-section p {
@@ -102,9 +109,15 @@
 }
 
 .lokstallet-social-icons li a {
-  font-size: 3rem; /* större ikoner */
+  font-size: 3rem;
   color: #d7c7a8;
   transition: color 0.3s ease, transform 0.3s ease;
+}
+
+@media (min-width: 769px) {
+  .lokstallet-social-icons li a {
+    font-size: 1.8rem;
+  }
 }
 
 .lokstallet-social-icons li a:hover {
@@ -178,6 +191,41 @@
   }
 
   .lokstallet-logo-fot {
-    height: 190px; /* större på små skärmar */
+    height: 190px;
   }
+}
+
+.lokstallet-footer-legal {
+  max-width: 1100px;
+  margin: 24px auto 0;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: #b8aa98;
+}
+
+.lokstallet-footer-legal p {
+  margin: 0;
+}
+
+.lokstallet-footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.lokstallet-footer-links a {
+  color: #b8aa98;
+  text-decoration: none;
+  font-size: 0.82rem;
+  transition: color 0.2s;
+}
+
+.lokstallet-footer-links a:hover {
+  color: #f5f0e6;
+  text-decoration: underline;
 }

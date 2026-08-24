@@ -4,6 +4,14 @@ import { db } from "../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import "./EventPage.css";
 
+function renderMarkdown(text) {
+  if (!text) return "";
+  const escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return escaped
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.*?)\*/g, "<em>$1</em>");
+}
+
 function parseLocalDate(val) {
   if (!val) return null;
   if (val?.toDate) return val.toDate();
@@ -110,13 +118,25 @@ export default function EventPage() {
           {event.date && <span>{formatDate(event.date)}</span>}
           {event.time && <span>{event.time}</span>}
           {event.location && <span>{event.location}</span>}
-          {event.price && <span className="event-page-price">{event.price}</span>}
+          {(event.price || event.organizer) && (
+            <div className="event-page-price-organizer-row">
+              <span className="event-page-price">{event.price || ""}</span>
+              {event.organizer && (
+                <span className="event-page-organizer-inline">
+                  Arrangör:{" "}
+                  {event.organizerEmail
+                    ? <a href={`mailto:${event.organizerEmail}`} className="event-page-organizer-link">{event.organizer}</a>
+                    : event.organizer}
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="event-page-description">
-          {event.description  && <p>{event.description}</p>}
-          {event.description2 && <p>{event.description2}</p>}
-          {event.description3 && <p>{event.description3}</p>}
+          {event.description  && <p dangerouslySetInnerHTML={{ __html: renderMarkdown(event.description) }} />}
+          {event.description2 && <p dangerouslySetInnerHTML={{ __html: renderMarkdown(event.description2) }} />}
+          {event.description3 && <p dangerouslySetInnerHTML={{ __html: renderMarkdown(event.description3) }} />}
         </div>
 
         <div className="event-page-tickets">
