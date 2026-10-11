@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useId } from "react";
 import { db } from "../firebaseConfig";
 import { auth } from "../firebaseAuth";
 import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc } from "firebase/firestore";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { useNoIndex } from "../hooks/useNoIndex";
 import "./EventAdmin.css";
 
 function FormattedTextarea({ className, placeholder, value, onChange, required }) {
@@ -163,7 +164,7 @@ const UPLOAD_TOKEN = "lokstallet-upload-2024";
 const MAX_DIMENSION = 1600;
 const JPEG_QUALITY = 0.82;
 
-function downscaleImage(file) {
+function downscaleImage(file, filename = file.name || "image.jpg") {
   return new Promise((resolve) => {
     const img = new Image();
     const objectUrl = URL.createObjectURL(file);
@@ -178,7 +179,7 @@ function downscaleImage(file) {
       const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0, width, height);
       canvas.toBlob(
-        (blob) => resolve(blob ? new File([blob], file.name, { type: "image/jpeg" }) : file),
+        (blob) => resolve(blob ? new File([blob], filename, { type: "image/jpeg" }) : file),
         "image/jpeg",
         JPEG_QUALITY
       );
@@ -188,8 +189,46 @@ function downscaleImage(file) {
   });
 }
 
+// Egna uppladdade bilder ligger alltid under den här sökvägen (se upload.php) —
+// externa bildlänkar (t.ex. URL-läge) rörs aldrig av batch-optimeringen.
+const OWN_IMAGE_PATH = "/bilder/event/";
+
+async function uploadCompressedImage(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Kunde inte hämta bilden (${res.status})`);
+  const blob = await res.blob();
+  const compressed = blob.type === "image/gif" ? blob : await downscaleImage(blob, "event.jpg");
+
+  const data = new FormData();
+  data.append("image", compressed, "event.jpg");
+
+  const uploadRes = await fetch("/upload.php", {
+    method: "POST",
+    headers: { "X-Upload-Token": UPLOAD_TOKEN },
+    body: data,
+  });
+  const json = await uploadRes.json();
+  if (!json.url) throw new Error(json.error || "Uppladdning misslyckades");
+  return json.url;
+}
+
+async function uploadImageFileToServer(file) {
+  const uploadFile = file.type === "image/gif" ? file : await downscaleImage(file, file.name || "image.jpg");
+  const data = new FormData();
+  data.append("image", uploadFile);
+  const res = await fetch("/upload.php", {
+    method: "POST",
+    headers: { "X-Upload-Token": UPLOAD_TOKEN },
+    body: data,
+  });
+  const json = await res.json();
+  if (!json.url) throw new Error(json.error || "Uppladdning misslyckades");
+  return json.url;
+}
+
 function ImageInput({ value, onChange }) {
   const fileRef = useRef();
+  const inputId = useId();
   const [progress, setProgress] = useState(false);
   const [error, setError] = useState("");
   const [mode, setMode] = useState("upload");
@@ -204,7 +243,7 @@ function ImageInput({ value, onChange }) {
     const file = e.target.files[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) { setError("Välj en bildfil."); return; }
-    if (file.size > 5 * 1024 * 1024) { setError("Max 5 MB."); return; }
+    if (file.size > 40 * 1024 * 1024) { setError("Max 40 MB."); return; }
     setError("");
     setProgress(true);
 
@@ -257,8 +296,8 @@ function ImageInput({ value, onChange }) {
             </div>
           ) : (
             <>
-              <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="image-file-input" id="image-upload" />
-              <label htmlFor="image-upload" className="image-upload-label">
+              <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="image-file-input" id={inputId} />
+              <label htmlFor={inputId} className="image-upload-label">
                 {progress ? "Laddar upp…" : "Välj bild från datorn"}
               </label>
             </>
@@ -281,7 +320,162 @@ function ImageInput({ value, onChange }) {
   );
 }
 
+function EventListItem({ event, isEditing, editForm, setEditForm, onSave, onCancel, onEditClick, onDelete, onToggleHidden }) {
+  const isPast = new Date(event.date) < new Date(new Date().toDateString());
+
+  return (
+    <li className={`admin-event-item ${event.hidden ? "is-hidden" : ""} ${isPast ? "is-past" : ""}`}>
+      {isEditing ? (
+        <div className="admin-edit-form">
+          <div className="admin-form-section">
+            <h3 className="admin-section-title">Grundinfo</h3>
+            <div className="admin-grid-2">
+              <div className="admin-field">
+                <label className="admin-label">Titel</label>
+                <input className="admin-input" type="text" value={editForm.title} onChange={(e) => setEditForm({ ...editForm, title: e.target.value })} />
+              </div>
+              <div className="admin-field">
+                <label className="admin-label">Undertitel</label>
+                <input className="admin-input" type="text" value={editForm.subtitle || ""} onChange={(e) => setEditForm({ ...editForm, subtitle: e.target.value })} />
+              </div>
+              <div className="admin-field">
+                <label className="admin-label">Artist / akt</label>
+                <input className="admin-input" type="text" value={editForm.artist || ""} onChange={(e) => setEditForm({ ...editForm, artist: e.target.value })} />
+              </div>
+              <div className="admin-field">
+                <label className="admin-label">Genre</label>
+                <GenreTagInput
+                  tags={Array.isArray(editForm.genre) ? editForm.genre : (editForm.genre ? [editForm.genre] : [])}
+                  onChange={(tags) => setEditForm({ ...editForm, genre: tags })}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="admin-form-section">
+            <h3 className="admin-section-title">Tid & Plats</h3>
+            <div className="admin-grid-3">
+              <div className="admin-field">
+                <label className="admin-label">Datum</label>
+                <input className="admin-input" type="date" value={editForm.date} onChange={(e) => setEditForm({ ...editForm, date: e.target.value })} />
+              </div>
+              <div className="admin-field">
+                <label className="admin-label">Tid</label>
+                <input className="admin-input" type="text" value={editForm.time} onChange={(e) => setEditForm({ ...editForm, time: e.target.value })} />
+              </div>
+              <div className="admin-field">
+                <label className="admin-label">Plats</label>
+                <input className="admin-input" type="text" value={editForm.location} onChange={(e) => setEditForm({ ...editForm, location: e.target.value })} />
+              </div>
+            </div>
+          </div>
+
+          <div className="admin-form-section">
+            <h3 className="admin-section-title">Beskrivning</h3>
+            <div className="admin-field">
+              <label className="admin-label">Stycke 1</label>
+              <FormattedTextarea className="admin-textarea" placeholder="Inledning – vad är evenemanget? Sätt tonen direkt." value={editForm.description} onChange={(v) => setEditForm({ ...editForm, description: v })} />
+            </div>
+            <div className="admin-field" style={{ marginTop: "12px" }}>
+              <label className="admin-label">Stycke 2</label>
+              <FormattedTextarea className="admin-textarea" placeholder="Mer info – artist, program eller vad som ingår." value={editForm.description2 || ""} onChange={(v) => setEditForm({ ...editForm, description2: v })} />
+            </div>
+            <div className="admin-field" style={{ marginTop: "12px" }}>
+              <label className="admin-label">Stycke 3</label>
+              <FormattedTextarea className="admin-textarea" placeholder="Praktiskt – ålder, inträde, garderob eller annat att tänka på." value={editForm.description3 || ""} onChange={(v) => setEditForm({ ...editForm, description3: v })} />
+            </div>
+          </div>
+
+          <div className="admin-form-section">
+            <h3 className="admin-section-title">Biljetter & Bild</h3>
+            <div className="admin-grid-2">
+              <div className="admin-field">
+                <label className="admin-label">Pris</label>
+                <input className="admin-input" type="text" value={editForm.price || ""} onChange={(e) => setEditForm({ ...editForm, price: e.target.value })} />
+              </div>
+              <div className="admin-field">
+                <label className="admin-label">Biljetlänk</label>
+                <input className="admin-input" type="text" value={editForm.link} onChange={(e) => setEditForm({ ...editForm, link: e.target.value })} />
+              </div>
+              <div className="admin-field admin-field--full">
+                <label className="admin-label">Spotify-länk(ar)</label>
+                <SpotifyTagInput
+                  links={Array.isArray(editForm.spotify) ? editForm.spotify : (editForm.spotify ? [editForm.spotify] : [])}
+                  onChange={(links) => setEditForm({ ...editForm, spotify: links })}
+                />
+              </div>
+              <div className="admin-field admin-field--full">
+                <label className="admin-label">Bild</label>
+                <ImageInput value={editForm.image} onChange={(url) => setEditForm({ ...editForm, image: url })} />
+              </div>
+            </div>
+          </div>
+
+          <div className="admin-form-section">
+            <h3 className="admin-section-title">Arrangör</h3>
+            <div className="admin-grid-2">
+              <div className="admin-field">
+                <label className="admin-label">Arrangörens namn</label>
+                <input className="admin-input" type="text" value={editForm.organizer || ""} onChange={(e) => setEditForm({ ...editForm, organizer: e.target.value })} />
+              </div>
+              <div className="admin-field">
+                <label className="admin-label">Arrangörens e-post</label>
+                <input className="admin-input" type="email" value={editForm.organizerEmail || ""} onChange={(e) => setEditForm({ ...editForm, organizerEmail: e.target.value })} />
+              </div>
+            </div>
+          </div>
+
+          <label className="admin-hidden-toggle">
+            <input type="checkbox" checked={editForm.hidden} onChange={(e) => setEditForm({ ...editForm, hidden: e.target.checked })} />
+            Dölj event
+          </label>
+
+          <div className="admin-edit-actions">
+            <button className="admin-button" onClick={onSave}>Spara</button>
+            <button className="admin-button admin-button--cancel" onClick={onCancel}>Avbryt</button>
+          </div>
+        </div>
+      ) : (
+        <>
+          {event.image && <img src={event.image} alt={event.title} className="admin-event-image" />}
+          <div className="admin-event-info">
+            <p className="admin-event-name">
+              {event.title}
+              {isPast && <span className="admin-past-badge">Passerat</span>}
+            </p>
+            {event.subtitle && <p className="admin-event-subtitle">{event.subtitle}</p>}
+            <div className="admin-event-meta">
+              <span>{event.date}</span>
+              {event.time && <span>{event.time}</span>}
+              {event.location && <span>{event.location}</span>}
+              {(Array.isArray(event.genre) ? event.genre : (event.genre ? [event.genre] : [])).map((g) => (
+                <span key={g} className="admin-genre-tag">{g}</span>
+              ))}
+              {event.price && <span className="admin-price-tag">{event.price}</span>}
+            </div>
+            {event.description && (
+              <p className="admin-event-desc">
+                {event.description.length > 120 ? event.description.substring(0, 120) + "…" : event.description}
+              </p>
+            )}
+            {event.hidden && <span className="admin-hidden-badge">Dold</span>}
+          </div>
+          <div className="admin-event-buttons">
+            <button className="btn-edit" onClick={onEditClick}>Redigera</button>
+            <button className="btn-delete" onClick={onDelete}>Ta bort</button>
+            <button className="btn-toggle" onClick={onToggleHidden}>
+              {event.hidden ? "Visa" : "Dölj"}
+            </button>
+          </div>
+        </>
+      )}
+    </li>
+  );
+}
+
 const EventAdmin = () => {
+  useNoIndex();
+
   const [events, setEvents] = useState([]);
   const [form, setForm] = useState(EMPTY_FORM);
   const [editingId, setEditingId] = useState(null);
@@ -294,6 +488,23 @@ const EventAdmin = () => {
   const [reviewForm, setReviewForm] = useState(EMPTY_REVIEW);
   const [editingReviewId, setEditingReviewId] = useState(null);
   const [editReviewForm, setEditReviewForm] = useState(EMPTY_REVIEW);
+
+  const [arkivImages, setArkivImages] = useState([]);
+  const [arkivImageUrl, setArkivImageUrl] = useState("");
+  const [arkivDate, setArkivDate] = useState("");
+  const [arkivArtist, setArkivArtist] = useState("");
+  const [editingArkivId, setEditingArkivId] = useState(null);
+  const [editArkivForm, setEditArkivForm] = useState({ date: "", artist: "" });
+  const [selectedArkivIds, setSelectedArkivIds] = useState([]);
+  const [bulkArkivDate, setBulkArkivDate] = useState("");
+  const [bulkArkivArtist, setBulkArkivArtist] = useState("");
+  const [bulkArkivSaving, setBulkArkivSaving] = useState(false);
+  const [arkivUploading, setArkivUploading] = useState(false);
+  const [arkivUploadMsg, setArkivUploadMsg] = useState("");
+  const arkivFileInputId = useId();
+
+  const [optimizing, setOptimizing] = useState(false);
+  const [optimizeMsg, setOptimizeMsg] = useState("");
 
   const navigate = useNavigate();
 
@@ -341,6 +552,7 @@ const EventAdmin = () => {
   useEffect(() => {
     fetchEvents();
     fetchReviews();
+    fetchArkivImages();
   }, []);
 
   const fetchReviews = async () => {
@@ -352,6 +564,18 @@ const EventAdmin = () => {
     }
   };
 
+  const fetchArkivImages = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, "arkivbilder"));
+      const images = snapshot.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .sort((a, b) => (b.date || b.createdAt || "").localeCompare(a.date || a.createdAt || ""));
+      setArkivImages(images);
+    } catch (err) {
+      console.error("Fetch arkivbilder error:", err);
+    }
+  };
+
   const handleAddEvent = async (e) => {
     e.preventDefault();
     if (!isAdmin) return;
@@ -360,6 +584,7 @@ const EventAdmin = () => {
         ...form,
         link: normalizeBillettoLink(form.link),
         hidden: false,
+        imageOptimized: true,
       });
       setForm(EMPTY_FORM);
       fetchEvents();
@@ -378,9 +603,12 @@ const EventAdmin = () => {
   const handleSaveEdit = async (id) => {
     if (!isAdmin) return;
     try {
+      const original = events.find((e) => e.id === id);
+      const imageChanged = original && original.image !== editForm.image;
       await updateDoc(doc(db, "events", id), {
         ...editForm,
         link: normalizeBillettoLink(editForm.link),
+        ...(imageChanged ? { imageOptimized: true } : {}),
       });
       setEditingId(null);
       fetchEvents();
@@ -457,6 +685,164 @@ const EventAdmin = () => {
     }
   };
 
+  const handleAddArkivImage = async (e) => {
+    e.preventDefault();
+    if (!isAdmin || !arkivImageUrl) return;
+    try {
+      await addDoc(collection(db, "arkivbilder"), {
+        image: arkivImageUrl,
+        date: arkivDate,
+        artist: arkivArtist,
+        createdAt: new Date().toISOString(),
+      });
+      setArkivImageUrl("");
+      fetchArkivImages();
+      setSaveMsg("Bild tillagd i arkivet!");
+      setTimeout(() => setSaveMsg(""), 3000);
+    } catch (err) {
+      console.error("Add arkivbild error:", err);
+    }
+  };
+
+  const handleArkivFiles = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    if (!isAdmin) {
+      setArkivUploadMsg("Du verkar inte vara inloggad som admin längre. Logga ut och in igen.");
+      e.target.value = "";
+      return;
+    }
+
+    setArkivUploading(true);
+    let done = 0;
+    let failed = 0;
+
+    for (const file of files) {
+      setArkivUploadMsg(`Laddar upp bild ${done + failed + 1} av ${files.length}…`);
+      if (!file.type.startsWith("image/") || file.size > 40 * 1024 * 1024) {
+        console.warn("Arkiv upload skipped (fel typ eller över 40 MB):", file.name, file.type, file.size);
+        failed++;
+        continue;
+      }
+      try {
+        const url = await uploadImageFileToServer(file);
+        await addDoc(collection(db, "arkivbilder"), { image: url, date: arkivDate, artist: arkivArtist, createdAt: new Date().toISOString() });
+        done++;
+      } catch (err) {
+        console.error("Arkiv upload error:", err);
+        failed++;
+      }
+    }
+
+    setArkivUploading(false);
+    setArkivUploadMsg(
+      failed === 0 ? `Klart! ${done} bilder tillagda.` : `Klart! ${done} bilder tillagda, ${failed} misslyckades.`
+    );
+    setTimeout(() => setArkivUploadMsg(""), 4000);
+    e.target.value = "";
+    fetchArkivImages();
+  };
+
+  const handleDeleteArkivImage = async (id) => {
+    if (!isAdmin) return;
+    try {
+      await deleteDoc(doc(db, "arkivbilder", id));
+      fetchArkivImages();
+    } catch (err) {
+      console.error("Delete arkivbild error:", err);
+    }
+  };
+
+  const handleEditArkivClick = (img) => {
+    setEditingArkivId(img.id);
+    setEditArkivForm({ date: img.date || "", artist: img.artist || "" });
+  };
+
+  const handleCancelArkivEdit = () => setEditingArkivId(null);
+
+  const toggleArkivSelected = (id) => {
+    setSelectedArkivIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
+
+  const handleApplyBulkArkiv = async () => {
+    if (!isAdmin || selectedArkivIds.length === 0 || (!bulkArkivDate && !bulkArkivArtist)) return;
+    setBulkArkivSaving(true);
+    try {
+      const updates = {};
+      if (bulkArkivDate) updates.date = bulkArkivDate;
+      if (bulkArkivArtist) updates.artist = bulkArkivArtist;
+      await Promise.all(
+        selectedArkivIds.map((id) => updateDoc(doc(db, "arkivbilder", id), updates))
+      );
+      setSelectedArkivIds([]);
+      setBulkArkivDate("");
+      setBulkArkivArtist("");
+      fetchArkivImages();
+      setSaveMsg("Bilderna uppdaterades!");
+      setTimeout(() => setSaveMsg(""), 3000);
+    } catch (err) {
+      console.error("Bulk update arkivbilder error:", err);
+    } finally {
+      setBulkArkivSaving(false);
+    }
+  };
+
+  const handleSaveArkivEdit = async (id) => {
+    if (!isAdmin) return;
+    try {
+      await updateDoc(doc(db, "arkivbilder", id), {
+        date: editArkivForm.date,
+        artist: editArkivForm.artist,
+      });
+      setEditingArkivId(null);
+      fetchArkivImages();
+      setSaveMsg("Ändringarna sparades!");
+      setTimeout(() => setSaveMsg(""), 3000);
+    } catch (err) {
+      console.error("Update arkivbild error:", err);
+    }
+  };
+
+  const handleOptimizeImages = async () => {
+    if (!isAdmin || optimizing) return;
+
+    const targets = events.filter(
+      (e) => e.image && e.image.includes(OWN_IMAGE_PATH) && !e.imageOptimized
+    );
+
+    if (targets.length === 0) {
+      setOptimizeMsg("Inga bilder att optimera just nu.");
+      setTimeout(() => setOptimizeMsg(""), 3000);
+      return;
+    }
+
+    setOptimizing(true);
+    let done = 0;
+    let failed = 0;
+
+    for (const event of targets) {
+      setOptimizeMsg(`Optimerar bild ${done + failed + 1} av ${targets.length}…`);
+      try {
+        const newUrl = await uploadCompressedImage(event.image);
+        await updateDoc(doc(db, "events", event.id), { image: newUrl, imageOptimized: true });
+        done++;
+      } catch (err) {
+        console.error("Optimize image error for event", event.id, err);
+        failed++;
+      }
+    }
+
+    setOptimizing(false);
+    setOptimizeMsg(
+      failed === 0
+        ? `Klart! ${done} bilder optimerade.`
+        : `Klart! ${done} bilder optimerade, ${failed} misslyckades (se konsolen).`
+    );
+    fetchEvents();
+  };
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -467,6 +853,10 @@ const EventAdmin = () => {
   };
 
   if (loading) return <p>Loading...</p>;
+
+  const today = new Date(new Date().toDateString());
+  const upcomingEvents = events.filter((e) => new Date(e.date) >= today);
+  const pastEvents = events.filter((e) => new Date(e.date) < today);
 
   return (
     <div className="admin-container">
@@ -581,160 +971,62 @@ const EventAdmin = () => {
 
       <div className="admin-list-header">
         <h3>Befintliga event</h3>
+        <button
+          type="button"
+          className="admin-button"
+          onClick={handleOptimizeImages}
+          disabled={optimizing}
+        >
+          {optimizing ? "Optimerar…" : "Optimera bilder"}
+        </button>
       </div>
 
+      {optimizeMsg && (
+        <p className="admin-save-msg" role="status" aria-live="polite">{optimizeMsg}</p>
+      )}
+
+      <p style={{ fontSize: "0.85rem", color: "#6b5c4d", marginTop: "-8px", marginBottom: "16px" }}>
+        Komprimerar och skalar ner redan uppladdade eventbilder (fungerar bara på lokstallett.se, inte i lokal utveckling).
+      </p>
+
       <ul className="admin-event-list">
-        {events.map((event) => (
-          <li key={event.id} className={`admin-event-item ${event.hidden ? "is-hidden" : ""} ${new Date(event.date) < new Date(new Date().toDateString()) ? "is-past" : ""}`}>
-            {editingId === event.id ? (
-              <div className="admin-edit-form">
-                <div className="admin-form-section">
-                  <h3 className="admin-section-title">Grundinfo</h3>
-                  <div className="admin-grid-2">
-                    <div className="admin-field">
-                      <label className="admin-label">Titel</label>
-                      <input className="admin-input" type="text" value={editForm.title} onChange={(e) => setEditForm({ ...editForm, title: e.target.value })} />
-                    </div>
-                    <div className="admin-field">
-                      <label className="admin-label">Undertitel</label>
-                      <input className="admin-input" type="text" value={editForm.subtitle || ""} onChange={(e) => setEditForm({ ...editForm, subtitle: e.target.value })} />
-                    </div>
-                    <div className="admin-field">
-                      <label className="admin-label">Artist / akt</label>
-                      <input className="admin-input" type="text" value={editForm.artist || ""} onChange={(e) => setEditForm({ ...editForm, artist: e.target.value })} />
-                    </div>
-                    <div className="admin-field">
-                      <label className="admin-label">Genre</label>
-                      <GenreTagInput
-                        tags={Array.isArray(editForm.genre) ? editForm.genre : (editForm.genre ? [editForm.genre] : [])}
-                        onChange={(tags) => setEditForm({ ...editForm, genre: tags })}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="admin-form-section">
-                  <h3 className="admin-section-title">Tid & Plats</h3>
-                  <div className="admin-grid-3">
-                    <div className="admin-field">
-                      <label className="admin-label">Datum</label>
-                      <input className="admin-input" type="date" value={editForm.date} onChange={(e) => setEditForm({ ...editForm, date: e.target.value })} />
-                    </div>
-                    <div className="admin-field">
-                      <label className="admin-label">Tid</label>
-                      <input className="admin-input" type="text" value={editForm.time} onChange={(e) => setEditForm({ ...editForm, time: e.target.value })} />
-                    </div>
-                    <div className="admin-field">
-                      <label className="admin-label">Plats</label>
-                      <input className="admin-input" type="text" value={editForm.location} onChange={(e) => setEditForm({ ...editForm, location: e.target.value })} />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="admin-form-section">
-                  <h3 className="admin-section-title">Beskrivning</h3>
-                  <div className="admin-field">
-                    <label className="admin-label">Stycke 1</label>
-                    <FormattedTextarea className="admin-textarea" placeholder="Inledning – vad är evenemanget? Sätt tonen direkt." value={editForm.description} onChange={(v) => setEditForm({ ...editForm, description: v })} />
-                  </div>
-                  <div className="admin-field" style={{ marginTop: "12px" }}>
-                    <label className="admin-label">Stycke 2</label>
-                    <FormattedTextarea className="admin-textarea" placeholder="Mer info – artist, program eller vad som ingår." value={editForm.description2 || ""} onChange={(v) => setEditForm({ ...editForm, description2: v })} />
-                  </div>
-                  <div className="admin-field" style={{ marginTop: "12px" }}>
-                    <label className="admin-label">Stycke 3</label>
-                    <FormattedTextarea className="admin-textarea" placeholder="Praktiskt – ålder, inträde, garderob eller annat att tänka på." value={editForm.description3 || ""} onChange={(v) => setEditForm({ ...editForm, description3: v })} />
-                  </div>
-                </div>
-
-                <div className="admin-form-section">
-                  <h3 className="admin-section-title">Biljetter & Bild</h3>
-                  <div className="admin-grid-2">
-                    <div className="admin-field">
-                      <label className="admin-label">Pris</label>
-                      <input className="admin-input" type="text" value={editForm.price || ""} onChange={(e) => setEditForm({ ...editForm, price: e.target.value })} />
-                    </div>
-                    <div className="admin-field">
-                      <label className="admin-label">Biljetlänk</label>
-                      <input className="admin-input" type="text" value={editForm.link} onChange={(e) => setEditForm({ ...editForm, link: e.target.value })} />
-                    </div>
-                    <div className="admin-field admin-field--full">
-                      <label className="admin-label">Spotify-länk(ar)</label>
-                      <SpotifyTagInput
-                        links={Array.isArray(editForm.spotify) ? editForm.spotify : (editForm.spotify ? [editForm.spotify] : [])}
-                        onChange={(links) => setEditForm({ ...editForm, spotify: links })}
-                      />
-                    </div>
-                    <div className="admin-field admin-field--full">
-                      <label className="admin-label">Bild</label>
-                      <ImageInput value={editForm.image} onChange={(url) => setEditForm({ ...editForm, image: url })} />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="admin-form-section">
-                  <h3 className="admin-section-title">Arrangör</h3>
-                  <div className="admin-grid-2">
-                    <div className="admin-field">
-                      <label className="admin-label">Arrangörens namn</label>
-                      <input className="admin-input" type="text" value={editForm.organizer || ""} onChange={(e) => setEditForm({ ...editForm, organizer: e.target.value })} />
-                    </div>
-                    <div className="admin-field">
-                      <label className="admin-label">Arrangörens e-post</label>
-                      <input className="admin-input" type="email" value={editForm.organizerEmail || ""} onChange={(e) => setEditForm({ ...editForm, organizerEmail: e.target.value })} />
-                    </div>
-                  </div>
-                </div>
-
-                <label className="admin-hidden-toggle">
-                  <input type="checkbox" checked={editForm.hidden} onChange={(e) => setEditForm({ ...editForm, hidden: e.target.checked })} />
-                  Dölj event
-                </label>
-
-                <div className="admin-edit-actions">
-                  <button className="admin-button" onClick={() => handleSaveEdit(event.id)}>Spara</button>
-                  <button className="admin-button admin-button--cancel" onClick={handleCancelEdit}>Avbryt</button>
-                </div>
-              </div>
-            ) : (
-              <>
-                {event.image && <img src={event.image} alt={event.title} className="admin-event-image" />}
-                <div className="admin-event-info">
-                  <p className="admin-event-name">
-                    {event.title}
-                    {new Date(event.date) < new Date(new Date().toDateString()) && (
-                      <span className="admin-past-badge">Passerat</span>
-                    )}
-                  </p>
-                  {event.subtitle && <p className="admin-event-subtitle">{event.subtitle}</p>}
-                  <div className="admin-event-meta">
-                    <span>{event.date}</span>
-                    {event.time && <span>{event.time}</span>}
-                    {event.location && <span>{event.location}</span>}
-                    {(Array.isArray(event.genre) ? event.genre : (event.genre ? [event.genre] : [])).map((g) => (
-                      <span key={g} className="admin-genre-tag">{g}</span>
-                    ))}
-                    {event.price && <span className="admin-price-tag">{event.price}</span>}
-                  </div>
-                  {event.description && (
-                    <p className="admin-event-desc">
-                      {event.description.length > 120 ? event.description.substring(0, 120) + "…" : event.description}
-                    </p>
-                  )}
-                  {event.hidden && <span className="admin-hidden-badge">Dold</span>}
-                </div>
-                <div className="admin-event-buttons">
-                  <button className="btn-edit" onClick={() => handleEditClick(event)}>Redigera</button>
-                  <button className="btn-delete" onClick={() => handleDeleteEvent(event.id)}>Ta bort</button>
-                  <button className="btn-toggle" onClick={() => handleToggleHidden(event.id, event.hidden)}>
-                    {event.hidden ? "Visa" : "Dölj"}
-                  </button>
-                </div>
-              </>
-            )}
-          </li>
+        {upcomingEvents.map((event) => (
+          <EventListItem
+            key={event.id}
+            event={event}
+            isEditing={editingId === event.id}
+            editForm={editForm}
+            setEditForm={setEditForm}
+            onSave={() => handleSaveEdit(event.id)}
+            onCancel={handleCancelEdit}
+            onEditClick={() => handleEditClick(event)}
+            onDelete={() => handleDeleteEvent(event.id)}
+            onToggleHidden={() => handleToggleHidden(event.id, event.hidden)}
+          />
         ))}
       </ul>
+
+      {pastEvents.length > 0 && (
+        <details className="admin-past-events">
+          <summary>Visa passerade event ({pastEvents.length})</summary>
+          <ul className="admin-event-list">
+            {pastEvents.map((event) => (
+              <EventListItem
+                key={event.id}
+                event={event}
+                isEditing={editingId === event.id}
+                editForm={editForm}
+                setEditForm={setEditForm}
+                onSave={() => handleSaveEdit(event.id)}
+                onCancel={handleCancelEdit}
+                onEditClick={() => handleEditClick(event)}
+                onDelete={() => handleDeleteEvent(event.id)}
+                onToggleHidden={() => handleToggleHidden(event.id, event.hidden)}
+              />
+            ))}
+          </ul>
+        </details>
+      )}
 
       <div className="admin-list-header" style={{ marginTop: "60px" }}>
         <h2 className="admin-title" style={{ marginBottom: "6px" }}>Hantera Recensioner</h2>
@@ -808,6 +1100,159 @@ const EventAdmin = () => {
                 <div className="admin-event-buttons">
                   <button className="btn-edit" onClick={() => handleEditReviewClick(review)}>Redigera</button>
                   <button className="btn-delete" onClick={() => handleDeleteReview(review.id)}>Ta bort</button>
+                </div>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <div className="admin-list-header" style={{ marginTop: "60px" }}>
+        <h2 className="admin-title" style={{ marginBottom: "6px" }}>Hantera Arkiv (bilder)</h2>
+        <p style={{ textAlign: "center", marginTop: 0 }}>
+          {arkivImages.length} bilder visas på arkivsidan, senaste överst.
+        </p>
+      </div>
+
+      <div className="admin-grid-2">
+        <div className="admin-field">
+          <label className="admin-label">Datum för bilderna</label>
+          <input
+            className="admin-input"
+            type="date"
+            value={arkivDate}
+            onChange={(e) => setArkivDate(e.target.value)}
+          />
+        </div>
+        <div className="admin-field">
+          <label className="admin-label">Artist/band</label>
+          <input
+            className="admin-input"
+            type="text"
+            placeholder="T.ex. Bandnamnet"
+            value={arkivArtist}
+            onChange={(e) => setArkivArtist(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="admin-form-section image-upload-area">
+        <input
+          id={arkivFileInputId}
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleArkivFiles}
+          className="image-file-input"
+          disabled={arkivUploading}
+        />
+        <label htmlFor={arkivFileInputId} className="image-upload-label">
+          {arkivUploading ? (arkivUploadMsg || "Laddar upp…") : "Välj en eller flera bilder från datorn"}
+        </label>
+        {!arkivUploading && arkivUploadMsg && <p className="image-error" style={{ color: "#3a6b3a" }}>{arkivUploadMsg}</p>}
+      </div>
+
+      <form onSubmit={handleAddArkivImage} className="admin-form">
+        <div className="admin-field">
+          <label className="admin-label">Eller klistra in en bildadress (URL)</label>
+          <input
+            className="admin-input"
+            type="text"
+            placeholder="https://..."
+            value={arkivImageUrl}
+            onChange={(e) => setArkivImageUrl(e.target.value)}
+          />
+        </div>
+        <button type="submit" className="admin-button admin-submit-btn" disabled={!arkivImageUrl}>
+          Lägg till via URL
+        </button>
+      </form>
+
+      {selectedArkivIds.length > 0 && (
+        <div className="admin-form-section admin-arkiv-bulk-bar">
+          <p style={{ margin: "0 0 10px", fontWeight: 700 }}>
+            {selectedArkivIds.length} bilder markerade
+          </p>
+          <div className="admin-grid-2">
+            <div className="admin-field">
+              <label className="admin-label">Sätt datum på markerade</label>
+              <input
+                className="admin-input"
+                type="date"
+                value={bulkArkivDate}
+                onChange={(e) => setBulkArkivDate(e.target.value)}
+              />
+            </div>
+            <div className="admin-field">
+              <label className="admin-label">Sätt artist/band på markerade</label>
+              <input
+                className="admin-input"
+                type="text"
+                placeholder="T.ex. Bandnamnet"
+                value={bulkArkivArtist}
+                onChange={(e) => setBulkArkivArtist(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="admin-edit-actions" style={{ marginTop: "10px" }}>
+            <button
+              type="button"
+              className="admin-button"
+              disabled={bulkArkivSaving || (!bulkArkivDate && !bulkArkivArtist)}
+              onClick={handleApplyBulkArkiv}
+            >
+              {bulkArkivSaving ? "Sparar…" : "Tillämpa på markerade"}
+            </button>
+            <button
+              type="button"
+              className="admin-button admin-button--cancel"
+              onClick={() => setSelectedArkivIds([])}
+            >
+              Avmarkera alla
+            </button>
+          </div>
+        </div>
+      )}
+
+      <ul className="admin-event-list admin-arkiv-grid">
+        {arkivImages.map((img) => (
+          <li key={img.id} className="admin-event-item admin-arkiv-item">
+            <label className="admin-arkiv-select">
+              <input
+                type="checkbox"
+                checked={selectedArkivIds.includes(img.id)}
+                onChange={() => toggleArkivSelected(img.id)}
+              />
+              Markera
+            </label>
+            <img src={img.image} alt="" className="admin-arkiv-thumb" />
+            {editingArkivId === img.id ? (
+              <>
+                <input
+                  className="admin-input"
+                  type="date"
+                  value={editArkivForm.date}
+                  onChange={(e) => setEditArkivForm({ ...editArkivForm, date: e.target.value })}
+                />
+                <input
+                  className="admin-input"
+                  type="text"
+                  placeholder="Artist/band"
+                  value={editArkivForm.artist}
+                  onChange={(e) => setEditArkivForm({ ...editArkivForm, artist: e.target.value })}
+                />
+                <div className="admin-edit-actions">
+                  <button className="admin-button" onClick={() => handleSaveArkivEdit(img.id)}>Spara</button>
+                  <button className="admin-button admin-button--cancel" onClick={handleCancelArkivEdit}>Avbryt</button>
+                </div>
+              </>
+            ) : (
+              <>
+                {img.artist && <p className="admin-arkiv-artist">{img.artist}</p>}
+                <p className="admin-arkiv-date">{img.date || "Inget datum"}</p>
+                <div className="admin-edit-actions">
+                  <button className="btn-edit" onClick={() => handleEditArkivClick(img)}>Redigera</button>
+                  <button className="btn-delete" onClick={() => handleDeleteArkivImage(img.id)}>Ta bort</button>
                 </div>
               </>
             )}

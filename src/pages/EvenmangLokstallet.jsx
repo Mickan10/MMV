@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { usePageMeta } from "../hooks/usePageMeta";
+import { useCookieConsent } from "../hooks/useCookieConsent";
 import { db } from "../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 
@@ -14,6 +15,7 @@ const EvenemangLokstallet = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [billettoReady, setBillettoReady] = useState(false);
+  const [consent, grantConsent] = useCookieConsent();
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [modalEvent, setModalEvent] = useState(null);
@@ -79,7 +81,10 @@ const EvenemangLokstallet = () => {
     };
   }, [modalEvent, closeModal]);
 
+  // Billetto-widgeten sätter egna tredjepartscookies – laddas därför
+  // inte förrän besökaren har accepterat cookies (se CookieBanner).
   useEffect(() => {
+    if (consent !== "accepted") return;
     const src = "https://billetto.se/widget.js";
     const existing = document.querySelector(`script[src="${src}"]`);
     if (existing) {
@@ -93,7 +98,7 @@ const EvenemangLokstallet = () => {
     script.onload = () => setBillettoReady(true);
     script.onerror = () => console.warn("Kunde inte ladda Billetto-widget.");
     document.body.appendChild(script);
-  }, []);
+  }, [consent]);
 
   const fetchEvents = async () => {
     try {
@@ -231,8 +236,16 @@ const EvenemangLokstallet = () => {
   const formatDate = (date) =>
     date.toLocaleDateString("sv-SE", { weekday: "long", day: "numeric", month: "long" });
 
-  if (loading) return <main><p role="status" aria-live="polite">Laddar evenemang...</p></main>;
-  if (error) return <main><p role="alert">{error}</p></main>;
+  if (loading) return (
+    <main id="main-content" className="evenemang-status">
+      <p role="status" aria-live="polite">Laddar evenemang...</p>
+    </main>
+  );
+  if (error) return (
+    <main id="main-content" className="evenemang-status">
+      <p role="alert" className="evenemang-status-error">{error}</p>
+    </main>
+  );
 
   return (
     <main id="main-content">
@@ -378,7 +391,7 @@ const EvenemangLokstallet = () => {
                       </button>
                     )}
 
-                    {billettoId && billettoReady && (
+                    {billettoId && consent === "accepted" && billettoReady && (
                       <div className="billetto-widget-wrap">
                         <billetto-widget
                           type="button"
@@ -392,6 +405,16 @@ const EvenemangLokstallet = () => {
                           whitelabel
                         />
                       </div>
+                    )}
+
+                    {billettoId && consent !== "accepted" && (
+                      <button
+                        type="button"
+                        className="bt-l2"
+                        onClick={() => grantConsent("accepted")}
+                      >
+                        Visa biljetter (accepterar cookies från Billetto)
+                      </button>
                     )}
 
                     {!billettoId && event.link && (
@@ -490,7 +513,7 @@ const EvenemangLokstallet = () => {
                 </div>
 
 
-                {billettoId && billettoReady && (
+                {billettoId && consent === "accepted" && billettoReady && (
                   <div className="billetto-widget-wrap" style={{ paddingTop: 0 }}>
                     <billetto-widget
                       type="button"
@@ -504,6 +527,16 @@ const EvenemangLokstallet = () => {
                       whitelabel
                     />
                   </div>
+                )}
+
+                {billettoId && consent !== "accepted" && (
+                  <button
+                    type="button"
+                    className="bt-l2"
+                    onClick={() => grantConsent("accepted")}
+                  >
+                    Visa biljetter (accepterar cookies från Billetto)
+                  </button>
                 )}
 
                 {!billettoId && modalEvent.link && (

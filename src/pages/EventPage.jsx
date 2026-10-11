@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { db } from "../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
+import { useCookieConsent } from "../hooks/useCookieConsent";
 import "./EventPage.css";
 
 function renderMarkdown(text) {
@@ -39,6 +40,7 @@ export default function EventPage() {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [billettoReady, setBillettoReady] = useState(false);
+  const [consent, grantConsent] = useCookieConsent();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -66,8 +68,10 @@ export default function EventPage() {
     fetchEvent();
   }, [id]);
 
+  // Billetto-widgeten sätter egna tredjepartscookies – laddas därför
+  // inte förrän besökaren har accepterat cookies (se CookieBanner).
   useEffect(() => {
-    if (!event) return;
+    if (!event || consent !== "accepted") return;
     const billettoId = getBillettoId(event);
     if (!billettoId) return;
     const src = "https://billetto.se/widget.js";
@@ -80,7 +84,7 @@ export default function EventPage() {
     script.async = true;
     script.onload = () => setBillettoReady(true);
     document.body.appendChild(script);
-  }, [event]);
+  }, [event, consent]);
 
   if (loading) return <div className="event-page-loading">Laddar...</div>;
   if (!event) return (
@@ -140,7 +144,7 @@ export default function EventPage() {
         </div>
 
         <div className="event-page-tickets">
-          {billettoId && billettoReady && (
+          {billettoId && consent === "accepted" && billettoReady && (
             <billetto-widget
               type="button"
               event={String(billettoId)}
@@ -152,6 +156,11 @@ export default function EventPage() {
               font-family="Roboto"
               whitelabel
             />
+          )}
+          {billettoId && consent !== "accepted" && (
+            <button className="bt-l2" onClick={() => grantConsent("accepted")}>
+              Visa biljetter (accepterar cookies från Billetto)
+            </button>
           )}
           {!billettoId && event.link && (
             <a href={event.link} target="_blank" rel="noopener noreferrer">

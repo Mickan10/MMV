@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDqaO972MvPl1Hjxwi7SMVnwe7yUKKUJ-g",
@@ -13,10 +13,11 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 
-// Persistent local cache: repeat visits paint instantly from IndexedDB
-// while data refreshes in the background, and it's far more resilient
-// on flaky mobile connections than an uncached one-shot fetch.
-export const db = initializeFirestore(app, {
-  localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
-});
+// Rent minnescache (standard) – ingen IndexedDB-persistens mellan sidladdningar.
+// Vi körde tidigare med persistentLocalCache, men den sparade gammal
+// inloggnings-/behörighetsdata i webbläsaren som blev inaktuell varje gång
+// koden uppdaterades (särskilt i adminpanelen), och krävde att man manuellt
+// rensade webbplatsdata för att logga in igen. Firestore-anropen är ändå
+// snabba (under en sekund), så vinsten med persistens är inte värd krånglet.
+export const db = getFirestore(app);
 

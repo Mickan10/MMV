@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { getCookieConsent, setCookieConsent } from "../hooks/useCookieConsent";
 import "./CookieBanner.css";
 
 export default function CookieBanner() {
@@ -7,8 +8,9 @@ export default function CookieBanner() {
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
-    const consent = localStorage.getItem("cookie-consent");
+    const consent = getCookieConsent();
     if (!consent) setVisible(true);
+    else if (consent === "accepted") loadMetaPixel("PIXEL_ID_HÄR"); // ← byt ut mot ditt riktiga Pixel-ID
   }, []);
 
   function loadMetaPixel(pixelId) {
@@ -26,13 +28,13 @@ export default function CookieBanner() {
   }
 
   function accept() {
-    localStorage.setItem("cookie-consent", "accepted");
+    setCookieConsent("accepted");
     setVisible(false);
     loadMetaPixel("PIXEL_ID_HÄR"); // ← byt ut mot ditt riktiga Pixel-ID
   }
 
   function decline() {
-    localStorage.setItem("cookie-consent", "declined");
+    setCookieConsent("declined");
     setVisible(false);
   }
 

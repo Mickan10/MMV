@@ -1,0 +1,206 @@
+.arkivbilder-main {
+  min-height: 100vh;
+  background-color: #c1b6a8;
+  padding: 50px 0;
+  box-sizing: border-box;
+}
+
+.arkivbilder-container {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 0 24px 40px;
+}
+
+.arkivbilder-container h1 {
+  font-family: "Playfair Display", serif;
+  font-weight: 900;
+  font-size: 2.6rem;
+  text-transform: uppercase;
+  text-align: center;
+  color: #382615;
+  border-bottom: 2px solid #b79c62;
+  padding-bottom: 12px;
+  margin-bottom: 10px;
+}
+
+.arkivbilder-intro {
+  text-align: center;
+  font-family: "Josefin Sans", sans-serif;
+  color: #5a4826;
+  margin: 0 0 40px;
+}
+
+.arkivbilder-loading,
+.arkivbilder-empty {
+  text-align: center;
+  font-family: "Josefin Sans", sans-serif;
+  color: #5a4826;
+}
+
+/* ── MÅNADSFILTER (samma stil som Evenemang-sidan) ── */
+.month-filter-wrap {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 14px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #c9b99a;
+}
+
+.month-filter-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #c1b6a8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a5c2e' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  border: 2px solid #b79c62;
+  border-radius: 999px;
+  color: #38220c;
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 8px 40px 8px 20px;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+  min-width: 200px;
+}
+
+.month-filter-select:hover {
+  border-color: #7a5c2e;
+  background-color: #b5aa9c;
+}
+
+.month-filter-select:focus {
+  outline: 2px solid #38220c;
+  outline-offset: 3px;
+  border-color: #7a5c2e;
+}
+
+/* ── GRUPPER PER DATUM ── */
+.arkivbilder-group {
+  margin-bottom: 36px;
+}
+
+.arkivbilder-date-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.arkivbilder-date-header > span {
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #5a4826;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.arkivbilder-artist {
+  font-family: "Playfair Display", serif !important;
+  font-size: 1.05rem !important;
+  font-weight: 900 !important;
+  color: #382615 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: uppercase;
+}
+
+.arkivbilder-date-line {
+  flex: 1;
+  height: 1px;
+  background: #b79c62;
+}
+
+/* GRID — tight rutnät, 3 kolumner, som ett Instagram-flöde */
+.arkivbilder-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.arkivbilder-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: #d9cfc4;
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: opacity 0.2s ease;
+}
+
+.arkivbilder-item:hover,
+.arkivbilder-item:focus-visible {
+  opacity: 0.85;
+}
+
+.arkivbilder-item:focus-visible {
+  outline: 2px solid #7a5c2e;
+  outline-offset: 3px;
+}
+
+.arkivbilder-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* LIGHTBOX */
+.arkivbilder-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 12, 4, 0.9);
+  z-index: 9500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  cursor: zoom-out;
+}
+
+.arkivbilder-lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 6px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+.arkivbilder-lightbox-close {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: #f1e6d2;
+  font-size: 2.4rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 10px;
+}
+
+.arkivbilder-lightbox-close:hover {
+  color: #b79c62;
+}
+
+@media (max-width: 600px) {
+  .arkivbilder-container h1 {
+    font-size: 2rem;
+  }
+
+  .arkivbilder-grid {
+    gap: 2px;
+  }
+
+  .arkivbilder-container {
+    padding: 0 2px 40px;
+  }
+}

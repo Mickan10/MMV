@@ -7,6 +7,25 @@
   justify-content: center;
 }
 
+/* Ladda/fel-läge innan eventen hunnit hämtas — samma beiga bakgrund som
+   sidan i övrigt, så det inte blinkar vitt ovanför/under texten. */
+.evenemang-status {
+  background-color: #c1b6a8;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 1.15em;
+  color: #4b3b2b;
+}
+
+.evenemang-status-error {
+  color: #7a2222;
+}
+
 .evenemang-container {
   width: 100%;
   max-width: 1400px;

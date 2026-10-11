@@ -27,7 +27,7 @@ if (!isset($_FILES["image"])) {
 $file = $_FILES["image"];
 
 // Validera filtyp
-$allowed = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+$allowed = ["image/jpeg", "image/pjpeg", "image/png", "image/webp", "image/gif"];
 $finfo = finfo_open(FILEINFO_MIME_TYPE);
 $mime = finfo_file($finfo, $file["tmp_name"]);
 finfo_close($finfo);
@@ -38,10 +38,12 @@ if (!in_array($mime, $allowed)) {
     exit();
 }
 
-// Max 5 MB
-if ($file["size"] > 5 * 1024 * 1024) {
+// Max 15 MB (bilden är redan förminskad i webbläsaren innan den når hit,
+// men vissa detaljrika bilder, t.ex. konsertfoton med mycket brus, kan
+// ändå bli några MB efter komprimering)
+if ($file["size"] > 15 * 1024 * 1024) {
     http_response_code(400);
-    echo json_encode(["error" => "Filen är för stor. Max 5 MB."]);
+    echo json_encode(["error" => "Filen är för stor. Max 15 MB."]);
     exit();
 }
 

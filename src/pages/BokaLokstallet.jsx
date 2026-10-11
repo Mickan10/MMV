@@ -188,6 +188,8 @@ const LOCAL_PRICES = {
   storaScenen: 5000,
 };
 
+const TOTAL_STEPS = 5;
+
 export default function BokaLokstallet() {
   usePageMeta("Boka Lokstallet", "Boka Lokstallet i Skövde för ditt evenemang – konserter, konferenser, bröllop och mer.");
   const [step, setStep] = useState(1);
@@ -258,13 +260,53 @@ export default function BokaLokstallet() {
     return () => { cancelled = true; };
   }, [form.local]);
 
-  function nextStep() {
+  function goToLokal() {
     if (!form.name || !form.email) {
       setSubmitError("Vänligen fyll i namn och e-post för att fortsätta.");
       return;
     }
     setSubmitError("");
     setStep(2);
+  }
+
+  function goToDetaljer() {
+    if (!form.local || !selectedDate) {
+      setSubmitError("Välj lokal och ett ledigt datum för att fortsätta.");
+      return;
+    }
+    setSubmitError("");
+    setStep(3);
+  }
+
+  function goToKontaktinfo() {
+    if (!form.local) {
+      setPriceError("Välj ett alternativ innan du beräknar pris.");
+      return;
+    }
+    if (price <= 0) {
+      setPriceError("Beräkna pris innan du går vidare.");
+      return;
+    }
+    setPriceError("");
+    setStep(4);
+  }
+
+  function goToSammanfattning() {
+    if (
+      !form.customerType ||
+      (form.customerType === "företag" && !form.orgNumber) ||
+      !form.phone
+    ) {
+      setSubmitError("Vänligen fyll i alla obligatoriska fält.");
+      return;
+    }
+    setSubmitError("");
+    setStep(5);
+  }
+
+  function goBack() {
+    setSubmitError("");
+    setStep((s) => Math.max(1, s - 1));
   }
 
   function calculatePrice() {
@@ -457,8 +499,14 @@ export default function BokaLokstallet() {
       <div className="forme-container">
         <h1>Boka Lokstallet</h1>
         <p className="boka-step-indicator" aria-live="polite">
-          Steg {step} av 2
+          Steg {step} av {TOTAL_STEPS}
         </p>
+        <div className="boka-progress-track" aria-hidden="true">
+          <div
+            className="boka-progress-fill"
+            style={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
+          />
+        </div>
 
         {/* ── STEP 1: Contact ── */}
         {step === 1 && (
@@ -487,18 +535,19 @@ export default function BokaLokstallet() {
                 placeholder="din@epost.se"
               />
             </div>
-            <button onClick={nextStep} disabled={!form.name || !form.email}>
+            <button onClick={goToLokal} disabled={!form.name || !form.email}>
               Fortsätt
             </button>
           </section>
         )}
 
-        {/* ── STEP 2: Booking details ── */}
+        {/* ── STEP 2: Lokal & datum ── */}
         {step === 2 && (
-          <>
-            {/* Lokal + kalender */}
             <section className="boka-section" id="step2-lokal">
               <h2>Välj lokal & datum</h2>
+              {submitError && (
+                <p className="error" role="alert">{submitError}</p>
+              )}
 
               <div className="boka-field">
                 <label htmlFor="local">Vad vill du boka? *</label>
@@ -577,9 +626,20 @@ export default function BokaLokstallet() {
                   Välj en lokal ovan för att se tillgängliga datum.
                 </p>
               )}
-            </section>
 
-            {/* Evenemang & tillval */}
+              <div className="boka-step-nav">
+                <button type="button" className="boka-btn-secondary" onClick={goBack}>
+                  Tillbaka
+                </button>
+                <button type="button" onClick={goToDetaljer} disabled={!form.local || !selectedDate}>
+                  Nästa
+                </button>
+              </div>
+            </section>
+        )}
+
+        {/* ── STEP 3: Evenemang & tillval ── */}
+        {step === 3 && (
             <section className="boka-section" id="step2-detaljer">
               <h2>Evenemang & tillval</h2>
 
@@ -655,11 +715,25 @@ export default function BokaLokstallet() {
                   Beräknat pris: {price.toLocaleString("sv-SE")} SEK
                 </p>
               )}
-            </section>
 
-            {/* Mer kontaktinfo */}
+              <div className="boka-step-nav">
+                <button type="button" className="boka-btn-secondary" onClick={goBack}>
+                  Tillbaka
+                </button>
+                <button type="button" onClick={goToKontaktinfo}>
+                  Nästa
+                </button>
+              </div>
+            </section>
+        )}
+
+        {/* ── STEP 4: Mer kontaktinfo ── */}
+        {step === 4 && (
             <section className="boka-section" id="step2-kontakt">
               <h2>Mer kontaktinfo</h2>
+              {submitError && (
+                <p className="error" role="alert">{submitError}</p>
+              )}
 
               <div className="boka-field">
                 <label htmlFor="customerType">Typ av kund *</label>
@@ -709,9 +783,28 @@ export default function BokaLokstallet() {
                   />
                 </div>
               )}
-            </section>
 
-            {/* Sammanfattning */}
+              <div className="boka-step-nav">
+                <button type="button" className="boka-btn-secondary" onClick={goBack}>
+                  Tillbaka
+                </button>
+                <button
+                  type="button"
+                  onClick={goToSammanfattning}
+                  disabled={
+                    !form.customerType ||
+                    (form.customerType === "företag" && !form.orgNumber) ||
+                    !form.phone
+                  }
+                >
+                  Nästa
+                </button>
+              </div>
+            </section>
+        )}
+
+        {/* ── STEP 5: Sammanfattning ── */}
+        {step === 5 && (
             <section className="boka-section boka-section--summary" id="summarySection">
               <h3>Sammanfattning</h3>
               {summary}
@@ -721,6 +814,12 @@ export default function BokaLokstallet() {
                   {submitError}
                 </p>
               )}
+
+              <div className="boka-step-nav">
+                <button type="button" className="boka-btn-secondary" onClick={goBack}>
+                  Tillbaka
+                </button>
+              </div>
 
               <button
                 onClick={handleSubmit}
@@ -742,7 +841,6 @@ export default function BokaLokstallet() {
                 Din bokning är en prelbokning tills vi bekräftar via e-post.
               </p>
             </section>
-          </>
         )}
       </div>
     </main>

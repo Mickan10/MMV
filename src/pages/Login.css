@@ -99,6 +99,24 @@ body {
   outline-offset: 3px;
 }
 
+/* "Glömt lösenord?" / "Tillbaka"-länkar – ser ut som text, inte en knapp */
+.login-container .login-link-btn {
+  background: none;
+  color: #7a664d;
+  box-shadow: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 4px;
+  text-decoration: underline;
+}
+
+.login-container .login-link-btn:hover {
+  background: none;
+  color: #38220c;
+  transform: none;
+  box-shadow: none;
+}
+
 /* Mobil */
 @media (max-width: 480px) {
   .login-container {

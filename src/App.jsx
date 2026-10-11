@@ -13,6 +13,7 @@ const BokaLokstallet = lazy(() => import("./pages/BokaLokstallet.jsx"));
 const KontaktLokstallet = lazy(() => import("./pages/KontaktLokstallet.jsx"));
 const BraAttVeta = lazy(() => import("./pages/BraAttVeta.jsx"));
 const EvenemangArkiv = lazy(() => import("./pages/EvenemangArkiv.jsx"));
+const Arkiv = lazy(() => import("./pages/Arkiv.jsx"));
 const IntegritetspolicyLokstallet = lazy(() => import("./pages/IntegritetspolicyLokstallet.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
 const EventAdmin = lazy(() => import("./pages/EventAdmin.jsx"));
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/kontakt-lokstallet" element={<LokstalletLayout><KontaktLokstallet /></LokstalletLayout>} />
           <Route path="/bra-att-veta" element={<LokstalletLayout><BraAttVeta /></LokstalletLayout>} />
           <Route path="/evenemang-lokstallet/arkiv" element={<LokstalletLayout><EvenemangArkiv /></LokstalletLayout>} />
+          <Route path="/arkiv" element={<LokstalletLayout><Arkiv /></LokstalletLayout>} />
           <Route path="/integritetspolicy" element={<LokstalletLayout><IntegritetspolicyLokstallet /></LokstalletLayout>} />
           <Route path="/admin-panel" element={<Login />} />
           <Route path="/admin" element={<EventAdmin />} />

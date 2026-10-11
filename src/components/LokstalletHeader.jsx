@@ -83,6 +83,17 @@ const LokstalletHeader = () => {
               </NavLink>
             </li>
 
+            <li>
+              <NavLink
+                to="/arkiv"
+                end
+                onClick={closeMenu}
+                className={({ isActive }) => (isActive ? "active" : "")}
+              >
+                Arkiv
+              </NavLink>
+            </li>
+
             {/* Boka-länk – dölj tills lansering
             <li>
               <NavLink

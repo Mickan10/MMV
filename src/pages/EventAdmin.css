@@ -201,6 +201,9 @@
 .admin-list-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
   margin-bottom: 20px;
 }
 
@@ -218,6 +221,103 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+/* ── ARKIV (bilder) ── */
+.admin-arkiv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 14px;
+}
+
+.admin-arkiv-item {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.admin-arkiv-item .admin-edit-actions {
+  flex-direction: column;
+}
+
+.admin-arkiv-thumb {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.admin-arkiv-date {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #8a7060;
+  text-align: center;
+}
+
+.admin-arkiv-artist {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4b3b2b;
+  text-align: center;
+}
+
+.admin-arkiv-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #8a7060;
+  cursor: pointer;
+}
+
+.admin-arkiv-bulk-bar {
+  border: 2px solid #b79c62;
+  margin-bottom: 20px;
+}
+
+/* ── PASSERADE EVENT (hopfällbar) ── */
+.admin-past-events {
+  margin-top: 24px;
+}
+
+.admin-past-events summary {
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+  color: #38220c;
+  background: #e5e2de;
+  padding: 12px 18px;
+  border-radius: 10px;
+  user-select: none;
+}
+
+.admin-past-events summary::-webkit-details-marker {
+  display: none;
+}
+
+.admin-past-events summary::before {
+  content: "▸ ";
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+
+.admin-past-events[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.admin-past-events summary:hover {
+  background: #d8d3cc;
+}
+
+.admin-past-events summary:focus-visible {
+  outline: 2px solid #38220c;
+  outline-offset: 2px;
+}
+
+.admin-past-events .admin-event-list {
+  margin-top: 16px;
 }
 
 .admin-event-item {

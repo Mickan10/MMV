@@ -9,7 +9,7 @@ export default function IntegritetspolicyLokstallet() {
     <div className="policy-page">
       <div className="policy-container">
         <h1>Integritetspolicy</h1>
-        <p className="policy-updated">Senast uppdaterad: juli 2025</p>
+        <p className="policy-updated">Senast uppdaterad: oktober 2026</p>
 
         <section>
           <h2>1. Personuppgiftsansvarig</h2>
@@ -26,6 +26,7 @@ export default function IntegritetspolicyLokstallet() {
           <p>Vi samlar in personuppgifter i följande situationer:</p>
           <ul>
             <li><strong>Kontaktformulär</strong> – namn och e-postadress när du skickar ett meddelande till oss.</li>
+            <li><strong>Bokningsförfrågan</strong> – namn, e-post, telefonnummer, typ av kund (privatperson/företag/arrangör), organisationsnummer (vid företag/arrangör) samt uppgifter om det evenemang du vill boka (datum, lokal, antal gäster, möblering och eventuella tillval), när du skickar en bokningsförfrågan.</li>
             <li><strong>Cookies och spårning</strong> – se avsnitt 6 nedan.</li>
             <li><strong>Biljettköp</strong> – om du köper biljett via Billetto hanteras dina uppgifter av Billetto i enlighet med deras integritetspolicy.</li>
           </ul>
@@ -35,6 +36,7 @@ export default function IntegritetspolicyLokstallet() {
           <h2>3. Varför samlar vi in uppgifterna?</h2>
           <ul>
             <li><strong>Kontaktförfrågningar</strong> – för att kunna besvara ditt meddelande. Rättslig grund: berättigat intresse (att kommunicera med de som kontaktar oss).</li>
+            <li><strong>Bokningsförfrågningar</strong> – för att kunna hantera, bekräfta och administrera din bokning av lokalen. Rättslig grund: fullgörande av avtal / åtgärder inför ingående av avtal.</li>
             <li><strong>Marknadsföring</strong> – om du har samtyckt till marknadsföringscookies används Meta Pixel för att mäta räckvidd via sociala medier. Rättslig grund: samtycke.</li>
           </ul>
         </section>
@@ -43,6 +45,7 @@ export default function IntegritetspolicyLokstallet() {
           <h2>4. Hur länge sparar vi uppgifterna?</h2>
           <ul>
             <li><strong>Kontaktformulär</strong> – uppgifterna sparas i vår e-postinkorg så länge de är relevanta, och raderas senast efter 12 månader.</li>
+            <li><strong>Bokningsförfrågningar</strong> – uppgifterna sparas i vår bokningsdatabas (Firebase) och e-postinkorg så länge de behövs för att hantera bokningen, och raderas därefter manuellt, dock längst 24 månader efter evenemangsdatumet (eller längre om krävs enligt bokföringslagen för genomförda betalningar).</li>
             <li><strong>Cookie-samtycke</strong> – ditt val sparas lokalt i din webbläsare (localStorage) tills du rensar det.</li>
           </ul>
         </section>
@@ -54,6 +57,7 @@ export default function IntegritetspolicyLokstallet() {
             <li><strong>Google Fonts</strong> – typsnitt laddas från Googles servrar, vilket innebär att din IP-adress kan skickas till Google.</li>
             <li><strong>Meta (Facebook)</strong> – om du accepterar marknadsföringscookies laddas Meta Pixel som skickar anonymiserad data om sidbesök till Meta. Läs mer: <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener noreferrer">facebook.com/privacy/policy</a></li>
             <li><strong>Billetto</strong> – biljettförsäljning hanteras av Billetto. Läs mer: <a href="https://billetto.se/privacy" target="_blank" rel="noopener noreferrer">billetto.se/privacy</a></li>
+            <li><strong>Google Maps</strong> – kartan på vår kontaktsida laddas från Google, vilket innebär att din IP-adress kan skickas till Google när du besöker sidan.</li>
           </ul>
         </section>
 
@@ -63,8 +67,9 @@ export default function IntegritetspolicyLokstallet() {
           <ul>
             <li><strong>Nödvändiga</strong> – Firebase-cookies som krävs för att hemsidan ska fungera. Dessa kan inte stängas av.</li>
             <li><strong>Marknadsföring</strong> – Meta Pixel (Facebook). Laddas endast om du har accepterat cookies.</li>
-            <li><strong>Tredjepartswidgetar</strong> – Billetto-widget för biljettköp, som kan sätta egna cookies.</li>
+            <li><strong>Tredjepartswidgetar</strong> – Billetto-widget för biljettköp. Widgeten laddas inte automatiskt, utan först när du aktivt väljer att visa biljetter (eller har accepterat cookies), eftersom den kan sätta egna cookies.</li>
           </ul>
+          <p>Kartan på vår kontaktsida (Google Maps) laddas alltid, oavsett cookie-val, eftersom den bedöms nödvändig för att du ska kunna hitta till oss.</p>
           <p>Du kan när som helst ändra ditt cookie-val genom att rensa din webbläsares lokala lagring och ladda om sidan.</p>
         </section>
 

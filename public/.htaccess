@@ -19,3 +19,13 @@ RewriteRule ^ index.html [L]
 <FilesMatch "\.(js|css)$">
   Header set Cache-Control "public, max-age=31536000, immutable"
 </FilesMatch>
+
+# Håll sökmotorer borta från admin-sidorna (kompletterar noindex-metataggen i appen)
+SetEnvIf Request_URI "^/admin(-panel)?(/|$)" IS_ADMIN_PAGE
+Header set X-Robots-Tag "noindex, nofollow" env=IS_ADMIN_PAGE
+
+# Bilderna är redan publika — tillåt att de läses från både lokstallett.se och
+# www.lokstallett.se (annars blockerar webbläsaren fetch() pga CORS när de skiljer sig åt).
+<FilesMatch "\.(jpe?g|png|gif|webp)$">
+  Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
